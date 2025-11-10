@@ -1,7 +1,10 @@
 ---
 title: "Predicting Student Dropout and Academic Success"
 subtitle: "Exploratory Data Analysis"
-author: "Patricia Gotz"
+authors: "Patricia Gotz, 
+Lana Kabbani,
+Estela Gonzalez Vizcarra,
+Noémie Glaus"
 date: today
 format:
   html:
@@ -11,6 +14,17 @@ format:
     code-fold: true
     code-tools: true
     df-print: paged
+  pdf:
+       # wrapping the code also in the pdf (otherwise, it overflows)
+    toc: false
+    echo: false          # HIDE code completely in PDF
+    include-in-header:
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+          commandchars=\\\{\},
+          breaklines, breaknonspaceingroup, breakanywhere
+        }
 execute:
   warning: false
   message: false
@@ -415,7 +429,7 @@ outlier_results = detect_outliers_intelligent(df, var_types)
 
 if not outlier_results.empty:
     outlier_results = outlier_results.sort_values('pct', ascending=False)
-    print("\n📋 Detected Issues:")
+    print("\n Detected Issues:")
     outlier_results
     
     # Visualize problematic variables
