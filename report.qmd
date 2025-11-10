@@ -1,10 +1,10 @@
 ---
 title: "Predicting Student Dropout and Academic Success"
 subtitle: "Exploratory Data Analysis"
-authors: "Patricia Gotz, 
-Lana Kabbani,
-Estela Gonzalez Vizcarra,
-Noémie Glaus"
+authors: "Patricia Gotz," 
+"Lana Kabbani,"
+"Estela Gonzalez Vizcarra,"
+"Noémie Glaus"
 date: today
 format:
   html:
