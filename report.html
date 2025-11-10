@@ -86,7 +86,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#i.-introduction" id="toc-i.-introduction" class="nav-link active" data-scroll-target="#i.-introduction">I. Introduction</a></li>
+  <li><a href="#i.i---background-and-motivation" id="toc-i.i---background-and-motivation" class="nav-link" data-scroll-target="#i.i---background-and-motivation">I.I - Background and Motivation</a></li>
+  <li><a href="#i.ii---project-goals" id="toc-i.ii---project-goals" class="nav-link" data-scroll-target="#i.ii---project-goals">I.II - Project Goals</a></li>
+  <li><a href="#i.iii---research-questions" id="toc-i.iii---research-questions" class="nav-link" data-scroll-target="#i.iii---research-questions">I.III - Research Questions</a></li>
   <li><a href="#data-loading" id="toc-data-loading" class="nav-link" data-scroll-target="#data-loading">Data Loading</a></li>
   <li><a href="#variable-selection" id="toc-variable-selection" class="nav-link" data-scroll-target="#variable-selection">Variable Selection</a></li>
   <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning</a></li>
@@ -133,10 +136,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="i.-introduction" class="level2">
+<h2 class="anchored" data-anchor-id="i.-introduction">I. Introduction</h2>
 <p>This analysis examines data from a Portuguese higher education institution to identify factors that contribute to student dropout and academic success. The dataset contains information on 4,424 students enrolled across various undergraduate programs.</p>
-<hr>
+</section>
+<section id="i.i---background-and-motivation" class="level2">
+<h2 class="anchored" data-anchor-id="i.i---background-and-motivation">I.I - Background and Motivation</h2>
+<p>Student retention and academic success are crucial issues for higher education institutions. Universities increasingly rely on data-driven insights to identify at-risk students and to design early intervention strategies. We chose this topic because predicting student dropout not only helps optimize institutional resources but also supports students in achieving their academic goals. Understanding the factors that influence academic success, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems. This subject is particularly meaningful in data science, because we can combine analytical and predictive methods to better understand and prevent student dropout.</p>
+</section>
+<section id="i.ii---project-goals" class="level2">
+<h2 class="anchored" data-anchor-id="i.ii---project-goals">I.II - Project Goals</h2>
+<p>The main objective of this project is to identify the factors that influence students to drop out, stay enrolled, or graduate from higher education. The dataset provides detailed information on each student’s academic performance, socioeconomic background, and demographic profile, offering a comprehensive view of the variables that shape educational outcomes. By the end of our analysis, we seek to identify the most significant combinations of academic and personal factors that influence student success. First, our analysis will focus on academic performance, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether early academic performance can serve as a reliable predictor of future dropout risk. We will then explore the influence of socioeconomic and personal factors, including parental education, occupation, and financial situation, to understand their impact on academic achievement. Lastly, the dataset will be used to build and evaluate classification models that predict students’ academic status (Dropout, Enrolled, or Graduate). In summary, this study combines exploratory analysis, visualization, and predictive modeling to generate actionable insights that help universities detect at-risk students early and strengthen academic success.</p>
+</section>
+<section id="i.iii---research-questions" class="level2">
+<h2 class="anchored" data-anchor-id="i.iii---research-questions">I.III - Research Questions</h2>
+<p>I. How do academic performance indicators and study conditions influence students’ likelihood of graduation or dropout? II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out? III. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?</p>
 </section>
 <section id="data-loading" class="level2">
 <h2 class="anchored" data-anchor-id="data-loading">Data Loading</h2>
@@ -1781,530 +1795,548 @@ Remaining variables: 27</code></pre>
 <span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
 <span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## I. Introduction</span></span>
 <span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>This analysis examines data from a Portuguese higher education institution to identify factors that contribute to student dropout and academic success. The dataset contains information on 4,424 students enrolled across various undergraduate programs.</span>
 <span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Loading</span></span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
-<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries</span></span>
-<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ucimlrepo <span class="im">import</span> fetch_ucirepo</span>
-<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
-<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
-<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Set style</span></span>
-<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>sns.set_style(<span class="st">"whitegrid"</span>)</span>
-<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## I.I - Background and Motivation</span></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>Student retention and academic success are crucial issues for higher education institutions. Universities increasingly rely on data-driven insights to identify at-risk students and to design early intervention strategies.</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>We chose this topic because predicting student dropout not only helps optimize institutional resources but also supports students in achieving their academic goals. Understanding the factors that influence academic success, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems.</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>This subject is particularly meaningful in data science, because we can combine analytical and predictive methods to better understand and prevent student dropout. </span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## I.II - Project Goals</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>The main objective of this project is to identify the factors that influence students to drop out, stay enrolled, or graduate from higher education. The dataset provides detailed information on each student’s academic performance, socioeconomic background, and demographic profile, offering a comprehensive view of the variables that shape educational outcomes. By the end of our analysis, we seek to identify the most significant combinations of academic and personal factors that influence student success. </span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>First, our analysis will focus on academic performance, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether early academic performance can serve as a reliable predictor of future dropout risk. We will then explore the influence of socioeconomic and personal factors, including parental education, occupation, and financial situation, to understand their impact on academic achievement. Lastly,  the dataset will be used to build and evaluate classification models that predict students’ academic status (Dropout, Enrolled, or Graduate). </span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>In summary, this study combines exploratory analysis, visualization, and predictive modeling to generate actionable insights that help universities detect at-risk students early and strengthen academic success.</span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## I.III - Research Questions</span></span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>I. How do academic performance indicators and study conditions influence students’ likelihood of graduation or dropout?</span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out?</span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>III. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?</span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Loading</span></span>
 <span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
-<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">697</span>)</span>
-<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array(dataset.data.features)</span>
-<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array(dataset.data.targets)</span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup</span></span>
 <span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dataframe</span></span>
-<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>col_names <span class="op">=</span> dataset.variables[<span class="st">"name"</span>]</span>
-<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(np.column_stack((X, y)), columns<span class="op">=</span>col_names)</span>
-<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dataset shape: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries</span></span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ucimlrepo <span class="im">import</span> fetch_ucirepo</span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
 <span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## Variable Selection</span></span>
-<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a>We selected 35 relevant variables for analysis:</span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Set style</span></span>
+<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a>sns.set_style(<span class="st">"whitegrid"</span>)</span>
+<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: variable-selection</span></span>
+<span id="cb19-74"><a href="#cb19-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
+<span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">697</span>)</span>
+<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array(dataset.data.features)</span>
+<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array(dataset.data.targets)</span>
 <span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a>selected_columns <span class="op">=</span> [ </span>
-<span id="cb19-80"><a href="#cb19-80" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Marital Status"</span>, </span>
-<span id="cb19-81"><a href="#cb19-81" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Application order"</span>, </span>
-<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Course"</span>, </span>
-<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Daytime/evening attendance"</span>, </span>
-<span id="cb19-84"><a href="#cb19-84" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Previous qualification"</span>, </span>
-<span id="cb19-85"><a href="#cb19-85" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Previous qualification (grade)"</span>,</span>
-<span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Nacionality"</span>, </span>
-<span id="cb19-87"><a href="#cb19-87" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Mother's qualification"</span>, </span>
-<span id="cb19-88"><a href="#cb19-88" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Father's qualification"</span>, </span>
-<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Mother's occupation"</span>, </span>
-<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Father's occupation"</span>, </span>
-<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Admission grade"</span>, </span>
-<span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Educational special needs"</span>, </span>
-<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Gender"</span>, </span>
-<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Scholarship holder"</span>, </span>
-<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Age at enrollment"</span>, </span>
-<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Displaced"</span>, </span>
-<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Debtor"</span>, </span>
-<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a>    <span class="st">"International"</span>, </span>
-<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (credited)"</span>, </span>
-<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (enrolled)"</span>, </span>
-<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (evaluations)"</span>,</span>
-<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (approved)"</span>, </span>
-<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (grade)"</span>, </span>
-<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (without evaluations)"</span>, </span>
-<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (credited)"</span>, </span>
-<span id="cb19-106"><a href="#cb19-106" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (enrolled)"</span>, </span>
-<span id="cb19-107"><a href="#cb19-107" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (evaluations)"</span>, </span>
-<span id="cb19-108"><a href="#cb19-108" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (approved)"</span>, </span>
-<span id="cb19-109"><a href="#cb19-109" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (grade)"</span>, </span>
-<span id="cb19-110"><a href="#cb19-110" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (without evaluations)"</span>, </span>
-<span id="cb19-111"><a href="#cb19-111" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unemployment rate"</span>, </span>
-<span id="cb19-112"><a href="#cb19-112" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Inflation rate"</span>, </span>
-<span id="cb19-113"><a href="#cb19-113" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GDP"</span>, </span>
-<span id="cb19-114"><a href="#cb19-114" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Target"</span>, </span>
-<span id="cb19-115"><a href="#cb19-115" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb19-116"><a href="#cb19-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-117"><a href="#cb19-117" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[selected_columns].copy()</span>
-<span id="cb19-118"><a href="#cb19-118" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Selected </span><span class="sc">{</span><span class="bu">len</span>(selected_columns)<span class="sc">}</span><span class="ss"> variables"</span>)</span>
-<span id="cb19-119"><a href="#cb19-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-120"><a href="#cb19-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-121"><a href="#cb19-121" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-122"><a href="#cb19-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-123"><a href="#cb19-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Cleaning</span></span>
-<span id="cb19-124"><a href="#cb19-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-127"><a href="#cb19-127" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-128"><a href="#cb19-128" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data-cleaning</span></span>
-<span id="cb19-129"><a href="#cb19-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-130"><a href="#cb19-130" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_dataframe(df, col_missing_thresh<span class="op">=</span><span class="fl">0.30</span>, row_missing_thresh<span class="op">=</span><span class="fl">0.50</span>):</span>
-<span id="cb19-131"><a href="#cb19-131" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Clean dataset with missing value handling."""</span></span>
-<span id="cb19-132"><a href="#cb19-132" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.copy()</span>
-<span id="cb19-133"><a href="#cb19-133" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-134"><a href="#cb19-134" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Drop columns with excessive missing</span></span>
-<span id="cb19-135"><a href="#cb19-135" aria-hidden="true" tabindex="-1"></a>    col_frac <span class="op">=</span> df.isna().mean()</span>
-<span id="cb19-136"><a href="#cb19-136" aria-hidden="true" tabindex="-1"></a>    drop_cols <span class="op">=</span> col_frac[col_frac <span class="op">&gt;</span> col_missing_thresh].index.tolist()</span>
-<span id="cb19-137"><a href="#cb19-137" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> drop_cols:</span>
-<span id="cb19-138"><a href="#cb19-138" aria-hidden="true" tabindex="-1"></a>        df.drop(columns<span class="op">=</span>drop_cols, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb19-139"><a href="#cb19-139" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-140"><a href="#cb19-140" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Drop rows with excessive missing</span></span>
-<span id="cb19-141"><a href="#cb19-141" aria-hidden="true" tabindex="-1"></a>    row_frac <span class="op">=</span> df.isna().mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb19-142"><a href="#cb19-142" aria-hidden="true" tabindex="-1"></a>    drop_rows <span class="op">=</span> row_frac[row_frac <span class="op">&gt;</span> row_missing_thresh].index</span>
-<span id="cb19-143"><a href="#cb19-143" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(drop_rows):</span>
-<span id="cb19-144"><a href="#cb19-144" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.drop(index<span class="op">=</span>drop_rows).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb19-145"><a href="#cb19-145" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-146"><a href="#cb19-146" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Coerce numeric types</span></span>
-<span id="cb19-147"><a href="#cb19-147" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.<span class="bu">apply</span>(<span class="kw">lambda</span> s: pd.to_numeric(s, errors<span class="op">=</span><span class="st">"ignore"</span>))</span>
-<span id="cb19-148"><a href="#cb19-148" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-149"><a href="#cb19-149" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Impute missing values</span></span>
-<span id="cb19-150"><a href="#cb19-150" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> df.select_dtypes(include<span class="op">=</span>[np.number]).columns:</span>
-<span id="cb19-151"><a href="#cb19-151" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> df[col].isna().<span class="bu">any</span>():</span>
-<span id="cb19-152"><a href="#cb19-152" aria-hidden="true" tabindex="-1"></a>            df[col] <span class="op">=</span> df[col].fillna(df[col].median())</span>
-<span id="cb19-153"><a href="#cb19-153" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-154"><a href="#cb19-154" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> df.select_dtypes(include<span class="op">=</span>[<span class="st">"category"</span>,<span class="st">"object"</span>]).columns:</span>
-<span id="cb19-155"><a href="#cb19-155" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> df[col].isna().<span class="bu">any</span>():</span>
-<span id="cb19-156"><a href="#cb19-156" aria-hidden="true" tabindex="-1"></a>            mode <span class="op">=</span> df[col].mode(dropna<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb19-157"><a href="#cb19-157" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> mode.empty:</span>
-<span id="cb19-158"><a href="#cb19-158" aria-hidden="true" tabindex="-1"></a>                df[col] <span class="op">=</span> df[col].fillna(mode.iloc[<span class="dv">0</span>])</span>
-<span id="cb19-159"><a href="#cb19-159" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-160"><a href="#cb19-160" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
-<span id="cb19-161"><a href="#cb19-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-162"><a href="#cb19-162" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_dataframe(df)</span>
-<span id="cb19-163"><a href="#cb19-163" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shape after cleaning: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-164"><a href="#cb19-164" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Missing values: </span><span class="sc">{</span>df<span class="sc">.</span>isna()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-165"><a href="#cb19-165" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-166"><a href="#cb19-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-167"><a href="#cb19-167" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-168"><a href="#cb19-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-169"><a href="#cb19-169" aria-hidden="true" tabindex="-1"></a><span class="fu">## Target Variable</span></span>
-<span id="cb19-170"><a href="#cb19-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-173"><a href="#cb19-173" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-174"><a href="#cb19-174" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: target-distribution</span></span>
-<span id="cb19-175"><a href="#cb19-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-176"><a href="#cb19-176" aria-hidden="true" tabindex="-1"></a><span class="co"># Recode target</span></span>
-<span id="cb19-177"><a href="#cb19-177" aria-hidden="true" tabindex="-1"></a>target_col <span class="op">=</span> <span class="st">"Target"</span></span>
-<span id="cb19-178"><a href="#cb19-178" aria-hidden="true" tabindex="-1"></a>df[target_col] <span class="op">=</span> df[target_col].replace({</span>
-<span id="cb19-179"><a href="#cb19-179" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>: <span class="st">"Dropout"</span>, </span>
-<span id="cb19-180"><a href="#cb19-180" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: <span class="st">"Enrolled"</span>, </span>
-<span id="cb19-181"><a href="#cb19-181" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>: <span class="st">"Graduate"</span></span>
-<span id="cb19-182"><a href="#cb19-182" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb19-183"><a href="#cb19-183" aria-hidden="true" tabindex="-1"></a>df[target_col] <span class="op">=</span> pd.Categorical(</span>
-<span id="cb19-184"><a href="#cb19-184" aria-hidden="true" tabindex="-1"></a>    df[target_col], </span>
-<span id="cb19-185"><a href="#cb19-185" aria-hidden="true" tabindex="-1"></a>    categories<span class="op">=</span>[<span class="st">"Dropout"</span>, <span class="st">"Enrolled"</span>, <span class="st">"Graduate"</span>], </span>
-<span id="cb19-186"><a href="#cb19-186" aria-hidden="true" tabindex="-1"></a>    ordered<span class="op">=</span><span class="va">True</span></span>
-<span id="cb19-187"><a href="#cb19-187" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dataframe</span></span>
+<span id="cb19-80"><a href="#cb19-80" aria-hidden="true" tabindex="-1"></a>col_names <span class="op">=</span> dataset.variables[<span class="st">"name"</span>]</span>
+<span id="cb19-81"><a href="#cb19-81" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(np.column_stack((X, y)), columns<span class="op">=</span>col_names)</span>
+<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Dataset shape: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-84"><a href="#cb19-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-85"><a href="#cb19-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-87"><a href="#cb19-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-88"><a href="#cb19-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## Variable Selection</span></span>
+<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a>We selected 35 relevant variables for analysis:</span>
+<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: variable-selection</span></span>
+<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a>selected_columns <span class="op">=</span> [ </span>
+<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Marital Status"</span>, </span>
+<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Application order"</span>, </span>
+<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Course"</span>, </span>
+<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Daytime/evening attendance"</span>, </span>
+<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Previous qualification"</span>, </span>
+<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Previous qualification (grade)"</span>,</span>
+<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Nacionality"</span>, </span>
+<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Mother's qualification"</span>, </span>
+<span id="cb19-106"><a href="#cb19-106" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Father's qualification"</span>, </span>
+<span id="cb19-107"><a href="#cb19-107" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Mother's occupation"</span>, </span>
+<span id="cb19-108"><a href="#cb19-108" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Father's occupation"</span>, </span>
+<span id="cb19-109"><a href="#cb19-109" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Admission grade"</span>, </span>
+<span id="cb19-110"><a href="#cb19-110" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Educational special needs"</span>, </span>
+<span id="cb19-111"><a href="#cb19-111" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Gender"</span>, </span>
+<span id="cb19-112"><a href="#cb19-112" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Scholarship holder"</span>, </span>
+<span id="cb19-113"><a href="#cb19-113" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Age at enrollment"</span>, </span>
+<span id="cb19-114"><a href="#cb19-114" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Displaced"</span>, </span>
+<span id="cb19-115"><a href="#cb19-115" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Debtor"</span>, </span>
+<span id="cb19-116"><a href="#cb19-116" aria-hidden="true" tabindex="-1"></a>    <span class="st">"International"</span>, </span>
+<span id="cb19-117"><a href="#cb19-117" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (credited)"</span>, </span>
+<span id="cb19-118"><a href="#cb19-118" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (enrolled)"</span>, </span>
+<span id="cb19-119"><a href="#cb19-119" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (evaluations)"</span>,</span>
+<span id="cb19-120"><a href="#cb19-120" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (approved)"</span>, </span>
+<span id="cb19-121"><a href="#cb19-121" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (grade)"</span>, </span>
+<span id="cb19-122"><a href="#cb19-122" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (without evaluations)"</span>, </span>
+<span id="cb19-123"><a href="#cb19-123" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (credited)"</span>, </span>
+<span id="cb19-124"><a href="#cb19-124" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (enrolled)"</span>, </span>
+<span id="cb19-125"><a href="#cb19-125" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (evaluations)"</span>, </span>
+<span id="cb19-126"><a href="#cb19-126" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (approved)"</span>, </span>
+<span id="cb19-127"><a href="#cb19-127" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (grade)"</span>, </span>
+<span id="cb19-128"><a href="#cb19-128" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (without evaluations)"</span>, </span>
+<span id="cb19-129"><a href="#cb19-129" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unemployment rate"</span>, </span>
+<span id="cb19-130"><a href="#cb19-130" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Inflation rate"</span>, </span>
+<span id="cb19-131"><a href="#cb19-131" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GDP"</span>, </span>
+<span id="cb19-132"><a href="#cb19-132" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Target"</span>, </span>
+<span id="cb19-133"><a href="#cb19-133" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb19-134"><a href="#cb19-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-135"><a href="#cb19-135" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[selected_columns].copy()</span>
+<span id="cb19-136"><a href="#cb19-136" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Selected </span><span class="sc">{</span><span class="bu">len</span>(selected_columns)<span class="sc">}</span><span class="ss"> variables"</span>)</span>
+<span id="cb19-137"><a href="#cb19-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-138"><a href="#cb19-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-139"><a href="#cb19-139" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-140"><a href="#cb19-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-141"><a href="#cb19-141" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Cleaning</span></span>
+<span id="cb19-142"><a href="#cb19-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-145"><a href="#cb19-145" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-146"><a href="#cb19-146" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data-cleaning</span></span>
+<span id="cb19-147"><a href="#cb19-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-148"><a href="#cb19-148" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_dataframe(df, col_missing_thresh<span class="op">=</span><span class="fl">0.30</span>, row_missing_thresh<span class="op">=</span><span class="fl">0.50</span>):</span>
+<span id="cb19-149"><a href="#cb19-149" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Clean dataset with missing value handling."""</span></span>
+<span id="cb19-150"><a href="#cb19-150" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.copy()</span>
+<span id="cb19-151"><a href="#cb19-151" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-152"><a href="#cb19-152" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Drop columns with excessive missing</span></span>
+<span id="cb19-153"><a href="#cb19-153" aria-hidden="true" tabindex="-1"></a>    col_frac <span class="op">=</span> df.isna().mean()</span>
+<span id="cb19-154"><a href="#cb19-154" aria-hidden="true" tabindex="-1"></a>    drop_cols <span class="op">=</span> col_frac[col_frac <span class="op">&gt;</span> col_missing_thresh].index.tolist()</span>
+<span id="cb19-155"><a href="#cb19-155" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> drop_cols:</span>
+<span id="cb19-156"><a href="#cb19-156" aria-hidden="true" tabindex="-1"></a>        df.drop(columns<span class="op">=</span>drop_cols, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-157"><a href="#cb19-157" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-158"><a href="#cb19-158" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Drop rows with excessive missing</span></span>
+<span id="cb19-159"><a href="#cb19-159" aria-hidden="true" tabindex="-1"></a>    row_frac <span class="op">=</span> df.isna().mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb19-160"><a href="#cb19-160" aria-hidden="true" tabindex="-1"></a>    drop_rows <span class="op">=</span> row_frac[row_frac <span class="op">&gt;</span> row_missing_thresh].index</span>
+<span id="cb19-161"><a href="#cb19-161" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(drop_rows):</span>
+<span id="cb19-162"><a href="#cb19-162" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> df.drop(index<span class="op">=</span>drop_rows).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-163"><a href="#cb19-163" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-164"><a href="#cb19-164" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Coerce numeric types</span></span>
+<span id="cb19-165"><a href="#cb19-165" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.<span class="bu">apply</span>(<span class="kw">lambda</span> s: pd.to_numeric(s, errors<span class="op">=</span><span class="st">"ignore"</span>))</span>
+<span id="cb19-166"><a href="#cb19-166" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-167"><a href="#cb19-167" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Impute missing values</span></span>
+<span id="cb19-168"><a href="#cb19-168" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> df.select_dtypes(include<span class="op">=</span>[np.number]).columns:</span>
+<span id="cb19-169"><a href="#cb19-169" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> df[col].isna().<span class="bu">any</span>():</span>
+<span id="cb19-170"><a href="#cb19-170" aria-hidden="true" tabindex="-1"></a>            df[col] <span class="op">=</span> df[col].fillna(df[col].median())</span>
+<span id="cb19-171"><a href="#cb19-171" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-172"><a href="#cb19-172" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> df.select_dtypes(include<span class="op">=</span>[<span class="st">"category"</span>,<span class="st">"object"</span>]).columns:</span>
+<span id="cb19-173"><a href="#cb19-173" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> df[col].isna().<span class="bu">any</span>():</span>
+<span id="cb19-174"><a href="#cb19-174" aria-hidden="true" tabindex="-1"></a>            mode <span class="op">=</span> df[col].mode(dropna<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-175"><a href="#cb19-175" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> mode.empty:</span>
+<span id="cb19-176"><a href="#cb19-176" aria-hidden="true" tabindex="-1"></a>                df[col] <span class="op">=</span> df[col].fillna(mode.iloc[<span class="dv">0</span>])</span>
+<span id="cb19-177"><a href="#cb19-177" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-178"><a href="#cb19-178" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb19-179"><a href="#cb19-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-180"><a href="#cb19-180" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_dataframe(df)</span>
+<span id="cb19-181"><a href="#cb19-181" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Shape after cleaning: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-182"><a href="#cb19-182" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Missing values: </span><span class="sc">{</span>df<span class="sc">.</span>isna()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-183"><a href="#cb19-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-184"><a href="#cb19-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-185"><a href="#cb19-185" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-186"><a href="#cb19-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-187"><a href="#cb19-187" aria-hidden="true" tabindex="-1"></a><span class="fu">## Target Variable</span></span>
 <span id="cb19-188"><a href="#cb19-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-189"><a href="#cb19-189" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize</span></span>
-<span id="cb19-190"><a href="#cb19-190" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb19-191"><a href="#cb19-191" aria-hidden="true" tabindex="-1"></a>target_counts <span class="op">=</span> df[target_col].value_counts()</span>
-<span id="cb19-192"><a href="#cb19-192" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'#e74c3c'</span>, <span class="st">'#f39c12'</span>, <span class="st">'#2ecc71'</span>]</span>
-<span id="cb19-193"><a href="#cb19-193" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax.bar(<span class="bu">range</span>(<span class="bu">len</span>(target_counts)), target_counts.values, </span>
-<span id="cb19-194"><a href="#cb19-194" aria-hidden="true" tabindex="-1"></a>              color<span class="op">=</span>colors, edgecolor<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
-<span id="cb19-195"><a href="#cb19-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-196"><a href="#cb19-196" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(target_counts)))</span>
-<span id="cb19-197"><a href="#cb19-197" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(target_counts.index)</span>
-<span id="cb19-198"><a href="#cb19-198" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Number of Students'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
-<span id="cb19-199"><a href="#cb19-199" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Student Outcomes Distribution'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb19-200"><a href="#cb19-200" aria-hidden="true" tabindex="-1"></a>ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb19-201"><a href="#cb19-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-202"><a href="#cb19-202" aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
-<span id="cb19-203"><a href="#cb19-203" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(target_counts.values):</span>
-<span id="cb19-204"><a href="#cb19-204" aria-hidden="true" tabindex="-1"></a>    ax.text(i, v <span class="op">+</span> <span class="dv">30</span>, <span class="ss">f'</span><span class="sc">{</span>v<span class="sc">}</span><span class="ch">\n</span><span class="ss">(</span><span class="sc">{</span>v<span class="op">/</span><span class="bu">len</span>(df)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)'</span>, </span>
-<span id="cb19-205"><a href="#cb19-205" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb19-191"><a href="#cb19-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-192"><a href="#cb19-192" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: target-distribution</span></span>
+<span id="cb19-193"><a href="#cb19-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-194"><a href="#cb19-194" aria-hidden="true" tabindex="-1"></a><span class="co"># Recode target</span></span>
+<span id="cb19-195"><a href="#cb19-195" aria-hidden="true" tabindex="-1"></a>target_col <span class="op">=</span> <span class="st">"Target"</span></span>
+<span id="cb19-196"><a href="#cb19-196" aria-hidden="true" tabindex="-1"></a>df[target_col] <span class="op">=</span> df[target_col].replace({</span>
+<span id="cb19-197"><a href="#cb19-197" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>: <span class="st">"Dropout"</span>, </span>
+<span id="cb19-198"><a href="#cb19-198" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: <span class="st">"Enrolled"</span>, </span>
+<span id="cb19-199"><a href="#cb19-199" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>: <span class="st">"Graduate"</span></span>
+<span id="cb19-200"><a href="#cb19-200" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb19-201"><a href="#cb19-201" aria-hidden="true" tabindex="-1"></a>df[target_col] <span class="op">=</span> pd.Categorical(</span>
+<span id="cb19-202"><a href="#cb19-202" aria-hidden="true" tabindex="-1"></a>    df[target_col], </span>
+<span id="cb19-203"><a href="#cb19-203" aria-hidden="true" tabindex="-1"></a>    categories<span class="op">=</span>[<span class="st">"Dropout"</span>, <span class="st">"Enrolled"</span>, <span class="st">"Graduate"</span>], </span>
+<span id="cb19-204"><a href="#cb19-204" aria-hidden="true" tabindex="-1"></a>    ordered<span class="op">=</span><span class="va">True</span></span>
+<span id="cb19-205"><a href="#cb19-205" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb19-206"><a href="#cb19-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-207"><a href="#cb19-207" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb19-208"><a href="#cb19-208" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb19-209"><a href="#cb19-209" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-210"><a href="#cb19-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-211"><a href="#cb19-211" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-212"><a href="#cb19-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-213"><a href="#cb19-213" aria-hidden="true" tabindex="-1"></a><span class="fu">## Descriptive Statistics</span></span>
-<span id="cb19-214"><a href="#cb19-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-217"><a href="#cb19-217" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-218"><a href="#cb19-218" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: descriptive-stats</span></span>
+<span id="cb19-207"><a href="#cb19-207" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize</span></span>
+<span id="cb19-208"><a href="#cb19-208" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb19-209"><a href="#cb19-209" aria-hidden="true" tabindex="-1"></a>target_counts <span class="op">=</span> df[target_col].value_counts()</span>
+<span id="cb19-210"><a href="#cb19-210" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'#e74c3c'</span>, <span class="st">'#f39c12'</span>, <span class="st">'#2ecc71'</span>]</span>
+<span id="cb19-211"><a href="#cb19-211" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax.bar(<span class="bu">range</span>(<span class="bu">len</span>(target_counts)), target_counts.values, </span>
+<span id="cb19-212"><a href="#cb19-212" aria-hidden="true" tabindex="-1"></a>              color<span class="op">=</span>colors, edgecolor<span class="op">=</span><span class="st">'black'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb19-213"><a href="#cb19-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-214"><a href="#cb19-214" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(target_counts)))</span>
+<span id="cb19-215"><a href="#cb19-215" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(target_counts.index)</span>
+<span id="cb19-216"><a href="#cb19-216" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Number of Students'</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb19-217"><a href="#cb19-217" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Student Outcomes Distribution'</span>, fontsize<span class="op">=</span><span class="dv">13</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb19-218"><a href="#cb19-218" aria-hidden="true" tabindex="-1"></a>ax.grid(axis<span class="op">=</span><span class="st">'y'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
 <span id="cb19-219"><a href="#cb19-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-220"><a href="#cb19-220" aria-hidden="true" tabindex="-1"></a>numeric_cols <span class="op">=</span> df.select_dtypes(include<span class="op">=</span>np.number).columns</span>
-<span id="cb19-221"><a href="#cb19-221" aria-hidden="true" tabindex="-1"></a>desc_stats <span class="op">=</span> df[numeric_cols].describe().T</span>
-<span id="cb19-222"><a href="#cb19-222" aria-hidden="true" tabindex="-1"></a>desc_stats <span class="op">=</span> desc_stats.<span class="bu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb19-223"><a href="#cb19-223" aria-hidden="true" tabindex="-1"></a>desc_stats</span>
-<span id="cb19-224"><a href="#cb19-224" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-225"><a href="#cb19-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-226"><a href="#cb19-226" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-227"><a href="#cb19-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-228"><a href="#cb19-228" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlation Analysis</span></span>
-<span id="cb19-229"><a href="#cb19-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-232"><a href="#cb19-232" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-233"><a href="#cb19-233" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: correlation-matrix</span></span>
-<span id="cb19-234"><a href="#cb19-234" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 12</span></span>
-<span id="cb19-235"><a href="#cb19-235" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 14</span></span>
-<span id="cb19-236"><a href="#cb19-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-237"><a href="#cb19-237" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate correlations</span></span>
-<span id="cb19-238"><a href="#cb19-238" aria-hidden="true" tabindex="-1"></a>corr <span class="op">=</span> df.corr(numeric_only<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb19-239"><a href="#cb19-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-240"><a href="#cb19-240" aria-hidden="true" tabindex="-1"></a><span class="co"># Create heatmap</span></span>
-<span id="cb19-241"><a href="#cb19-241" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">14</span>))</span>
-<span id="cb19-242"><a href="#cb19-242" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> np.triu(np.ones_like(corr, dtype<span class="op">=</span><span class="bu">bool</span>), k<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb19-220"><a href="#cb19-220" aria-hidden="true" tabindex="-1"></a><span class="co"># Add labels</span></span>
+<span id="cb19-221"><a href="#cb19-221" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(target_counts.values):</span>
+<span id="cb19-222"><a href="#cb19-222" aria-hidden="true" tabindex="-1"></a>    ax.text(i, v <span class="op">+</span> <span class="dv">30</span>, <span class="ss">f'</span><span class="sc">{</span>v<span class="sc">}</span><span class="ch">\n</span><span class="ss">(</span><span class="sc">{</span>v<span class="op">/</span><span class="bu">len</span>(df)<span class="op">*</span><span class="dv">100</span><span class="sc">:.1f}</span><span class="ss">%)'</span>, </span>
+<span id="cb19-223"><a href="#cb19-223" aria-hidden="true" tabindex="-1"></a>            ha<span class="op">=</span><span class="st">'center'</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb19-224"><a href="#cb19-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-225"><a href="#cb19-225" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-226"><a href="#cb19-226" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb19-227"><a href="#cb19-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-228"><a href="#cb19-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-229"><a href="#cb19-229" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-230"><a href="#cb19-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-231"><a href="#cb19-231" aria-hidden="true" tabindex="-1"></a><span class="fu">## Descriptive Statistics</span></span>
+<span id="cb19-232"><a href="#cb19-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-235"><a href="#cb19-235" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-236"><a href="#cb19-236" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: descriptive-stats</span></span>
+<span id="cb19-237"><a href="#cb19-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-238"><a href="#cb19-238" aria-hidden="true" tabindex="-1"></a>numeric_cols <span class="op">=</span> df.select_dtypes(include<span class="op">=</span>np.number).columns</span>
+<span id="cb19-239"><a href="#cb19-239" aria-hidden="true" tabindex="-1"></a>desc_stats <span class="op">=</span> df[numeric_cols].describe().T</span>
+<span id="cb19-240"><a href="#cb19-240" aria-hidden="true" tabindex="-1"></a>desc_stats <span class="op">=</span> desc_stats.<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb19-241"><a href="#cb19-241" aria-hidden="true" tabindex="-1"></a>desc_stats</span>
+<span id="cb19-242"><a href="#cb19-242" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb19-243"><a href="#cb19-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-244"><a href="#cb19-244" aria-hidden="true" tabindex="-1"></a>sns.heatmap(</span>
-<span id="cb19-245"><a href="#cb19-245" aria-hidden="true" tabindex="-1"></a>    corr, </span>
-<span id="cb19-246"><a href="#cb19-246" aria-hidden="true" tabindex="-1"></a>    mask<span class="op">=</span>mask,</span>
-<span id="cb19-247"><a href="#cb19-247" aria-hidden="true" tabindex="-1"></a>    cmap<span class="op">=</span><span class="st">'RdBu_r'</span>, </span>
-<span id="cb19-248"><a href="#cb19-248" aria-hidden="true" tabindex="-1"></a>    center<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb19-249"><a href="#cb19-249" aria-hidden="true" tabindex="-1"></a>    vmin<span class="op">=-</span><span class="dv">1</span>, </span>
-<span id="cb19-250"><a href="#cb19-250" aria-hidden="true" tabindex="-1"></a>    vmax<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb19-251"><a href="#cb19-251" aria-hidden="true" tabindex="-1"></a>    annot<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb19-252"><a href="#cb19-252" aria-hidden="true" tabindex="-1"></a>    fmt<span class="op">=</span><span class="st">'.2f'</span>,</span>
-<span id="cb19-253"><a href="#cb19-253" aria-hidden="true" tabindex="-1"></a>    square<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb19-254"><a href="#cb19-254" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb19-255"><a href="#cb19-255" aria-hidden="true" tabindex="-1"></a>    cbar_kws<span class="op">=</span>{<span class="st">"shrink"</span>: <span class="fl">0.8</span>, <span class="st">"label"</span>: <span class="st">"Correlation"</span>}</span>
-<span id="cb19-256"><a href="#cb19-256" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-244"><a href="#cb19-244" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-245"><a href="#cb19-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-246"><a href="#cb19-246" aria-hidden="true" tabindex="-1"></a><span class="fu">## Correlation Analysis</span></span>
+<span id="cb19-247"><a href="#cb19-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-250"><a href="#cb19-250" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-251"><a href="#cb19-251" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: correlation-matrix</span></span>
+<span id="cb19-252"><a href="#cb19-252" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-height: 12</span></span>
+<span id="cb19-253"><a href="#cb19-253" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-width: 14</span></span>
+<span id="cb19-254"><a href="#cb19-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-255"><a href="#cb19-255" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate correlations</span></span>
+<span id="cb19-256"><a href="#cb19-256" aria-hidden="true" tabindex="-1"></a>corr <span class="op">=</span> df.corr(numeric_only<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb19-257"><a href="#cb19-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-258"><a href="#cb19-258" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Correlation Matrix of Numeric Variables'</span>, </span>
-<span id="cb19-259"><a href="#cb19-259" aria-hidden="true" tabindex="-1"></a>          fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb19-260"><a href="#cb19-260" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb19-261"><a href="#cb19-261" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb19-262"><a href="#cb19-262" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-263"><a href="#cb19-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-264"><a href="#cb19-264" aria-hidden="true" tabindex="-1"></a>Based on this correlation analysis, we identified several highly correlated variable pairs that suggest multicollinearity. We excluded 8 redundant semester variables that were highly correlated with other metrics.</span>
-<span id="cb19-265"><a href="#cb19-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-266"><a href="#cb19-266" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-267"><a href="#cb19-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-268"><a href="#cb19-268" aria-hidden="true" tabindex="-1"></a><span class="fu">## Feature Selection</span></span>
-<span id="cb19-269"><a href="#cb19-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-272"><a href="#cb19-272" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-273"><a href="#cb19-273" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: feature-selection</span></span>
-<span id="cb19-274"><a href="#cb19-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-275"><a href="#cb19-275" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove highly correlated features</span></span>
-<span id="cb19-276"><a href="#cb19-276" aria-hidden="true" tabindex="-1"></a>columns_to_remove <span class="op">=</span> [</span>
-<span id="cb19-277"><a href="#cb19-277" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (credited)"</span>, </span>
-<span id="cb19-278"><a href="#cb19-278" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (evaluations)"</span>, </span>
-<span id="cb19-279"><a href="#cb19-279" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (approved)"</span>,</span>
-<span id="cb19-280"><a href="#cb19-280" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (without evaluations)"</span>,</span>
-<span id="cb19-281"><a href="#cb19-281" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (credited)"</span>, </span>
-<span id="cb19-282"><a href="#cb19-282" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (evaluations)"</span>, </span>
-<span id="cb19-283"><a href="#cb19-283" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (approved)"</span>,</span>
-<span id="cb19-284"><a href="#cb19-284" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (without evaluations)"</span></span>
-<span id="cb19-285"><a href="#cb19-285" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb19-286"><a href="#cb19-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-287"><a href="#cb19-287" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>columns_to_remove)</span>
-<span id="cb19-288"><a href="#cb19-288" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Removed </span><span class="sc">{</span><span class="bu">len</span>(columns_to_remove)<span class="sc">}</span><span class="ss"> highly correlated variables"</span>)</span>
-<span id="cb19-289"><a href="#cb19-289" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Remaining variables: </span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-290"><a href="#cb19-290" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-291"><a href="#cb19-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-292"><a href="#cb19-292" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb19-293"><a href="#cb19-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-294"><a href="#cb19-294" aria-hidden="true" tabindex="-1"></a><span class="fu">## Outlier Detection</span></span>
-<span id="cb19-295"><a href="#cb19-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-296"><a href="#cb19-296" aria-hidden="true" tabindex="-1"></a>We implemented a type-aware outlier detection strategy that applies different methods based on the nature of each variable:</span>
-<span id="cb19-297"><a href="#cb19-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-298"><a href="#cb19-298" aria-hidden="true" tabindex="-1"></a>**Binary variables** (e.g., Gender, Scholarship holder): Outlier detection was skipped entirely, as these variables only contain two valid values (0/1).</span>
-<span id="cb19-299"><a href="#cb19-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-300"><a href="#cb19-300" aria-hidden="true" tabindex="-1"></a>**Nominal categorical variables** (e.g., Course, Nationality): No outlier detection applied, as these represent distinct categories without natural ordering. We only reported the number of unique categories present.</span>
-<span id="cb19-301"><a href="#cb19-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-302"><a href="#cb19-302" aria-hidden="true" tabindex="-1"></a>**Ordinal categorical variables** (e.g., qualifications, occupations): We reported the number of levels but did not apply outlier detection, as these represent ordered categories rather than continuous measurements.</span>
-<span id="cb19-303"><a href="#cb19-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-304"><a href="#cb19-304" aria-hidden="true" tabindex="-1"></a>**Grade variables** (0-200 scale): We checked for values outside the valid range (0-200). According to the dataset documentation, grades in the Portuguese system can range from 0 to 200.</span>
-<span id="cb19-305"><a href="#cb19-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-306"><a href="#cb19-306" aria-hidden="true" tabindex="-1"></a>**Count variables** (e.g., enrolled courses): We used a more lenient threshold of 3×IQR (Interquartile Range) rather than the standard 1.5×IQR, as count variables naturally exhibit right-skewed distributions where high values may represent legitimate cases (e.g., students enrolling in many courses).</span>
-<span id="cb19-307"><a href="#cb19-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-308"><a href="#cb19-308" aria-hidden="true" tabindex="-1"></a>**Continuous variables** (e.g., Age, GDP, Unemployment rate): We applied the standard Tukey method with 1.5×IQR threshold to identify potential outliers: values below Q1 - 1.5×IQR or above Q3 + 1.5×IQR.</span>
+<span id="cb19-258"><a href="#cb19-258" aria-hidden="true" tabindex="-1"></a><span class="co"># Create heatmap</span></span>
+<span id="cb19-259"><a href="#cb19-259" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">14</span>))</span>
+<span id="cb19-260"><a href="#cb19-260" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> np.triu(np.ones_like(corr, dtype<span class="op">=</span><span class="bu">bool</span>), k<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb19-261"><a href="#cb19-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-262"><a href="#cb19-262" aria-hidden="true" tabindex="-1"></a>sns.heatmap(</span>
+<span id="cb19-263"><a href="#cb19-263" aria-hidden="true" tabindex="-1"></a>    corr, </span>
+<span id="cb19-264"><a href="#cb19-264" aria-hidden="true" tabindex="-1"></a>    mask<span class="op">=</span>mask,</span>
+<span id="cb19-265"><a href="#cb19-265" aria-hidden="true" tabindex="-1"></a>    cmap<span class="op">=</span><span class="st">'RdBu_r'</span>, </span>
+<span id="cb19-266"><a href="#cb19-266" aria-hidden="true" tabindex="-1"></a>    center<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb19-267"><a href="#cb19-267" aria-hidden="true" tabindex="-1"></a>    vmin<span class="op">=-</span><span class="dv">1</span>, </span>
+<span id="cb19-268"><a href="#cb19-268" aria-hidden="true" tabindex="-1"></a>    vmax<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb19-269"><a href="#cb19-269" aria-hidden="true" tabindex="-1"></a>    annot<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb19-270"><a href="#cb19-270" aria-hidden="true" tabindex="-1"></a>    fmt<span class="op">=</span><span class="st">'.2f'</span>,</span>
+<span id="cb19-271"><a href="#cb19-271" aria-hidden="true" tabindex="-1"></a>    square<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb19-272"><a href="#cb19-272" aria-hidden="true" tabindex="-1"></a>    linewidths<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb19-273"><a href="#cb19-273" aria-hidden="true" tabindex="-1"></a>    cbar_kws<span class="op">=</span>{<span class="st">"shrink"</span>: <span class="fl">0.8</span>, <span class="st">"label"</span>: <span class="st">"Correlation"</span>}</span>
+<span id="cb19-274"><a href="#cb19-274" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-275"><a href="#cb19-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-276"><a href="#cb19-276" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Correlation Matrix of Numeric Variables'</span>, </span>
+<span id="cb19-277"><a href="#cb19-277" aria-hidden="true" tabindex="-1"></a>          fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, pad<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb19-278"><a href="#cb19-278" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-279"><a href="#cb19-279" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb19-280"><a href="#cb19-280" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-281"><a href="#cb19-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-282"><a href="#cb19-282" aria-hidden="true" tabindex="-1"></a>Based on this correlation analysis, we identified several highly correlated variable pairs that suggest multicollinearity. We excluded 8 redundant semester variables that were highly correlated with other metrics.</span>
+<span id="cb19-283"><a href="#cb19-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-284"><a href="#cb19-284" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb19-285"><a href="#cb19-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-286"><a href="#cb19-286" aria-hidden="true" tabindex="-1"></a><span class="fu">## Feature Selection</span></span>
+<span id="cb19-287"><a href="#cb19-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-290"><a href="#cb19-290" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-291"><a href="#cb19-291" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: feature-selection</span></span>
+<span id="cb19-292"><a href="#cb19-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-293"><a href="#cb19-293" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove highly correlated features</span></span>
+<span id="cb19-294"><a href="#cb19-294" aria-hidden="true" tabindex="-1"></a>columns_to_remove <span class="op">=</span> [</span>
+<span id="cb19-295"><a href="#cb19-295" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (credited)"</span>, </span>
+<span id="cb19-296"><a href="#cb19-296" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (evaluations)"</span>, </span>
+<span id="cb19-297"><a href="#cb19-297" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (approved)"</span>,</span>
+<span id="cb19-298"><a href="#cb19-298" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 1st sem (without evaluations)"</span>,</span>
+<span id="cb19-299"><a href="#cb19-299" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (credited)"</span>, </span>
+<span id="cb19-300"><a href="#cb19-300" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (evaluations)"</span>, </span>
+<span id="cb19-301"><a href="#cb19-301" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (approved)"</span>,</span>
+<span id="cb19-302"><a href="#cb19-302" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Curricular units 2nd sem (without evaluations)"</span></span>
+<span id="cb19-303"><a href="#cb19-303" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb19-304"><a href="#cb19-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-305"><a href="#cb19-305" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>columns_to_remove)</span>
+<span id="cb19-306"><a href="#cb19-306" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Removed </span><span class="sc">{</span><span class="bu">len</span>(columns_to_remove)<span class="sc">}</span><span class="ss"> highly correlated variables"</span>)</span>
+<span id="cb19-307"><a href="#cb19-307" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Remaining variables: </span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-308"><a href="#cb19-308" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb19-309"><a href="#cb19-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-310"><a href="#cb19-310" aria-hidden="true" tabindex="-1"></a>This approach ensures that outlier detection is contextually appropriate for each variable type, reducing false positives while identifying genuine data quality issues.</span>
+<span id="cb19-310"><a href="#cb19-310" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb19-311"><a href="#cb19-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-314"><a href="#cb19-314" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-315"><a href="#cb19-315" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: outlier-detection</span></span>
-<span id="cb19-316"><a href="#cb19-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-317"><a href="#cb19-317" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> detect_outliers_intelligent(df, var_type_dict):</span>
-<span id="cb19-318"><a href="#cb19-318" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Detect outliers based on variable type."""</span></span>
-<span id="cb19-319"><a href="#cb19-319" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
-<span id="cb19-320"><a href="#cb19-320" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-321"><a href="#cb19-321" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Binary variables - skip</span></span>
-<span id="cb19-322"><a href="#cb19-322" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Binary variables (skipping outlier detection):"</span>)</span>
-<span id="cb19-323"><a href="#cb19-323" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'binary'</span>, []):</span>
-<span id="cb19-324"><a href="#cb19-324" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">in</span> df.columns:</span>
-<span id="cb19-325"><a href="#cb19-325" aria-hidden="true" tabindex="-1"></a>            unique_vals <span class="op">=</span> <span class="bu">sorted</span>(df[col].dropna().unique())</span>
-<span id="cb19-326"><a href="#cb19-326" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: values = </span><span class="sc">{</span>unique_vals<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-327"><a href="#cb19-327" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-328"><a href="#cb19-328" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Nominal categorical</span></span>
-<span id="cb19-329"><a href="#cb19-329" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Nominal Categorical (no natural order):"</span>)</span>
-<span id="cb19-330"><a href="#cb19-330" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'nominal'</span>, []):</span>
-<span id="cb19-331"><a href="#cb19-331" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
-<span id="cb19-332"><a href="#cb19-332" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb19-333"><a href="#cb19-333" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
-<span id="cb19-334"><a href="#cb19-334" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(series.unique())<span class="sc">}</span><span class="ss"> categories"</span>)</span>
-<span id="cb19-335"><a href="#cb19-335" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-336"><a href="#cb19-336" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ordinal categorical</span></span>
-<span id="cb19-337"><a href="#cb19-337" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Ordinal Categorical (meaningful order):"</span>)</span>
-<span id="cb19-338"><a href="#cb19-338" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'ordinal'</span>, []):</span>
-<span id="cb19-339"><a href="#cb19-339" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
-<span id="cb19-340"><a href="#cb19-340" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb19-341"><a href="#cb19-341" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
-<span id="cb19-342"><a href="#cb19-342" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(series.unique())<span class="sc">}</span><span class="ss"> levels"</span>)</span>
-<span id="cb19-343"><a href="#cb19-343" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-344"><a href="#cb19-344" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Grade variables (0-200 scale)</span></span>
-<span id="cb19-345"><a href="#cb19-345" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Grade variables (0-200 scale):"</span>)</span>
-<span id="cb19-346"><a href="#cb19-346" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'grades'</span>, []):</span>
-<span id="cb19-347"><a href="#cb19-347" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
-<span id="cb19-348"><a href="#cb19-348" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb19-349"><a href="#cb19-349" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
-<span id="cb19-350"><a href="#cb19-350" aria-hidden="true" tabindex="-1"></a>        min_val, max_val <span class="op">=</span> series.<span class="bu">min</span>(), series.<span class="bu">max</span>()</span>
-<span id="cb19-351"><a href="#cb19-351" aria-hidden="true" tabindex="-1"></a>        invalid <span class="op">=</span> ((series <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">|</span> (series <span class="op">&gt;</span> <span class="dv">200</span>)).<span class="bu">sum</span>()</span>
-<span id="cb19-352"><a href="#cb19-352" aria-hidden="true" tabindex="-1"></a>        invalid_pct <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> invalid <span class="op">/</span> <span class="bu">len</span>(series) <span class="cf">if</span> <span class="bu">len</span>(series) <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span></span>
-<span id="cb19-353"><a href="#cb19-353" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-354"><a href="#cb19-354" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: range=[</span><span class="sc">{</span>min_val<span class="sc">:.1f}</span><span class="ss">, </span><span class="sc">{</span>max_val<span class="sc">:.1f}</span><span class="ss">], "</span></span>
-<span id="cb19-355"><a href="#cb19-355" aria-hidden="true" tabindex="-1"></a>              <span class="ss">f"invalid: </span><span class="sc">{</span>invalid<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>invalid_pct<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
-<span id="cb19-356"><a href="#cb19-356" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-357"><a href="#cb19-357" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> invalid <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb19-358"><a href="#cb19-358" aria-hidden="true" tabindex="-1"></a>            results.append({</span>
-<span id="cb19-359"><a href="#cb19-359" aria-hidden="true" tabindex="-1"></a>                <span class="st">'column'</span>: col, <span class="st">'type'</span>: <span class="st">'grade'</span>, <span class="st">'issue'</span>: <span class="st">'out_of_range'</span>,</span>
-<span id="cb19-360"><a href="#cb19-360" aria-hidden="true" tabindex="-1"></a>                <span class="st">'count'</span>: invalid, <span class="st">'pct'</span>: invalid_pct</span>
-<span id="cb19-361"><a href="#cb19-361" aria-hidden="true" tabindex="-1"></a>            })</span>
-<span id="cb19-362"><a href="#cb19-362" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-363"><a href="#cb19-363" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Count variables (3×IQR)</span></span>
-<span id="cb19-364"><a href="#cb19-364" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Count variables (3×IQR threshold):"</span>)</span>
-<span id="cb19-365"><a href="#cb19-365" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'counts'</span>, []):</span>
-<span id="cb19-366"><a href="#cb19-366" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
-<span id="cb19-367"><a href="#cb19-367" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb19-368"><a href="#cb19-368" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
-<span id="cb19-369"><a href="#cb19-369" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(series) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb19-370"><a href="#cb19-370" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb19-371"><a href="#cb19-371" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb19-372"><a href="#cb19-372" aria-hidden="true" tabindex="-1"></a>        Q1, Q3 <span class="op">=</span> series.quantile([<span class="fl">0.25</span>, <span class="fl">0.75</span>])</span>
-<span id="cb19-373"><a href="#cb19-373" aria-hidden="true" tabindex="-1"></a>        IQR <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
-<span id="cb19-374"><a href="#cb19-374" aria-hidden="true" tabindex="-1"></a>        lower, upper <span class="op">=</span> Q1 <span class="op">-</span> <span class="dv">3</span> <span class="op">*</span> IQR, Q3 <span class="op">+</span> <span class="dv">3</span> <span class="op">*</span> IQR</span>
-<span id="cb19-375"><a href="#cb19-375" aria-hidden="true" tabindex="-1"></a>        outliers <span class="op">=</span> ((series <span class="op">&lt;</span> lower) <span class="op">|</span> (series <span class="op">&gt;</span> upper)).<span class="bu">sum</span>()</span>
-<span id="cb19-376"><a href="#cb19-376" aria-hidden="true" tabindex="-1"></a>        outlier_pct <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> outliers <span class="op">/</span> <span class="bu">len</span>(series)</span>
-<span id="cb19-377"><a href="#cb19-377" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-378"><a href="#cb19-378" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: extreme outliers: </span><span class="sc">{</span>outliers<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>outlier_pct<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
-<span id="cb19-379"><a href="#cb19-379" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-380"><a href="#cb19-380" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> outliers <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb19-381"><a href="#cb19-381" aria-hidden="true" tabindex="-1"></a>            results.append({</span>
-<span id="cb19-382"><a href="#cb19-382" aria-hidden="true" tabindex="-1"></a>                <span class="st">'column'</span>: col, <span class="st">'type'</span>: <span class="st">'count'</span>, <span class="st">'issue'</span>: <span class="st">'extreme_outlier'</span>,</span>
-<span id="cb19-383"><a href="#cb19-383" aria-hidden="true" tabindex="-1"></a>                <span class="st">'count'</span>: outliers, <span class="st">'pct'</span>: outlier_pct</span>
-<span id="cb19-384"><a href="#cb19-384" aria-hidden="true" tabindex="-1"></a>            })</span>
-<span id="cb19-385"><a href="#cb19-385" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-386"><a href="#cb19-386" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Continuous variables (1.5×IQR)</span></span>
-<span id="cb19-387"><a href="#cb19-387" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Continuous variables (1.5×IQR threshold):"</span>)</span>
-<span id="cb19-388"><a href="#cb19-388" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'continuous'</span>, []):</span>
-<span id="cb19-389"><a href="#cb19-389" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
-<span id="cb19-390"><a href="#cb19-390" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb19-391"><a href="#cb19-391" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
-<span id="cb19-392"><a href="#cb19-392" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(series) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb19-393"><a href="#cb19-393" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb19-394"><a href="#cb19-394" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb19-395"><a href="#cb19-395" aria-hidden="true" tabindex="-1"></a>        Q1, Q3 <span class="op">=</span> series.quantile([<span class="fl">0.25</span>, <span class="fl">0.75</span>])</span>
-<span id="cb19-396"><a href="#cb19-396" aria-hidden="true" tabindex="-1"></a>        IQR <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
-<span id="cb19-397"><a href="#cb19-397" aria-hidden="true" tabindex="-1"></a>        lower, upper <span class="op">=</span> Q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> IQR, Q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
-<span id="cb19-398"><a href="#cb19-398" aria-hidden="true" tabindex="-1"></a>        outliers <span class="op">=</span> ((series <span class="op">&lt;</span> lower) <span class="op">|</span> (series <span class="op">&gt;</span> upper)).<span class="bu">sum</span>()</span>
-<span id="cb19-399"><a href="#cb19-399" aria-hidden="true" tabindex="-1"></a>        outlier_pct <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> outliers <span class="op">/</span> <span class="bu">len</span>(series)</span>
-<span id="cb19-400"><a href="#cb19-400" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-401"><a href="#cb19-401" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: outliers: </span><span class="sc">{</span>outliers<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>outlier_pct<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
-<span id="cb19-402"><a href="#cb19-402" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-403"><a href="#cb19-403" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> outliers <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb19-404"><a href="#cb19-404" aria-hidden="true" tabindex="-1"></a>            results.append({</span>
-<span id="cb19-405"><a href="#cb19-405" aria-hidden="true" tabindex="-1"></a>                <span class="st">'column'</span>: col, <span class="st">'type'</span>: <span class="st">'continuous'</span>, <span class="st">'issue'</span>: <span class="st">'outlier'</span>,</span>
-<span id="cb19-406"><a href="#cb19-406" aria-hidden="true" tabindex="-1"></a>                <span class="st">'count'</span>: outliers, <span class="st">'pct'</span>: outlier_pct</span>
-<span id="cb19-407"><a href="#cb19-407" aria-hidden="true" tabindex="-1"></a>            })</span>
-<span id="cb19-408"><a href="#cb19-408" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-409"><a href="#cb19-409" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(results)</span>
-<span id="cb19-410"><a href="#cb19-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-411"><a href="#cb19-411" aria-hidden="true" tabindex="-1"></a><span class="co"># Define variable types</span></span>
-<span id="cb19-412"><a href="#cb19-412" aria-hidden="true" tabindex="-1"></a>var_types <span class="op">=</span> {</span>
-<span id="cb19-413"><a href="#cb19-413" aria-hidden="true" tabindex="-1"></a>    <span class="st">'binary'</span>: [</span>
-<span id="cb19-414"><a href="#cb19-414" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Daytime/evening attendance"</span>, <span class="st">"Educational special needs"</span>, </span>
-<span id="cb19-415"><a href="#cb19-415" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Gender"</span>, <span class="st">"Scholarship holder"</span>, <span class="st">"Displaced"</span>, <span class="st">"Debtor"</span>, <span class="st">"International"</span></span>
-<span id="cb19-416"><a href="#cb19-416" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb19-417"><a href="#cb19-417" aria-hidden="true" tabindex="-1"></a>    <span class="st">'nominal'</span>: [<span class="st">"Course"</span>, <span class="st">"Nacionality"</span>],</span>
-<span id="cb19-418"><a href="#cb19-418" aria-hidden="true" tabindex="-1"></a>    <span class="st">'ordinal'</span>: [</span>
-<span id="cb19-419"><a href="#cb19-419" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Marital Status"</span>, <span class="st">"Application mode"</span>, <span class="st">"Application order"</span>,</span>
-<span id="cb19-420"><a href="#cb19-420" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Previous qualification"</span>, <span class="st">"Mother's qualification"</span>, </span>
-<span id="cb19-421"><a href="#cb19-421" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Father's qualification"</span>, <span class="st">"Mother's occupation"</span>, <span class="st">"Father's occupation"</span></span>
-<span id="cb19-422"><a href="#cb19-422" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb19-423"><a href="#cb19-423" aria-hidden="true" tabindex="-1"></a>    <span class="st">'grades'</span>: [</span>
-<span id="cb19-424"><a href="#cb19-424" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Previous qualification (grade)"</span>, <span class="st">"Admission grade"</span>,</span>
-<span id="cb19-425"><a href="#cb19-425" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Curricular units 1st sem (grade)"</span>, <span class="st">"Curricular units 2nd sem (grade)"</span></span>
-<span id="cb19-426"><a href="#cb19-426" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb19-427"><a href="#cb19-427" aria-hidden="true" tabindex="-1"></a>    <span class="st">'counts'</span>: [</span>
-<span id="cb19-428"><a href="#cb19-428" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Curricular units 1st sem (enrolled)"</span>,</span>
-<span id="cb19-429"><a href="#cb19-429" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Curricular units 2nd sem (enrolled)"</span></span>
-<span id="cb19-430"><a href="#cb19-430" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb19-431"><a href="#cb19-431" aria-hidden="true" tabindex="-1"></a>    <span class="st">'continuous'</span>: [<span class="st">"Age at enrollment"</span>, <span class="st">"Unemployment rate"</span>, <span class="st">"Inflation rate"</span>, <span class="st">"GDP"</span>]</span>
-<span id="cb19-432"><a href="#cb19-432" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb19-433"><a href="#cb19-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-434"><a href="#cb19-434" aria-hidden="true" tabindex="-1"></a><span class="co"># Run outlier detection</span></span>
-<span id="cb19-435"><a href="#cb19-435" aria-hidden="true" tabindex="-1"></a>outlier_results <span class="op">=</span> detect_outliers_intelligent(df, var_types)</span>
-<span id="cb19-436"><a href="#cb19-436" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-437"><a href="#cb19-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-438"><a href="#cb19-438" aria-hidden="true" tabindex="-1"></a><span class="fu">### Outlier Summary</span></span>
-<span id="cb19-439"><a href="#cb19-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-442"><a href="#cb19-442" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-443"><a href="#cb19-443" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: outlier-summary</span></span>
-<span id="cb19-444"><a href="#cb19-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-445"><a href="#cb19-445" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> outlier_results.empty:</span>
-<span id="cb19-446"><a href="#cb19-446" aria-hidden="true" tabindex="-1"></a>    outlier_results <span class="op">=</span> outlier_results.sort_values(<span class="st">'pct'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb19-447"><a href="#cb19-447" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> Detected Issues:"</span>)</span>
-<span id="cb19-448"><a href="#cb19-448" aria-hidden="true" tabindex="-1"></a>    outlier_results</span>
-<span id="cb19-449"><a href="#cb19-449" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-450"><a href="#cb19-450" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Visualize problematic variables</span></span>
-<span id="cb19-451"><a href="#cb19-451" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, row <span class="kw">in</span> outlier_results.iterrows():</span>
-<span id="cb19-452"><a href="#cb19-452" aria-hidden="true" tabindex="-1"></a>        col <span class="op">=</span> row[<span class="st">'column'</span>]</span>
-<span id="cb19-453"><a href="#cb19-453" aria-hidden="true" tabindex="-1"></a>        fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
-<span id="cb19-454"><a href="#cb19-454" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-455"><a href="#cb19-455" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Histogram</span></span>
-<span id="cb19-456"><a href="#cb19-456" aria-hidden="true" tabindex="-1"></a>        df[col].hist(bins<span class="op">=</span><span class="dv">30</span>, ax<span class="op">=</span>ax1, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb19-457"><a href="#cb19-457" aria-hidden="true" tabindex="-1"></a>        ax1.set_title(<span class="ss">f"Distribution"</span>)</span>
-<span id="cb19-458"><a href="#cb19-458" aria-hidden="true" tabindex="-1"></a>        ax1.set_xlabel(col)</span>
-<span id="cb19-459"><a href="#cb19-459" aria-hidden="true" tabindex="-1"></a>        ax1.set_ylabel(<span class="st">"Frequency"</span>)</span>
-<span id="cb19-460"><a href="#cb19-460" aria-hidden="true" tabindex="-1"></a>        ax1.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb19-461"><a href="#cb19-461" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-462"><a href="#cb19-462" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Boxplot</span></span>
-<span id="cb19-463"><a href="#cb19-463" aria-hidden="true" tabindex="-1"></a>        sns.boxplot(y<span class="op">=</span>df[col], ax<span class="op">=</span>ax2)</span>
-<span id="cb19-464"><a href="#cb19-464" aria-hidden="true" tabindex="-1"></a>        ax2.set_title(<span class="ss">f"Boxplot (</span><span class="sc">{</span>row[<span class="st">'type'</span>]<span class="sc">}</span><span class="ss">)"</span>)</span>
-<span id="cb19-465"><a href="#cb19-465" aria-hidden="true" tabindex="-1"></a>        ax2.grid(alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
-<span id="cb19-466"><a href="#cb19-466" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-467"><a href="#cb19-467" aria-hidden="true" tabindex="-1"></a>        plt.suptitle(<span class="ss">f"</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>row[<span class="st">'count'</span>]<span class="sc">}</span><span class="ss"> potential outliers (</span><span class="sc">{</span>row[<span class="st">'pct'</span>]<span class="sc">:.1f}</span><span class="ss">%)"</span>, </span>
-<span id="cb19-468"><a href="#cb19-468" aria-hidden="true" tabindex="-1"></a>                     fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb19-469"><a href="#cb19-469" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
-<span id="cb19-470"><a href="#cb19-470" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
-<span id="cb19-471"><a href="#cb19-471" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb19-472"><a href="#cb19-472" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✅ No significant outliers detected!"</span>)</span>
-<span id="cb19-473"><a href="#cb19-473" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-474"><a href="#cb19-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-475"><a href="#cb19-475" aria-hidden="true" tabindex="-1"></a><span class="fu">## Feature Importance Analysis</span></span>
-<span id="cb19-476"><a href="#cb19-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-477"><a href="#cb19-477" aria-hidden="true" tabindex="-1"></a><span class="fu">### Methodology</span></span>
-<span id="cb19-478"><a href="#cb19-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-479"><a href="#cb19-479" aria-hidden="true" tabindex="-1"></a>We used one-way ANOVA (Analysis of Variance) to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:</span>
-<span id="cb19-480"><a href="#cb19-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-481"><a href="#cb19-481" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**p-value**: Statistical significance of differences between groups (α = 0.05)</span>
-<span id="cb19-482"><a href="#cb19-482" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Eta-squared (η²)**: Effect size measure representing the proportion of variance explained by the target variable (ranges from 0 to 1, where higher values indicate stronger association)</span>
-<span id="cb19-483"><a href="#cb19-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-484"><a href="#cb19-484" aria-hidden="true" tabindex="-1"></a>Variables with p-value &lt; 0.05 are considered significantly associated with student outcomes and may be strong predictors in classification models.</span>
-<span id="cb19-485"><a href="#cb19-485" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-488"><a href="#cb19-488" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-489"><a href="#cb19-489" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: anova-analysis</span></span>
-<span id="cb19-490"><a href="#cb19-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-491"><a href="#cb19-491" aria-hidden="true" tabindex="-1"></a><span class="co"># ANOVA for numeric variables</span></span>
-<span id="cb19-492"><a href="#cb19-492" aria-hidden="true" tabindex="-1"></a>anova_results <span class="op">=</span> {}</span>
-<span id="cb19-493"><a href="#cb19-493" aria-hidden="true" tabindex="-1"></a>numeric_cols <span class="op">=</span> df.select_dtypes(include<span class="op">=</span>np.number).columns</span>
+<span id="cb19-312"><a href="#cb19-312" aria-hidden="true" tabindex="-1"></a><span class="fu">## Outlier Detection</span></span>
+<span id="cb19-313"><a href="#cb19-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-314"><a href="#cb19-314" aria-hidden="true" tabindex="-1"></a>We implemented a type-aware outlier detection strategy that applies different methods based on the nature of each variable:</span>
+<span id="cb19-315"><a href="#cb19-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-316"><a href="#cb19-316" aria-hidden="true" tabindex="-1"></a>**Binary variables** (e.g., Gender, Scholarship holder): Outlier detection was skipped entirely, as these variables only contain two valid values (0/1).</span>
+<span id="cb19-317"><a href="#cb19-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-318"><a href="#cb19-318" aria-hidden="true" tabindex="-1"></a>**Nominal categorical variables** (e.g., Course, Nationality): No outlier detection applied, as these represent distinct categories without natural ordering. We only reported the number of unique categories present.</span>
+<span id="cb19-319"><a href="#cb19-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-320"><a href="#cb19-320" aria-hidden="true" tabindex="-1"></a>**Ordinal categorical variables** (e.g., qualifications, occupations): We reported the number of levels but did not apply outlier detection, as these represent ordered categories rather than continuous measurements.</span>
+<span id="cb19-321"><a href="#cb19-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-322"><a href="#cb19-322" aria-hidden="true" tabindex="-1"></a>**Grade variables** (0-200 scale): We checked for values outside the valid range (0-200). According to the dataset documentation, grades in the Portuguese system can range from 0 to 200.</span>
+<span id="cb19-323"><a href="#cb19-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-324"><a href="#cb19-324" aria-hidden="true" tabindex="-1"></a>**Count variables** (e.g., enrolled courses): We used a more lenient threshold of 3×IQR (Interquartile Range) rather than the standard 1.5×IQR, as count variables naturally exhibit right-skewed distributions where high values may represent legitimate cases (e.g., students enrolling in many courses).</span>
+<span id="cb19-325"><a href="#cb19-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-326"><a href="#cb19-326" aria-hidden="true" tabindex="-1"></a>**Continuous variables** (e.g., Age, GDP, Unemployment rate): We applied the standard Tukey method with 1.5×IQR threshold to identify potential outliers: values below Q1 - 1.5×IQR or above Q3 + 1.5×IQR.</span>
+<span id="cb19-327"><a href="#cb19-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-328"><a href="#cb19-328" aria-hidden="true" tabindex="-1"></a>This approach ensures that outlier detection is contextually appropriate for each variable type, reducing false positives while identifying genuine data quality issues.</span>
+<span id="cb19-329"><a href="#cb19-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-332"><a href="#cb19-332" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-333"><a href="#cb19-333" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: outlier-detection</span></span>
+<span id="cb19-334"><a href="#cb19-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-335"><a href="#cb19-335" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> detect_outliers_intelligent(df, var_type_dict):</span>
+<span id="cb19-336"><a href="#cb19-336" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Detect outliers based on variable type."""</span></span>
+<span id="cb19-337"><a href="#cb19-337" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
+<span id="cb19-338"><a href="#cb19-338" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-339"><a href="#cb19-339" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Binary variables - skip</span></span>
+<span id="cb19-340"><a href="#cb19-340" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Binary variables (skipping outlier detection):"</span>)</span>
+<span id="cb19-341"><a href="#cb19-341" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'binary'</span>, []):</span>
+<span id="cb19-342"><a href="#cb19-342" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">in</span> df.columns:</span>
+<span id="cb19-343"><a href="#cb19-343" aria-hidden="true" tabindex="-1"></a>            unique_vals <span class="op">=</span> <span class="bu">sorted</span>(df[col].dropna().unique())</span>
+<span id="cb19-344"><a href="#cb19-344" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: values = </span><span class="sc">{</span>unique_vals<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-345"><a href="#cb19-345" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-346"><a href="#cb19-346" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Nominal categorical</span></span>
+<span id="cb19-347"><a href="#cb19-347" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Nominal Categorical (no natural order):"</span>)</span>
+<span id="cb19-348"><a href="#cb19-348" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'nominal'</span>, []):</span>
+<span id="cb19-349"><a href="#cb19-349" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb19-350"><a href="#cb19-350" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb19-351"><a href="#cb19-351" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
+<span id="cb19-352"><a href="#cb19-352" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(series.unique())<span class="sc">}</span><span class="ss"> categories"</span>)</span>
+<span id="cb19-353"><a href="#cb19-353" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-354"><a href="#cb19-354" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ordinal categorical</span></span>
+<span id="cb19-355"><a href="#cb19-355" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Ordinal Categorical (meaningful order):"</span>)</span>
+<span id="cb19-356"><a href="#cb19-356" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'ordinal'</span>, []):</span>
+<span id="cb19-357"><a href="#cb19-357" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb19-358"><a href="#cb19-358" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb19-359"><a href="#cb19-359" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
+<span id="cb19-360"><a href="#cb19-360" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(series.unique())<span class="sc">}</span><span class="ss"> levels"</span>)</span>
+<span id="cb19-361"><a href="#cb19-361" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-362"><a href="#cb19-362" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Grade variables (0-200 scale)</span></span>
+<span id="cb19-363"><a href="#cb19-363" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Grade variables (0-200 scale):"</span>)</span>
+<span id="cb19-364"><a href="#cb19-364" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'grades'</span>, []):</span>
+<span id="cb19-365"><a href="#cb19-365" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb19-366"><a href="#cb19-366" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb19-367"><a href="#cb19-367" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
+<span id="cb19-368"><a href="#cb19-368" aria-hidden="true" tabindex="-1"></a>        min_val, max_val <span class="op">=</span> series.<span class="bu">min</span>(), series.<span class="bu">max</span>()</span>
+<span id="cb19-369"><a href="#cb19-369" aria-hidden="true" tabindex="-1"></a>        invalid <span class="op">=</span> ((series <span class="op">&lt;</span> <span class="dv">0</span>) <span class="op">|</span> (series <span class="op">&gt;</span> <span class="dv">200</span>)).<span class="bu">sum</span>()</span>
+<span id="cb19-370"><a href="#cb19-370" aria-hidden="true" tabindex="-1"></a>        invalid_pct <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> invalid <span class="op">/</span> <span class="bu">len</span>(series) <span class="cf">if</span> <span class="bu">len</span>(series) <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb19-371"><a href="#cb19-371" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-372"><a href="#cb19-372" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: range=[</span><span class="sc">{</span>min_val<span class="sc">:.1f}</span><span class="ss">, </span><span class="sc">{</span>max_val<span class="sc">:.1f}</span><span class="ss">], "</span></span>
+<span id="cb19-373"><a href="#cb19-373" aria-hidden="true" tabindex="-1"></a>              <span class="ss">f"invalid: </span><span class="sc">{</span>invalid<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>invalid_pct<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb19-374"><a href="#cb19-374" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-375"><a href="#cb19-375" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> invalid <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb19-376"><a href="#cb19-376" aria-hidden="true" tabindex="-1"></a>            results.append({</span>
+<span id="cb19-377"><a href="#cb19-377" aria-hidden="true" tabindex="-1"></a>                <span class="st">'column'</span>: col, <span class="st">'type'</span>: <span class="st">'grade'</span>, <span class="st">'issue'</span>: <span class="st">'out_of_range'</span>,</span>
+<span id="cb19-378"><a href="#cb19-378" aria-hidden="true" tabindex="-1"></a>                <span class="st">'count'</span>: invalid, <span class="st">'pct'</span>: invalid_pct</span>
+<span id="cb19-379"><a href="#cb19-379" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb19-380"><a href="#cb19-380" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-381"><a href="#cb19-381" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Count variables (3×IQR)</span></span>
+<span id="cb19-382"><a href="#cb19-382" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Count variables (3×IQR threshold):"</span>)</span>
+<span id="cb19-383"><a href="#cb19-383" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'counts'</span>, []):</span>
+<span id="cb19-384"><a href="#cb19-384" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb19-385"><a href="#cb19-385" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb19-386"><a href="#cb19-386" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
+<span id="cb19-387"><a href="#cb19-387" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(series) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb19-388"><a href="#cb19-388" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb19-389"><a href="#cb19-389" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb19-390"><a href="#cb19-390" aria-hidden="true" tabindex="-1"></a>        Q1, Q3 <span class="op">=</span> series.quantile([<span class="fl">0.25</span>, <span class="fl">0.75</span>])</span>
+<span id="cb19-391"><a href="#cb19-391" aria-hidden="true" tabindex="-1"></a>        IQR <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
+<span id="cb19-392"><a href="#cb19-392" aria-hidden="true" tabindex="-1"></a>        lower, upper <span class="op">=</span> Q1 <span class="op">-</span> <span class="dv">3</span> <span class="op">*</span> IQR, Q3 <span class="op">+</span> <span class="dv">3</span> <span class="op">*</span> IQR</span>
+<span id="cb19-393"><a href="#cb19-393" aria-hidden="true" tabindex="-1"></a>        outliers <span class="op">=</span> ((series <span class="op">&lt;</span> lower) <span class="op">|</span> (series <span class="op">&gt;</span> upper)).<span class="bu">sum</span>()</span>
+<span id="cb19-394"><a href="#cb19-394" aria-hidden="true" tabindex="-1"></a>        outlier_pct <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> outliers <span class="op">/</span> <span class="bu">len</span>(series)</span>
+<span id="cb19-395"><a href="#cb19-395" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-396"><a href="#cb19-396" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: extreme outliers: </span><span class="sc">{</span>outliers<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>outlier_pct<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb19-397"><a href="#cb19-397" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-398"><a href="#cb19-398" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> outliers <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb19-399"><a href="#cb19-399" aria-hidden="true" tabindex="-1"></a>            results.append({</span>
+<span id="cb19-400"><a href="#cb19-400" aria-hidden="true" tabindex="-1"></a>                <span class="st">'column'</span>: col, <span class="st">'type'</span>: <span class="st">'count'</span>, <span class="st">'issue'</span>: <span class="st">'extreme_outlier'</span>,</span>
+<span id="cb19-401"><a href="#cb19-401" aria-hidden="true" tabindex="-1"></a>                <span class="st">'count'</span>: outliers, <span class="st">'pct'</span>: outlier_pct</span>
+<span id="cb19-402"><a href="#cb19-402" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb19-403"><a href="#cb19-403" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-404"><a href="#cb19-404" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Continuous variables (1.5×IQR)</span></span>
+<span id="cb19-405"><a href="#cb19-405" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📊 Continuous variables (1.5×IQR threshold):"</span>)</span>
+<span id="cb19-406"><a href="#cb19-406" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col <span class="kw">in</span> var_type_dict.get(<span class="st">'continuous'</span>, []):</span>
+<span id="cb19-407"><a href="#cb19-407" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb19-408"><a href="#cb19-408" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb19-409"><a href="#cb19-409" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> df[col].dropna()</span>
+<span id="cb19-410"><a href="#cb19-410" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(series) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb19-411"><a href="#cb19-411" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb19-412"><a href="#cb19-412" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb19-413"><a href="#cb19-413" aria-hidden="true" tabindex="-1"></a>        Q1, Q3 <span class="op">=</span> series.quantile([<span class="fl">0.25</span>, <span class="fl">0.75</span>])</span>
+<span id="cb19-414"><a href="#cb19-414" aria-hidden="true" tabindex="-1"></a>        IQR <span class="op">=</span> Q3 <span class="op">-</span> Q1</span>
+<span id="cb19-415"><a href="#cb19-415" aria-hidden="true" tabindex="-1"></a>        lower, upper <span class="op">=</span> Q1 <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> IQR, Q3 <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> IQR</span>
+<span id="cb19-416"><a href="#cb19-416" aria-hidden="true" tabindex="-1"></a>        outliers <span class="op">=</span> ((series <span class="op">&lt;</span> lower) <span class="op">|</span> (series <span class="op">&gt;</span> upper)).<span class="bu">sum</span>()</span>
+<span id="cb19-417"><a href="#cb19-417" aria-hidden="true" tabindex="-1"></a>        outlier_pct <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> outliers <span class="op">/</span> <span class="bu">len</span>(series)</span>
+<span id="cb19-418"><a href="#cb19-418" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-419"><a href="#cb19-419" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: outliers: </span><span class="sc">{</span>outliers<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>outlier_pct<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb19-420"><a href="#cb19-420" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-421"><a href="#cb19-421" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> outliers <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb19-422"><a href="#cb19-422" aria-hidden="true" tabindex="-1"></a>            results.append({</span>
+<span id="cb19-423"><a href="#cb19-423" aria-hidden="true" tabindex="-1"></a>                <span class="st">'column'</span>: col, <span class="st">'type'</span>: <span class="st">'continuous'</span>, <span class="st">'issue'</span>: <span class="st">'outlier'</span>,</span>
+<span id="cb19-424"><a href="#cb19-424" aria-hidden="true" tabindex="-1"></a>                <span class="st">'count'</span>: outliers, <span class="st">'pct'</span>: outlier_pct</span>
+<span id="cb19-425"><a href="#cb19-425" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb19-426"><a href="#cb19-426" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-427"><a href="#cb19-427" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(results)</span>
+<span id="cb19-428"><a href="#cb19-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-429"><a href="#cb19-429" aria-hidden="true" tabindex="-1"></a><span class="co"># Define variable types</span></span>
+<span id="cb19-430"><a href="#cb19-430" aria-hidden="true" tabindex="-1"></a>var_types <span class="op">=</span> {</span>
+<span id="cb19-431"><a href="#cb19-431" aria-hidden="true" tabindex="-1"></a>    <span class="st">'binary'</span>: [</span>
+<span id="cb19-432"><a href="#cb19-432" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Daytime/evening attendance"</span>, <span class="st">"Educational special needs"</span>, </span>
+<span id="cb19-433"><a href="#cb19-433" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Gender"</span>, <span class="st">"Scholarship holder"</span>, <span class="st">"Displaced"</span>, <span class="st">"Debtor"</span>, <span class="st">"International"</span></span>
+<span id="cb19-434"><a href="#cb19-434" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb19-435"><a href="#cb19-435" aria-hidden="true" tabindex="-1"></a>    <span class="st">'nominal'</span>: [<span class="st">"Course"</span>, <span class="st">"Nacionality"</span>],</span>
+<span id="cb19-436"><a href="#cb19-436" aria-hidden="true" tabindex="-1"></a>    <span class="st">'ordinal'</span>: [</span>
+<span id="cb19-437"><a href="#cb19-437" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Marital Status"</span>, <span class="st">"Application mode"</span>, <span class="st">"Application order"</span>,</span>
+<span id="cb19-438"><a href="#cb19-438" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Previous qualification"</span>, <span class="st">"Mother's qualification"</span>, </span>
+<span id="cb19-439"><a href="#cb19-439" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Father's qualification"</span>, <span class="st">"Mother's occupation"</span>, <span class="st">"Father's occupation"</span></span>
+<span id="cb19-440"><a href="#cb19-440" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb19-441"><a href="#cb19-441" aria-hidden="true" tabindex="-1"></a>    <span class="st">'grades'</span>: [</span>
+<span id="cb19-442"><a href="#cb19-442" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Previous qualification (grade)"</span>, <span class="st">"Admission grade"</span>,</span>
+<span id="cb19-443"><a href="#cb19-443" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Curricular units 1st sem (grade)"</span>, <span class="st">"Curricular units 2nd sem (grade)"</span></span>
+<span id="cb19-444"><a href="#cb19-444" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb19-445"><a href="#cb19-445" aria-hidden="true" tabindex="-1"></a>    <span class="st">'counts'</span>: [</span>
+<span id="cb19-446"><a href="#cb19-446" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Curricular units 1st sem (enrolled)"</span>,</span>
+<span id="cb19-447"><a href="#cb19-447" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Curricular units 2nd sem (enrolled)"</span></span>
+<span id="cb19-448"><a href="#cb19-448" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb19-449"><a href="#cb19-449" aria-hidden="true" tabindex="-1"></a>    <span class="st">'continuous'</span>: [<span class="st">"Age at enrollment"</span>, <span class="st">"Unemployment rate"</span>, <span class="st">"Inflation rate"</span>, <span class="st">"GDP"</span>]</span>
+<span id="cb19-450"><a href="#cb19-450" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-451"><a href="#cb19-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-452"><a href="#cb19-452" aria-hidden="true" tabindex="-1"></a><span class="co"># Run outlier detection</span></span>
+<span id="cb19-453"><a href="#cb19-453" aria-hidden="true" tabindex="-1"></a>outlier_results <span class="op">=</span> detect_outliers_intelligent(df, var_types)</span>
+<span id="cb19-454"><a href="#cb19-454" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-455"><a href="#cb19-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-456"><a href="#cb19-456" aria-hidden="true" tabindex="-1"></a><span class="fu">### Outlier Summary</span></span>
+<span id="cb19-457"><a href="#cb19-457" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-460"><a href="#cb19-460" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-461"><a href="#cb19-461" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: outlier-summary</span></span>
+<span id="cb19-462"><a href="#cb19-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-463"><a href="#cb19-463" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> outlier_results.empty:</span>
+<span id="cb19-464"><a href="#cb19-464" aria-hidden="true" tabindex="-1"></a>    outlier_results <span class="op">=</span> outlier_results.sort_values(<span class="st">'pct'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb19-465"><a href="#cb19-465" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> Detected Issues:"</span>)</span>
+<span id="cb19-466"><a href="#cb19-466" aria-hidden="true" tabindex="-1"></a>    outlier_results</span>
+<span id="cb19-467"><a href="#cb19-467" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-468"><a href="#cb19-468" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Visualize problematic variables</span></span>
+<span id="cb19-469"><a href="#cb19-469" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, row <span class="kw">in</span> outlier_results.iterrows():</span>
+<span id="cb19-470"><a href="#cb19-470" aria-hidden="true" tabindex="-1"></a>        col <span class="op">=</span> row[<span class="st">'column'</span>]</span>
+<span id="cb19-471"><a href="#cb19-471" aria-hidden="true" tabindex="-1"></a>        fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb19-472"><a href="#cb19-472" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-473"><a href="#cb19-473" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Histogram</span></span>
+<span id="cb19-474"><a href="#cb19-474" aria-hidden="true" tabindex="-1"></a>        df[col].hist(bins<span class="op">=</span><span class="dv">30</span>, ax<span class="op">=</span>ax1, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb19-475"><a href="#cb19-475" aria-hidden="true" tabindex="-1"></a>        ax1.set_title(<span class="ss">f"Distribution"</span>)</span>
+<span id="cb19-476"><a href="#cb19-476" aria-hidden="true" tabindex="-1"></a>        ax1.set_xlabel(col)</span>
+<span id="cb19-477"><a href="#cb19-477" aria-hidden="true" tabindex="-1"></a>        ax1.set_ylabel(<span class="st">"Frequency"</span>)</span>
+<span id="cb19-478"><a href="#cb19-478" aria-hidden="true" tabindex="-1"></a>        ax1.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb19-479"><a href="#cb19-479" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-480"><a href="#cb19-480" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Boxplot</span></span>
+<span id="cb19-481"><a href="#cb19-481" aria-hidden="true" tabindex="-1"></a>        sns.boxplot(y<span class="op">=</span>df[col], ax<span class="op">=</span>ax2)</span>
+<span id="cb19-482"><a href="#cb19-482" aria-hidden="true" tabindex="-1"></a>        ax2.set_title(<span class="ss">f"Boxplot (</span><span class="sc">{</span>row[<span class="st">'type'</span>]<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb19-483"><a href="#cb19-483" aria-hidden="true" tabindex="-1"></a>        ax2.grid(alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb19-484"><a href="#cb19-484" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-485"><a href="#cb19-485" aria-hidden="true" tabindex="-1"></a>        plt.suptitle(<span class="ss">f"</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>row[<span class="st">'count'</span>]<span class="sc">}</span><span class="ss"> potential outliers (</span><span class="sc">{</span>row[<span class="st">'pct'</span>]<span class="sc">:.1f}</span><span class="ss">%)"</span>, </span>
+<span id="cb19-486"><a href="#cb19-486" aria-hidden="true" tabindex="-1"></a>                     fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb19-487"><a href="#cb19-487" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
+<span id="cb19-488"><a href="#cb19-488" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
+<span id="cb19-489"><a href="#cb19-489" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb19-490"><a href="#cb19-490" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✅ No significant outliers detected!"</span>)</span>
+<span id="cb19-491"><a href="#cb19-491" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-492"><a href="#cb19-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-493"><a href="#cb19-493" aria-hidden="true" tabindex="-1"></a><span class="fu">## Feature Importance Analysis</span></span>
 <span id="cb19-494"><a href="#cb19-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-495"><a href="#cb19-495" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> numeric_cols:</span>
-<span id="cb19-496"><a href="#cb19-496" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> [df.loc[df[target_col] <span class="op">==</span> cat, col].dropna()</span>
-<span id="cb19-497"><a href="#cb19-497" aria-hidden="true" tabindex="-1"></a>              <span class="cf">for</span> cat <span class="kw">in</span> df[target_col].cat.categories</span>
-<span id="cb19-498"><a href="#cb19-498" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> cat <span class="kw">in</span> df[target_col].unique()]</span>
-<span id="cb19-499"><a href="#cb19-499" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-500"><a href="#cb19-500" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Need at least 2 non-empty groups</span></span>
-<span id="cb19-501"><a href="#cb19-501" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">sum</span>(<span class="bu">len</span>(g) <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">for</span> g <span class="kw">in</span> groups) <span class="op">&lt;</span> <span class="dv">2</span>:</span>
-<span id="cb19-502"><a href="#cb19-502" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb19-503"><a href="#cb19-503" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-504"><a href="#cb19-504" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> scipy.stats <span class="im">import</span> f_oneway</span>
-<span id="cb19-505"><a href="#cb19-505" aria-hidden="true" tabindex="-1"></a>    f_val, p_val <span class="op">=</span> f_oneway(<span class="op">*</span>groups)</span>
-<span id="cb19-506"><a href="#cb19-506" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-507"><a href="#cb19-507" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Effect size: eta-squared</span></span>
-<span id="cb19-508"><a href="#cb19-508" aria-hidden="true" tabindex="-1"></a>    grand_mean <span class="op">=</span> df[col].mean()</span>
-<span id="cb19-509"><a href="#cb19-509" aria-hidden="true" tabindex="-1"></a>    ss_between <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">len</span>(g) <span class="op">*</span> (g.mean() <span class="op">-</span> grand_mean) <span class="op">**</span> <span class="dv">2</span> <span class="cf">for</span> g <span class="kw">in</span> groups)</span>
-<span id="cb19-510"><a href="#cb19-510" aria-hidden="true" tabindex="-1"></a>    ss_total <span class="op">=</span> ((df[col] <span class="op">-</span> grand_mean) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()</span>
-<span id="cb19-511"><a href="#cb19-511" aria-hidden="true" tabindex="-1"></a>    eta_sq <span class="op">=</span> ss_between <span class="op">/</span> ss_total <span class="cf">if</span> ss_total <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan</span>
-<span id="cb19-512"><a href="#cb19-512" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-513"><a href="#cb19-513" aria-hidden="true" tabindex="-1"></a>    anova_results[col] <span class="op">=</span> {<span class="st">"p_value"</span>: p_val, <span class="st">"eta_sq"</span>: eta_sq}</span>
-<span id="cb19-514"><a href="#cb19-514" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-515"><a href="#cb19-515" aria-hidden="true" tabindex="-1"></a><span class="co"># Create results dataframe</span></span>
-<span id="cb19-516"><a href="#cb19-516" aria-hidden="true" tabindex="-1"></a>anova_df <span class="op">=</span> (pd.DataFrame(anova_results).T</span>
-<span id="cb19-517"><a href="#cb19-517" aria-hidden="true" tabindex="-1"></a>            .sort_values([<span class="st">"p_value"</span>, <span class="st">"eta_sq"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>]))</span>
-<span id="cb19-518"><a href="#cb19-518" aria-hidden="true" tabindex="-1"></a>anova_df[<span class="st">"significant"</span>] <span class="op">=</span> anova_df[<span class="st">"p_value"</span>] <span class="op">&lt;</span> <span class="fl">0.05</span></span>
-<span id="cb19-519"><a href="#cb19-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-520"><a href="#cb19-520" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Significant variables (p &lt; 0.05): </span><span class="sc">{</span>anova_df[<span class="st">'significant'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb19-521"><a href="#cb19-521" aria-hidden="true" tabindex="-1"></a>anova_df.head(<span class="dv">10</span>)</span>
-<span id="cb19-522"><a href="#cb19-522" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-523"><a href="#cb19-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-524"><a href="#cb19-524" aria-hidden="true" tabindex="-1"></a><span class="fu">### Top Predictive Variables</span></span>
-<span id="cb19-525"><a href="#cb19-525" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-528"><a href="#cb19-528" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb19-529"><a href="#cb19-529" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: visualize-important-vars</span></span>
-<span id="cb19-530"><a href="#cb19-530" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-531"><a href="#cb19-531" aria-hidden="true" tabindex="-1"></a>important_vars <span class="op">=</span> anova_df.loc[anova_df[<span class="st">"significant"</span>]].head(<span class="dv">10</span>).index.tolist()</span>
+<span id="cb19-495"><a href="#cb19-495" aria-hidden="true" tabindex="-1"></a><span class="fu">### Methodology</span></span>
+<span id="cb19-496"><a href="#cb19-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-497"><a href="#cb19-497" aria-hidden="true" tabindex="-1"></a>We used one-way ANOVA (Analysis of Variance) to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:</span>
+<span id="cb19-498"><a href="#cb19-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-499"><a href="#cb19-499" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**p-value**: Statistical significance of differences between groups (α = 0.05)</span>
+<span id="cb19-500"><a href="#cb19-500" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Eta-squared (η²)**: Effect size measure representing the proportion of variance explained by the target variable (ranges from 0 to 1, where higher values indicate stronger association)</span>
+<span id="cb19-501"><a href="#cb19-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-502"><a href="#cb19-502" aria-hidden="true" tabindex="-1"></a>Variables with p-value &lt; 0.05 are considered significantly associated with student outcomes and may be strong predictors in classification models.</span>
+<span id="cb19-503"><a href="#cb19-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-506"><a href="#cb19-506" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-507"><a href="#cb19-507" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: anova-analysis</span></span>
+<span id="cb19-508"><a href="#cb19-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-509"><a href="#cb19-509" aria-hidden="true" tabindex="-1"></a><span class="co"># ANOVA for numeric variables</span></span>
+<span id="cb19-510"><a href="#cb19-510" aria-hidden="true" tabindex="-1"></a>anova_results <span class="op">=</span> {}</span>
+<span id="cb19-511"><a href="#cb19-511" aria-hidden="true" tabindex="-1"></a>numeric_cols <span class="op">=</span> df.select_dtypes(include<span class="op">=</span>np.number).columns</span>
+<span id="cb19-512"><a href="#cb19-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-513"><a href="#cb19-513" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> numeric_cols:</span>
+<span id="cb19-514"><a href="#cb19-514" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> [df.loc[df[target_col] <span class="op">==</span> cat, col].dropna()</span>
+<span id="cb19-515"><a href="#cb19-515" aria-hidden="true" tabindex="-1"></a>              <span class="cf">for</span> cat <span class="kw">in</span> df[target_col].cat.categories</span>
+<span id="cb19-516"><a href="#cb19-516" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> cat <span class="kw">in</span> df[target_col].unique()]</span>
+<span id="cb19-517"><a href="#cb19-517" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-518"><a href="#cb19-518" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Need at least 2 non-empty groups</span></span>
+<span id="cb19-519"><a href="#cb19-519" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">sum</span>(<span class="bu">len</span>(g) <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">for</span> g <span class="kw">in</span> groups) <span class="op">&lt;</span> <span class="dv">2</span>:</span>
+<span id="cb19-520"><a href="#cb19-520" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb19-521"><a href="#cb19-521" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-522"><a href="#cb19-522" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> scipy.stats <span class="im">import</span> f_oneway</span>
+<span id="cb19-523"><a href="#cb19-523" aria-hidden="true" tabindex="-1"></a>    f_val, p_val <span class="op">=</span> f_oneway(<span class="op">*</span>groups)</span>
+<span id="cb19-524"><a href="#cb19-524" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-525"><a href="#cb19-525" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Effect size: eta-squared</span></span>
+<span id="cb19-526"><a href="#cb19-526" aria-hidden="true" tabindex="-1"></a>    grand_mean <span class="op">=</span> df[col].mean()</span>
+<span id="cb19-527"><a href="#cb19-527" aria-hidden="true" tabindex="-1"></a>    ss_between <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">len</span>(g) <span class="op">*</span> (g.mean() <span class="op">-</span> grand_mean) <span class="op">**</span> <span class="dv">2</span> <span class="cf">for</span> g <span class="kw">in</span> groups)</span>
+<span id="cb19-528"><a href="#cb19-528" aria-hidden="true" tabindex="-1"></a>    ss_total <span class="op">=</span> ((df[col] <span class="op">-</span> grand_mean) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()</span>
+<span id="cb19-529"><a href="#cb19-529" aria-hidden="true" tabindex="-1"></a>    eta_sq <span class="op">=</span> ss_between <span class="op">/</span> ss_total <span class="cf">if</span> ss_total <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> np.nan</span>
+<span id="cb19-530"><a href="#cb19-530" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-531"><a href="#cb19-531" aria-hidden="true" tabindex="-1"></a>    anova_results[col] <span class="op">=</span> {<span class="st">"p_value"</span>: p_val, <span class="st">"eta_sq"</span>: eta_sq}</span>
 <span id="cb19-532"><a href="#cb19-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-533"><a href="#cb19-533" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> var <span class="kw">in</span> important_vars:</span>
-<span id="cb19-534"><a href="#cb19-534" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if binary</span></span>
-<span id="cb19-535"><a href="#cb19-535" aria-hidden="true" tabindex="-1"></a>    non_na <span class="op">=</span> df[var].dropna()</span>
-<span id="cb19-536"><a href="#cb19-536" aria-hidden="true" tabindex="-1"></a>    is_binary <span class="op">=</span> non_na.nunique() <span class="op">==</span> <span class="dv">2</span></span>
-<span id="cb19-537"><a href="#cb19-537" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-538"><a href="#cb19-538" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> is_binary:</span>
-<span id="cb19-539"><a href="#cb19-539" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Stacked bar for binary variables</span></span>
-<span id="cb19-540"><a href="#cb19-540" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb19-541"><a href="#cb19-541" aria-hidden="true" tabindex="-1"></a>        tab <span class="op">=</span> (pd.crosstab(df[target_col], df[var])</span>
-<span id="cb19-542"><a href="#cb19-542" aria-hidden="true" tabindex="-1"></a>               .<span class="bu">apply</span>(<span class="kw">lambda</span> r: r <span class="op">/</span> r.<span class="bu">sum</span>(), axis<span class="op">=</span><span class="dv">1</span>))</span>
-<span id="cb19-543"><a href="#cb19-543" aria-hidden="true" tabindex="-1"></a>        tab <span class="op">=</span> tab.reindex(columns<span class="op">=</span><span class="bu">sorted</span>(tab.columns.tolist()))</span>
-<span id="cb19-544"><a href="#cb19-544" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-545"><a href="#cb19-545" aria-hidden="true" tabindex="-1"></a>        tab.plot(kind<span class="op">=</span><span class="st">"bar"</span>, stacked<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax, </span>
-<span id="cb19-546"><a href="#cb19-546" aria-hidden="true" tabindex="-1"></a>                color<span class="op">=</span>[<span class="st">'#e74c3c'</span>, <span class="st">'#2ecc71'</span>], edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb19-547"><a href="#cb19-547" aria-hidden="true" tabindex="-1"></a>        ax.set_ylabel(<span class="st">"Proportion within target group"</span>)</span>
-<span id="cb19-548"><a href="#cb19-548" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f"</span><span class="sc">{</span>var<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>target_col<span class="sc">}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb19-549"><a href="#cb19-549" aria-hidden="true" tabindex="-1"></a>        ax.legend(title<span class="op">=</span>var, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.02</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
-<span id="cb19-550"><a href="#cb19-550" aria-hidden="true" tabindex="-1"></a>        ax.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb19-551"><a href="#cb19-551" aria-hidden="true" tabindex="-1"></a>        ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
-<span id="cb19-552"><a href="#cb19-552" aria-hidden="true" tabindex="-1"></a>        plt.xticks(rotation<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb19-553"><a href="#cb19-553" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
-<span id="cb19-554"><a href="#cb19-554" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
-<span id="cb19-555"><a href="#cb19-555" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb19-556"><a href="#cb19-556" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Boxplot for continuous/ordinal variables</span></span>
-<span id="cb19-557"><a href="#cb19-557" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb19-558"><a href="#cb19-558" aria-hidden="true" tabindex="-1"></a>        sns.boxplot(x<span class="op">=</span>target_col, y<span class="op">=</span>var, data<span class="op">=</span>df, palette<span class="op">=</span>[<span class="st">'#e74c3c'</span>, <span class="st">'#f39c12'</span>, <span class="st">'#2ecc71'</span>], ax<span class="op">=</span>ax)</span>
-<span id="cb19-559"><a href="#cb19-559" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f"</span><span class="sc">{</span>var<span class="sc">}</span><span class="ss"> by </span><span class="sc">{</span>target_col<span class="sc">}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
-<span id="cb19-560"><a href="#cb19-560" aria-hidden="true" tabindex="-1"></a>        ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
-<span id="cb19-561"><a href="#cb19-561" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
-<span id="cb19-562"><a href="#cb19-562" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
-<span id="cb19-563"><a href="#cb19-563" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb19-564"><a href="#cb19-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-565"><a href="#cb19-565" aria-hidden="true" tabindex="-1"></a><span class="fu">### Key Findings: Academic Performance and Study Conditions</span></span>
-<span id="cb19-566"><a href="#cb19-566" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-567"><a href="#cb19-567" aria-hidden="true" tabindex="-1"></a>**Academic Performance Impact:**</span>
-<span id="cb19-568"><a href="#cb19-568" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Students who graduate have significantly higher admission grades (mean: X) compared to dropouts (mean: Y)</span>
-<span id="cb19-569"><a href="#cb19-569" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>First semester grades show the strongest association with outcomes (η² = X), suggesting early academic performance is a critical indicator</span>
-<span id="cb19-570"><a href="#cb19-570" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Approved course units in semester 1 differentiate graduates from dropouts more than enrollment numbers</span>
-<span id="cb19-571"><a href="#cb19-571" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-572"><a href="#cb19-572" aria-hidden="true" tabindex="-1"></a>**Study Conditions Impact:**</span>
-<span id="cb19-573"><a href="#cb19-573" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Daytime students show X% higher graduation rates compared to evening students</span>
-<span id="cb19-574"><a href="#cb19-574" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Application mode significantly affects outcomes (χ² = X, p &lt; 0.001), with <span class="co">[</span><span class="ot">specific mode</span><span class="co">]</span> showing highest graduation rates</span>
-<span id="cb19-575"><a href="#cb19-575" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Course type is significantly associated with dropout risk, with <span class="co">[</span><span class="ot">specific courses</span><span class="co">]</span> showing higher retention</span>
+<span id="cb19-533"><a href="#cb19-533" aria-hidden="true" tabindex="-1"></a><span class="co"># Create results dataframe</span></span>
+<span id="cb19-534"><a href="#cb19-534" aria-hidden="true" tabindex="-1"></a>anova_df <span class="op">=</span> (pd.DataFrame(anova_results).T</span>
+<span id="cb19-535"><a href="#cb19-535" aria-hidden="true" tabindex="-1"></a>            .sort_values([<span class="st">"p_value"</span>, <span class="st">"eta_sq"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>]))</span>
+<span id="cb19-536"><a href="#cb19-536" aria-hidden="true" tabindex="-1"></a>anova_df[<span class="st">"significant"</span>] <span class="op">=</span> anova_df[<span class="st">"p_value"</span>] <span class="op">&lt;</span> <span class="fl">0.05</span></span>
+<span id="cb19-537"><a href="#cb19-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-538"><a href="#cb19-538" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Significant variables (p &lt; 0.05): </span><span class="sc">{</span>anova_df[<span class="st">'significant'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-539"><a href="#cb19-539" aria-hidden="true" tabindex="-1"></a>anova_df.head(<span class="dv">10</span>)</span>
+<span id="cb19-540"><a href="#cb19-540" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-541"><a href="#cb19-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-542"><a href="#cb19-542" aria-hidden="true" tabindex="-1"></a><span class="fu">### Top Predictive Variables</span></span>
+<span id="cb19-543"><a href="#cb19-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-546"><a href="#cb19-546" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb19-547"><a href="#cb19-547" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: visualize-important-vars</span></span>
+<span id="cb19-548"><a href="#cb19-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-549"><a href="#cb19-549" aria-hidden="true" tabindex="-1"></a>important_vars <span class="op">=</span> anova_df.loc[anova_df[<span class="st">"significant"</span>]].head(<span class="dv">10</span>).index.tolist()</span>
+<span id="cb19-550"><a href="#cb19-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-551"><a href="#cb19-551" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> var <span class="kw">in</span> important_vars:</span>
+<span id="cb19-552"><a href="#cb19-552" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if binary</span></span>
+<span id="cb19-553"><a href="#cb19-553" aria-hidden="true" tabindex="-1"></a>    non_na <span class="op">=</span> df[var].dropna()</span>
+<span id="cb19-554"><a href="#cb19-554" aria-hidden="true" tabindex="-1"></a>    is_binary <span class="op">=</span> non_na.nunique() <span class="op">==</span> <span class="dv">2</span></span>
+<span id="cb19-555"><a href="#cb19-555" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-556"><a href="#cb19-556" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> is_binary:</span>
+<span id="cb19-557"><a href="#cb19-557" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Stacked bar for binary variables</span></span>
+<span id="cb19-558"><a href="#cb19-558" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb19-559"><a href="#cb19-559" aria-hidden="true" tabindex="-1"></a>        tab <span class="op">=</span> (pd.crosstab(df[target_col], df[var])</span>
+<span id="cb19-560"><a href="#cb19-560" aria-hidden="true" tabindex="-1"></a>               .<span class="bu">apply</span>(<span class="kw">lambda</span> r: r <span class="op">/</span> r.<span class="bu">sum</span>(), axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb19-561"><a href="#cb19-561" aria-hidden="true" tabindex="-1"></a>        tab <span class="op">=</span> tab.reindex(columns<span class="op">=</span><span class="bu">sorted</span>(tab.columns.tolist()))</span>
+<span id="cb19-562"><a href="#cb19-562" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-563"><a href="#cb19-563" aria-hidden="true" tabindex="-1"></a>        tab.plot(kind<span class="op">=</span><span class="st">"bar"</span>, stacked<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax, </span>
+<span id="cb19-564"><a href="#cb19-564" aria-hidden="true" tabindex="-1"></a>                color<span class="op">=</span>[<span class="st">'#e74c3c'</span>, <span class="st">'#2ecc71'</span>], edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb19-565"><a href="#cb19-565" aria-hidden="true" tabindex="-1"></a>        ax.set_ylabel(<span class="st">"Proportion within target group"</span>)</span>
+<span id="cb19-566"><a href="#cb19-566" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f"</span><span class="sc">{</span>var<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>target_col<span class="sc">}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb19-567"><a href="#cb19-567" aria-hidden="true" tabindex="-1"></a>        ax.legend(title<span class="op">=</span>var, bbox_to_anchor<span class="op">=</span>(<span class="fl">1.02</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb19-568"><a href="#cb19-568" aria-hidden="true" tabindex="-1"></a>        ax.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb19-569"><a href="#cb19-569" aria-hidden="true" tabindex="-1"></a>        ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb19-570"><a href="#cb19-570" aria-hidden="true" tabindex="-1"></a>        plt.xticks(rotation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb19-571"><a href="#cb19-571" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
+<span id="cb19-572"><a href="#cb19-572" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
+<span id="cb19-573"><a href="#cb19-573" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb19-574"><a href="#cb19-574" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Boxplot for continuous/ordinal variables</span></span>
+<span id="cb19-575"><a href="#cb19-575" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb19-576"><a href="#cb19-576" aria-hidden="true" tabindex="-1"></a>        sns.boxplot(x<span class="op">=</span>target_col, y<span class="op">=</span>var, data<span class="op">=</span>df, palette<span class="op">=</span>[<span class="st">'#e74c3c'</span>, <span class="st">'#f39c12'</span>, <span class="st">'#2ecc71'</span>], ax<span class="op">=</span>ax)</span>
+<span id="cb19-577"><a href="#cb19-577" aria-hidden="true" tabindex="-1"></a>        ax.set_title(<span class="ss">f"</span><span class="sc">{</span>var<span class="sc">}</span><span class="ss"> by </span><span class="sc">{</span>target_col<span class="sc">}</span><span class="ss">"</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb19-578"><a href="#cb19-578" aria-hidden="true" tabindex="-1"></a>        ax.grid(alpha<span class="op">=</span><span class="fl">0.3</span>, axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb19-579"><a href="#cb19-579" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
+<span id="cb19-580"><a href="#cb19-580" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
+<span id="cb19-581"><a href="#cb19-581" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb19-582"><a href="#cb19-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-583"><a href="#cb19-583" aria-hidden="true" tabindex="-1"></a><span class="fu">### Key Findings: Academic Performance and Study Conditions</span></span>
+<span id="cb19-584"><a href="#cb19-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-585"><a href="#cb19-585" aria-hidden="true" tabindex="-1"></a>**Academic Performance Impact:**</span>
+<span id="cb19-586"><a href="#cb19-586" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Students who graduate have significantly higher admission grades (mean: X) compared to dropouts (mean: Y)</span>
+<span id="cb19-587"><a href="#cb19-587" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>First semester grades show the strongest association with outcomes (η² = X), suggesting early academic performance is a critical indicator</span>
+<span id="cb19-588"><a href="#cb19-588" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Approved course units in semester 1 differentiate graduates from dropouts more than enrollment numbers</span>
+<span id="cb19-589"><a href="#cb19-589" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-590"><a href="#cb19-590" aria-hidden="true" tabindex="-1"></a>**Study Conditions Impact:**</span>
+<span id="cb19-591"><a href="#cb19-591" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Daytime students show X% higher graduation rates compared to evening students</span>
+<span id="cb19-592"><a href="#cb19-592" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Application mode significantly affects outcomes (χ² = X, p &lt; 0.001), with <span class="co">[</span><span class="ot">specific mode</span><span class="co">]</span> showing highest graduation rates</span>
+<span id="cb19-593"><a href="#cb19-593" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Course type is significantly associated with dropout risk, with <span class="co">[</span><span class="ot">specific courses</span><span class="co">]</span> showing higher retention</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
