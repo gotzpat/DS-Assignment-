@@ -727,7 +727,149 @@ plt.show()
 
 See @fig-1st-sem-enrolled for details.
 
+```{python}
+#| label: fig-admission-grade
+#| fig-cap: "Admission grade by student outcome"
 
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Admission grade',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Admission grade by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-admission-grade for details.
+
+```{python}
+#| label: fig-displaced
+#| fig-cap: "Displaced status by student outcome"
+
+plt.figure(figsize=(8, 5))
+tab = (pd.crosstab(df[target_col], df['Displaced'])
+       .apply(lambda r: r / r.sum(), axis=1))
+tab = tab.reindex(columns=sorted(tab.columns.tolist()))
+
+tab.plot(kind="bar", stacked=True,
+        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+plt.ylabel("Proportion within target group")
+plt.title('Displaced by Target', fontsize=12, fontweight='bold')
+plt.legend(title='Displaced', labels=['No', 'Yes'],
+         bbox_to_anchor=(1.02, 1), loc="upper left")
+plt.ylim(0, 1)
+plt.grid(alpha=0.3, axis='y')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-displaced for details.
+
+```{python}
+#| label: fig-prev-qual-grade
+#| fig-cap: "Previous qualification grade by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Previous qualification (grade)',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Previous qualification (grade) by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-prev-qual-grade for details.
+
+```{python}
+#| label: fig-marital-status
+#| fig-cap: "Marital status by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Marital Status',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Marital Status by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-marital-status for details.
+
+```{python}
+#| label: fig-application-order
+#| fig-cap: "Application order by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Application order',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Application order by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-application-order for details.
+
+
+```{python}
+#| label: fig-daytime-evening
+#| fig-cap: "Daytime/evening attendance by student outcome"
+
+tab = (pd.crosstab(df[target_col], df['Daytime/evening attendance'])
+       .apply(lambda r: r / r.sum(), axis=1))
+tab = tab.reindex(columns=sorted(tab.columns.tolist()))
+
+tab.plot(kind="bar", stacked=True,
+        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+plt.ylabel("Proportion within target group")
+plt.title('Daytime/evening attendance by Target', fontsize=12, fontweight='bold')
+plt.legend(title='Attendance', labels=['Evening', 'Daytime'],
+         bbox_to_anchor=(1.02, 1), loc="upper left")
+plt.ylim(0, 1)
+plt.grid(alpha=0.3, axis='y')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-daytime-evening for details.
+
+```{python}
+
+#| label: fig-mother-qualification
+#| fig-cap: "Mother's qualification by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y="Mother's qualification",
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title("Mother's qualification by Target", fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-mother-qualification for details.
 
 ### Key Findings: Academic Performance and Study Conditions
 
