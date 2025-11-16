@@ -11,6 +11,7 @@ format:
     code-fold: true
     code-tools: true
     df-print: paged
+    css: styles.css
   pdf:
        # wrapping the code also in the pdf (otherwise, it overflows)
     toc: false
@@ -22,6 +23,7 @@ format:
           commandchars=\\\{\},
           breaklines, breaknonspaceingroup, breakanywhere
         }
+    
 execute:
   warning: false
   message: false
