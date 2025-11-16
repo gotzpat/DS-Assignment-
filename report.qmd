@@ -51,9 +51,10 @@ In summary, this study combines exploratory analysis, visualization, and predict
 
 ## I.III - Research Questions
 
-I. How do academic performance indicators and study conditions influence students’ likelihood of graduation or dropout?
-II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out?
-III. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?
+- I.  How do academic performance indicators and study conditions influence students’ likelihood of graduation or dropout?
+- II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out?
+- III. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?
+
 
 ## Data Loading
 
@@ -145,26 +146,21 @@ print(f"Selected {len(selected_columns)} variables")
 
 def clean_dataframe(df, col_missing_thresh=0.30, row_missing_thresh=0.50):
     """Clean dataset with missing value handling."""
-    df = df.copy()
-
+  
     # Count number of NaNs
     df = df.copy()
-    print("\n" + "="*50)
-    print("Missing Values Analysis (Before Cleaning)")
-    print("="*50)
     missing = df.isna().sum()
     missing_data = missing[missing > 0]
 
     if len(missing_data) > 0:
-        print(f"\nTotal columns with missing values: {len(missing_data)}")
-        print(f"Total missing values: {missing_data.sum()}\n")
-        for col, count in missing_data.items():
-            percentage = (count / len(df)) * 100
-            print(f"  {col:30s} : {count:5d} ({percentage:5.2f}%)")
+        print(f"\n⚠️  Missing values found in {len(missing_data)} columns ({missing_data.sum():,} total)\n")
+        display(missing_data.to_frame('Count'))
     else:
         print("\n✓ No missing values found!")
-    print("="*50)
-    
+
+    print(f"\nShape after cleaning: {df.shape}")
+    print(f"Missing values: {df.isna().sum().sum()}")
+        
     # Drop columns with excessive missing
     col_frac = df.isna().mean()
     drop_cols = col_frac[col_frac > col_missing_thresh].index.tolist()
@@ -561,7 +557,49 @@ print(f"Significant variables (p < 0.05): {anova_df['significant'].sum()}")
 anova_df.head(15)
 ```
 
-### Top Predictive Variables
+## Top Predictive Variables
+
+### Acadamic Performance Indicators
+
+Our exploratory analysis shows clear and consistent relationships between academic performance measures and student outcomes (Dropout, Enrolled, Graduate). Several patterns emerge across admission grades, semester performance, and course load.
+
+```{python}
+#| label: fig-admission-grade
+#| fig-cap: "Admission grade by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Admission grade',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Admission grade by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+Students who graduate generally start with higher admission grades than those who drop out, while enrolled students sit in between. Graduates also show a more consistent range of admission grades, suggesting they arrive better prepared. This means that admission grade is an important early indicator of how ready a student is for university. Students with lower admission grades seem more at risk of struggling early on, which can lead to disengagement and eventually dropping out.
+
+```{python}
+#| label: fig-st-sem-grade
+#| fig-cap: "First semester grade by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Curricular units 1st sem (grade)',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Curricular units 1st sem (grade) by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+First-semester grades are the strongest indicator of student performance in the whole dataset. Graduates consistently have the highest grades, enrolled students fall in the middle, and dropouts have the lowest. 
 
 ```{python}
 #| label: fig-boxplot-grades
@@ -581,26 +619,83 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-boxplot-grades for details.
+Second-semester grades show the same trend, though the differences between groups become slightly smaller once first-semester results are considered. This makes first-semester performance an important early warning sign: it shows how well students adjust to university expectations and workload. Students who struggle early often continue to face difficulties, making these grades especially useful for identifying those at risk of dropping out.
 
 ```{python}
-#| label: fig-st-sem-grade
-#| fig-cap: "First semester grade by student outcome"
+#| label: fig-1st-sem-enrolled
+#| fig-cap: "First semester enrollment by student outcome"
 
 plt.figure(figsize=(8, 5))
 sns.boxplot(
     x=target_col,
-    y='Curricular units 1st sem (grade)',
+    y='Curricular units 1st sem (enrolled)',
     data=df,
     palette=['#e74c3c', '#f39c12', '#2ecc71']
 )
-plt.title('Curricular units 1st sem (grade) by Target', fontsize=12, fontweight='bold')
+plt.title('Curricular units 1st sem (enrolled) by Target', fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
 plt.tight_layout()
 plt.show()
 ```
 
-See @fig-st-sem-grade for details.
+Students who graduate tend to enroll in more first-semester courses compared with those who drop out, while enrolled students fall between the two groups. Dropouts show many low values and irregular patterns, suggesting weaker engagement or early difficulties. Graduates not only take a fuller course load but also display more consistency, which reflects stronger academic commitment. Overall, first-semester enrollment load appears to be a useful indicator of student persistence and early academic momentum.
+
+```{python}
+
+#| label: fig-2nd-sem-enrolled
+#| fig-cap: "Second semester enrollment by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Curricular units 2nd sem (enrolled)',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Curricular units 2nd sem (enrolled) by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+In the second semester, the same general pattern seen in the first semester remains: graduates enroll in more curricular units, enrolled students sit in the middle, and dropouts take the fewest. 
+
+However, the differences between groups are less pronounced compared to the first semester. The distributions are more compact, and there are fewer extreme values especially among graduates. Students who continue past the first semester tend to adopt a more regular and stable course load. 
+
+### Key Findings: Academic Performance and Study Conditions
+
+**Academic Performance Impact:**
+- Students who graduate have significantly higher admission grades (mean: X) compared to dropouts (mean: Y)
+- First semester grades show the strongest association with outcomes (η² = X), suggesting early academic performance is a critical indicator
+- Approved course units in semester 1 differentiate graduates from dropouts more than enrollment numbers
+
+**Study Conditions Impact:**
+- Daytime students show X% higher graduation rates compared to evening students
+- Application mode significantly affects outcomes (χ² = X, p < 0.001), with [specific mode] showing highest graduation rates
+- Course type is significantly associated with dropout risk, with [specific courses] showing higher retention
+
+
+### Demographic & Socioeconomic Background
+
+
+```{python}
+#| label: fig-age
+#| fig-cap: "Age at enrollment by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Age at enrollment',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Age at enrollment by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-age for details.
 
 ```{python}
 #| label: fig-scholarship
@@ -627,25 +722,6 @@ plt.show()
 See @fig-scholarship for details.
 
 ```{python}
-#| label: fig-age
-#| fig-cap: "Age at enrollment by student outcome"
-
-plt.figure(figsize=(8, 5))
-sns.boxplot(
-    x=target_col,
-    y='Age at enrollment',
-    data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
-)
-plt.title('Age at enrollment by Target', fontsize=12, fontweight='bold')
-plt.grid(alpha=0.3, axis='y')
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-age for details.
-
-```{python}
 #| label: fig-debtor
 #| fig-cap: "Debtor status by student outcome"
 
@@ -667,6 +743,7 @@ plt.show()
 ```
 
 See @fig-debtor for details.
+
 ```{python}
 #| label: fig-gender
 #| fig-cap: "Gender by student outcome"
@@ -687,70 +764,13 @@ plt.xticks(rotation=0)
 plt.tight_layout()
 plt.show()
 ```
+
 See @fig-gender for details.
-```{python}
-
-#| label: fig-2nd-sem-enrolled
-#| fig-cap: "Second semester enrollment by student outcome"
-
-plt.figure(figsize=(8, 5))
-sns.boxplot(
-    x=target_col,
-    y='Curricular units 2nd sem (enrolled)',
-    data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
-)
-plt.title('Curricular units 2nd sem (enrolled) by Target', fontsize=12, fontweight='bold')
-plt.grid(alpha=0.3, axis='y')
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-2nd-sem-enrolled for details.
-
-```{python}
-#| label: fig-1st-sem-enrolled
-#| fig-cap: "First semester enrollment by student outcome"
-
-plt.figure(figsize=(8, 5))
-sns.boxplot(
-    x=target_col,
-    y='Curricular units 1st sem (enrolled)',
-    data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
-)
-plt.title('Curricular units 1st sem (enrolled) by Target', fontsize=12, fontweight='bold')
-plt.grid(alpha=0.3, axis='y')
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-1st-sem-enrolled for details.
-
-```{python}
-#| label: fig-admission-grade
-#| fig-cap: "Admission grade by student outcome"
-
-plt.figure(figsize=(8, 5))
-sns.boxplot(
-    x=target_col,
-    y='Admission grade',
-    data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
-)
-plt.title('Admission grade by Target', fontsize=12, fontweight='bold')
-plt.grid(alpha=0.3, axis='y')
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-admission-grade for details.
 
 ```{python}
 #| label: fig-displaced
 #| fig-cap: "Displaced status by student outcome"
 
-plt.figure(figsize=(8, 5))
 tab = (pd.crosstab(df[target_col], df['Displaced'])
        .apply(lambda r: r / r.sum(), axis=1))
 tab = tab.reindex(columns=sorted(tab.columns.tolist()))
@@ -871,17 +891,7 @@ plt.show()
 
 See @fig-mother-qualification for details.
 
-### Key Findings: Academic Performance and Study Conditions
-
-**Academic Performance Impact:**
-- Students who graduate have significantly higher admission grades (mean: X) compared to dropouts (mean: Y)
-- First semester grades show the strongest association with outcomes (η² = X), suggesting early academic performance is a critical indicator
-- Approved course units in semester 1 differentiate graduates from dropouts more than enrollment numbers
-
-**Study Conditions Impact:**
-- Daytime students show X% higher graduation rates compared to evening students
-- Application mode significantly affects outcomes (χ² = X, p < 0.001), with [specific mode] showing highest graduation rates
-- Course type is significantly associated with dropout risk, with [specific courses] showing higher retention
+### Predictive Modelling
 
 ```{python}
 #| label: classification-model
