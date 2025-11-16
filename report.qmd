@@ -55,6 +55,15 @@ In summary, this study combines exploratory analysis, visualization, and predict
 - II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out?
 - III. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?
 
+## Data 
+
+## Data Sourcing
+The dataset is publicly available on UCI Machine Learning Repository and was created from multiple databases of higher education institutions in Portugal. It is related to enrolled students in different undergraduate programs and shows how different demographic, socioeconomic and academic factors are related to the dropout. Since the data has already been collected and can be directly downloaded from [UCI MLR - Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict%2Bstudents%2Bdropout%2Band%2Bacademic%2Bsuccess){target="_blank"} - [Accessed on 20th October] , there is no need to collect more data via webscraping or APIs. 
+
+## Data Description
+The dataset, containing data from a Portuguese higher education institution, is provided as a CSV file, approximately 520 KB in size, and contains detailed information about students’demographic, academic and socio-economic characteristics. It includes 4424 student records and 37 variables (features). After reviewing the dataset variables, we removed two irrelevant ones, resulting in 35 relevant variables selected  for analysis.
+
+The clean data is provided as below ..
 
 ## Data Loading
 
@@ -136,10 +145,16 @@ selected_columns = [
 df = df[selected_columns].copy()
 print(f"Selected {len(selected_columns)} variables")
 ```
+Through this step, we didn't encounter any difficult challenges. The dataset was already clean and encoded, so we didn't need to perform variable merging, one-hot encoding or ordinal encoding. We only had to convert categorical variables into readable labels to facilitate our visualization analysis.
 
 ---
 
-## Data Cleaning
+## Preprocessing (Data Cleaning and Wrangling)
+
+One of the most important steps in our project is data cleaning and wrangling. After running the code to check for missing values and undefined numerical data, we found that the dataset contains no missing values, no mistakes and no data entry mistakes.
+
+The dataset was already encoded, and we removed “Application mode” and “Tuition fees up to date” variables because they are not relevant to our research questions. Therefore we dropped two columns from the dataset. Ensuring that the numeric columns are numeric, categorical variables such as “Gender”, “Debtor”, “Displaced” , “Daytime/Evening attendance” were converted to readable string labels for analysis.
+
 
 ```{python}
 #| label: data-cleaning
@@ -193,6 +208,7 @@ df = clean_dataframe(df)
 print(f"Shape after cleaning: {df.shape}")
 print(f"Missing values: {df.isna().sum().sum()}")
 ```
+Although we had a well-structured and clean dataset, our main challenge was to determine the reliability of our dataset. We verified if there were any missing values, spotting mistakes, and determined irrelevant variables for our analysis. We pursue our cleaning work with the conversion of the categorical variables. Therefore, the reliable dataset was ready to be analyzed.
 
 ---
 
@@ -238,18 +254,6 @@ plt.show()
 
 ---
 
-## Descriptive Statistics
-
-```{python}
-#| label: descriptive-stats
-
-numeric_cols = df.select_dtypes(include=np.number).columns
-desc_stats = df[numeric_cols].describe().T
-desc_stats = desc_stats.round(2)
-desc_stats
-```
-
----
 
 ## Correlation Analysis
 
