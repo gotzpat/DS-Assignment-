@@ -414,6 +414,7 @@ print(f"[saved] {corr_path}")
 print("\n===== CFEATURE IMPORTANCE =====")
 anova_results = {}
 numeric_cols = merged_df.select_dtypes(include=np.number).columns  # target is categorical now
+print("Numeric columns considered for ANOVA:", len(numeric_cols))
 
 for col in numeric_cols:
     groups = [merged_df.loc[merged_df[target_col] == cat, col].dropna()

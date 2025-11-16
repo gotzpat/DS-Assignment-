@@ -1,7 +1,9 @@
 ---
 title: "Predicting Student Dropout and Academic Success"
 subtitle: "Exploratory Data Analysis"
-authors: "Patricia Gotz, Lana Kabbani, Estela Gonzalez Vizcarra, Noémie Glaus"
+authors: 
+    - "Patricia Gotz"
+    - "Lana Kabanni"
 date: today
 format:
   html:
@@ -144,6 +146,24 @@ print(f"Selected {len(selected_columns)} variables")
 def clean_dataframe(df, col_missing_thresh=0.30, row_missing_thresh=0.50):
     """Clean dataset with missing value handling."""
     df = df.copy()
+
+    # Count number of NaNs
+    df = df.copy()
+    print("\n" + "="*50)
+    print("Missing Values Analysis (Before Cleaning)")
+    print("="*50)
+    missing = df.isna().sum()
+    missing_data = missing[missing > 0]
+
+    if len(missing_data) > 0:
+        print(f"\nTotal columns with missing values: {len(missing_data)}")
+        print(f"Total missing values: {missing_data.sum()}\n")
+        for col, count in missing_data.items():
+            percentage = (count / len(df)) * 100
+            print(f"  {col:30s} : {count:5d} ({percentage:5.2f}%)")
+    else:
+        print("\n✓ No missing values found!")
+    print("="*50)
     
     # Drop columns with excessive missing
     col_frac = df.isna().mean()
@@ -319,7 +339,7 @@ This approach ensures that outlier detection is contextually appropriate for eac
 #| label: outlier-detection
 
 def detect_outliers_intelligent(df, var_type_dict):
-    """Detect outliers based on variable type."""
+    """Detect outliers based on variable type using simple statistical rules."""
     results = []
     
     # Binary variables - skip
@@ -345,68 +365,88 @@ def detect_outliers_intelligent(df, var_type_dict):
         series = df[col].dropna()
         print(f"  - {col}: {len(series.unique())} levels")
     
-    # Grade variables (0-200 scale)
-    print("\n📊 Grade variables (0-200 scale):")
+    # Grade variables (0-200 scale + Z-score)
+    print("\n📊 Grade variables (0-200 range + Z-score > 3):")
     for col in var_type_dict.get('grades', []):
         if col not in df.columns:
             continue
         series = df[col].dropna()
-        min_val, max_val = series.min(), series.max()
+        
+        # Check range violations
         invalid = ((series < 0) | (series > 200)).sum()
-        invalid_pct = 100 * invalid / len(series) if len(series) > 0 else 0
         
-        print(f"  - {col}: range=[{min_val:.1f}, {max_val:.1f}], "
-              f"invalid: {invalid} ({invalid_pct:.1f}%)")
+        # Check statistical outliers using Z-score
+        mean, std = series.mean(), series.std()
+        if std > 0:
+            z_scores = np.abs((series - mean) / std)
+            statistical_outliers = (z_scores > 3).sum()
+        else:
+            statistical_outliers = 0
         
-        if invalid > 0:
+        total_outliers = invalid + statistical_outliers
+        outlier_pct = 100 * total_outliers / len(series) if len(series) > 0 else 0
+        
+        print(f"  - {col}: {invalid} out-of-range + {statistical_outliers} extreme (Z>3) = "
+              f"{total_outliers} total ({outlier_pct:.1f}%)")
+        
+        if total_outliers > 0:
             results.append({
-                'column': col, 'type': 'grade', 'issue': 'out_of_range',
-                'count': invalid, 'pct': invalid_pct
+                'column': col, 'type': 'grade', 
+                'issue': 'out_of_range + extreme',
+                'count': total_outliers, 'pct': outlier_pct
             })
     
-    # Count variables (3×IQR)
-    print("\n📊 Count variables (3×IQR threshold):")
+    # Count variables (Z-score > 3)
+    print("\n📊 Count variables (Z-score > 3):")
     for col in var_type_dict.get('counts', []):
         if col not in df.columns:
             continue
         series = df[col].dropna()
         if len(series) == 0:
             continue
-            
-        Q1, Q3 = series.quantile([0.25, 0.75])
-        IQR = Q3 - Q1
-        lower, upper = Q1 - 3 * IQR, Q3 + 3 * IQR
-        outliers = ((series < lower) | (series > upper)).sum()
+        
+        mean, std = series.mean(), series.std()
+        if std > 0:
+            z_scores = np.abs((series - mean) / std)
+            outliers = (z_scores > 3).sum()
+        else:
+            outliers = 0
+        
         outlier_pct = 100 * outliers / len(series)
         
-        print(f"  - {col}: extreme outliers: {outliers} ({outlier_pct:.1f}%)")
+        print(f"  - {col}: extreme values: {outliers} ({outlier_pct:.1f}%)")
         
         if outliers > 0:
             results.append({
-                'column': col, 'type': 'count', 'issue': 'extreme_outlier',
+                'column': col, 'type': 'count', 
+                'issue': 'extreme_outlier',
                 'count': outliers, 'pct': outlier_pct
             })
     
-    # Continuous variables (1.5×IQR)
-    print("\n📊 Continuous variables (1.5×IQR threshold):")
+    # Continuous variables (Z-score > 3)
+    print("\n📊 Continuous variables (Z-score > 3):")
     for col in var_type_dict.get('continuous', []):
         if col not in df.columns:
             continue
         series = df[col].dropna()
         if len(series) == 0:
             continue
-            
-        Q1, Q3 = series.quantile([0.25, 0.75])
-        IQR = Q3 - Q1
-        lower, upper = Q1 - 1.5 * IQR, Q3 + 1.5 * IQR
-        outliers = ((series < lower) | (series > upper)).sum()
+        
+        mean, std = series.mean(), series.std()
+        if std > 0:
+            z_scores = np.abs((series - mean) / std)
+            outliers = (z_scores > 3).sum()
+        else:
+            outliers = 0
+        
         outlier_pct = 100 * outliers / len(series)
         
-        print(f"  - {col}: outliers: {outliers} ({outlier_pct:.1f}%)")
+        print(f"  - {col}: extreme values: {outliers} ({outlier_pct:.1f}%)")
         
         if outliers > 0:
             results.append({
-                'column': col, 'type': 'continuous', 'issue': 'outlier',
+                'column': col, 'type': 'continuous', 
+                'issue': 'extreme_outlier',
                 'count': outliers, 'pct': outlier_pct
             })
     
@@ -518,47 +558,176 @@ anova_df = (pd.DataFrame(anova_results).T
 anova_df["significant"] = anova_df["p_value"] < 0.05
 
 print(f"Significant variables (p < 0.05): {anova_df['significant'].sum()}")
-anova_df.head(10)
+anova_df.head(15)
 ```
 
 ### Top Predictive Variables
 
 ```{python}
-#| label: visualize-important-vars
+#| label: fig-boxplot-grades
+#| fig-cap: "Boxplot of Grades by Target"
+plt.figure(figsize=(8, 5))
 
-important_vars = anova_df.loc[anova_df["significant"]].head(10).index.tolist()
+sns.boxplot(
+    x=target_col,
+    y='Curricular units 2nd sem (grade)',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
 
-for var in important_vars:
-    # Check if binary
-    non_na = df[var].dropna()
-    is_binary = non_na.nunique() == 2
-    
-    if is_binary:
-        # Stacked bar for binary variables
-        fig, ax = plt.subplots(figsize=(8, 5))
-        tab = (pd.crosstab(df[target_col], df[var])
-               .apply(lambda r: r / r.sum(), axis=1))
-        tab = tab.reindex(columns=sorted(tab.columns.tolist()))
-        
-        tab.plot(kind="bar", stacked=True, ax=ax, 
-                color=['#e74c3c', '#2ecc71'], edgecolor='black')
-        ax.set_ylabel("Proportion within target group")
-        ax.set_title(f"{var} vs {target_col}", fontsize=12, fontweight='bold')
-        ax.legend(title=var, bbox_to_anchor=(1.02, 1), loc="upper left")
-        ax.set_ylim(0, 1)
-        ax.grid(alpha=0.3, axis='y')
-        plt.xticks(rotation=0)
-        plt.tight_layout()
-        plt.show()
-    else:
-        # Boxplot for continuous/ordinal variables
-        fig, ax = plt.subplots(figsize=(8, 5))
-        sns.boxplot(x=target_col, y=var, data=df, palette=['#e74c3c', '#f39c12', '#2ecc71'], ax=ax)
-        ax.set_title(f"{var} by {target_col}", fontsize=12, fontweight='bold')
-        ax.grid(alpha=0.3, axis='y')
-        plt.tight_layout()
-        plt.show()
+plt.title(f"Curricular units 2nd sem (grade) by {target_col}", fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
 ```
+
+See @fig-boxplot-grades for details.
+
+```{python}
+#| label: fig-st-sem-grade
+#| fig-cap: "First semester grade by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Curricular units 1st sem (grade)',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Curricular units 1st sem (grade) by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-st-sem-grade for details.
+
+```{python}
+#| label: fig-scholarship
+#| fig-cap: "Scholarship holder status by student outcome"
+
+#plt.figure(figsize=(8, 5))
+tab = (pd.crosstab(df[target_col], df['Scholarship holder'])
+       .apply(lambda r: r / r.sum(), axis=1))
+tab = tab.reindex(columns=sorted(tab.columns.tolist()))
+
+tab.plot(kind="bar", stacked=True, 
+        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+plt.ylabel("Proportion within target group")
+plt.title('Scholarship holder by Target', fontsize=12, fontweight='bold')
+plt.legend(title='Scholarship holder', labels=['No', 'Yes'], 
+         bbox_to_anchor=(1.02, 1), loc="upper left")
+plt.ylim(0, 1)
+plt.grid(alpha=0.3, axis='y')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-scholarship for details.
+
+```{python}
+#| label: fig-age
+#| fig-cap: "Age at enrollment by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Age at enrollment',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Age at enrollment by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-age for details.
+
+```{python}
+#| label: fig-debtor
+#| fig-cap: "Debtor status by student outcome"
+
+tab = (pd.crosstab(df[target_col], df['Debtor'])
+       .apply(lambda r: r / r.sum(), axis=1))
+tab = tab.reindex(columns=sorted(tab.columns.tolist()))
+
+tab.plot(kind="bar", stacked=True,
+        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+plt.ylabel("Proportion within target group")
+plt.title('Debtor by Target', fontsize=12, fontweight='bold')
+plt.legend(title='Debtor', labels=['No', 'Yes'],
+         bbox_to_anchor=(1.02, 1), loc="upper left")
+plt.ylim(0, 1)
+plt.grid(alpha=0.3, axis='y')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-debtor for details.
+```{python}
+#| label: fig-gender
+#| fig-cap: "Gender by student outcome"
+
+tab = (pd.crosstab(df[target_col], df['Gender'])
+       .apply(lambda r: r / r.sum(), axis=1))
+tab = tab.reindex(columns=sorted(tab.columns.tolist()))
+
+tab.plot(kind="bar", stacked=True,
+        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+plt.ylabel("Proportion within target group")
+plt.title('Gender by Target', fontsize=12, fontweight='bold')
+plt.legend(title='Gender', labels=['Female', 'Male'],
+         bbox_to_anchor=(1.02, 1), loc="upper left")
+plt.ylim(0, 1)
+plt.grid(alpha=0.3, axis='y')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+See @fig-gender for details.
+```{python}
+
+#| label: fig-2nd-sem-enrolled
+#| fig-cap: "Second semester enrollment by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Curricular units 2nd sem (enrolled)',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Curricular units 2nd sem (enrolled) by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-2nd-sem-enrolled for details.
+
+```{python}
+#| label: fig-1st-sem-enrolled
+#| fig-cap: "First semester enrollment by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Curricular units 1st sem (enrolled)',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Curricular units 1st sem (enrolled) by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-1st-sem-enrolled for details.
+
+
 
 ### Key Findings: Academic Performance and Study Conditions
 
@@ -571,3 +740,209 @@ for var in important_vars:
 - Daytime students show X% higher graduation rates compared to evening students
 - Application mode significantly affects outcomes (χ² = X, p < 0.001), with [specific mode] showing highest graduation rates
 - Course type is significantly associated with dropout risk, with [specific courses] showing higher retention
+
+```{python}
+#| label: classification-model
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+import lime
+import lime.lime_tabular
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Use the dataframe after feature selection (columns already removed)
+# This df already has the 8 redundant columns removed
+print(f"Starting with {df.shape[1]} features (after feature selection)")
+
+# Create working dataframe - use all columns that exist
+df_model = df.copy()
+
+# Remove rows with missing values
+print(f"Dataset shape before cleaning: {df_model.shape}")
+df_model = df_model.dropna()
+print(f"Dataset shape after removing missing values: {df_model.shape}")
+
+print(f"\nTarget distribution:")
+print(df_model['Target'].value_counts())
+
+# Separate features and target
+X = df_model.drop('Target', axis=1)
+y = df_model['Target']
+
+print(f"\nUsing {X.shape[1]} features for classification")
+
+# Encode categorical variables
+categorical_cols = X.select_dtypes(include=['object', 'category']).columns
+label_encoders = {}
+
+print(f"\n🔄 Encoding {len(categorical_cols)} categorical variables...")
+for col in categorical_cols:
+    le = LabelEncoder()
+    X[col] = le.fit_transform(X[col].astype(str))
+    label_encoders[col] = le
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+print(f"\nTraining set size: {X_train.shape[0]}")
+print(f"Test set size: {X_test.shape[0]}")
+
+# Train Random Forest model
+print("\n🌲 Training Random Forest Classifier...")
+rf_model = RandomForestClassifier(
+    n_estimators=100,
+    max_depth=10,
+    random_state=42,
+    n_jobs=-1
+)
+rf_model.fit(X_train, y_train)
+
+# Make predictions
+y_pred = rf_model.predict(X_test)
+y_pred_proba = rf_model.predict_proba(X_test)
+
+# Evaluate model
+print("\n📊 Model Performance:")
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+# Confusion Matrix
+plt.figure(figsize=(8, 6))
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix')
+plt.ylabel('True Label')
+plt.xlabel('Predicted Label')
+plt.tight_layout()
+plt.show()
+
+# Feature Importance from Random Forest
+feature_importance = pd.DataFrame({
+    'feature': X.columns,
+    'importance': rf_model.feature_importances_
+}).sort_values('importance', ascending=False)
+
+print("\n🔍 Top 15 Most Important Features (Random Forest):")
+print(feature_importance.head(15))
+
+# Plot feature importance
+plt.figure(figsize=(10, 8))
+top_15 = feature_importance.head(15)
+plt.barh(range(len(top_15)), top_15['importance'])
+plt.yticks(range(len(top_15)), top_15['feature'])
+plt.xlabel('Importance')
+plt.title('Top 15 Feature Importance (Random Forest)')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.show()
+
+# LIME Explainer
+print("\n🔬 Setting up LIME explainer...")
+explainer = lime.lime_tabular.LimeTabularExplainer(
+    training_data=X_train.values,
+    feature_names=X.columns.tolist(),
+    class_names=[str(c) for c in sorted(y.unique())],
+    mode='classification',
+    random_state=42
+)
+
+# Explain a few predictions
+print("\n💡 LIME Explanations for Sample Predictions:")
+
+# Select 3 random test samples
+np.random.seed(42)
+sample_indices = np.random.choice(X_test.index, size=min(3, len(X_test)), replace=False)
+
+for idx, sample_idx in enumerate(sample_indices):
+    sample = X_test.loc[sample_idx].values
+    true_label = y_test.loc[sample_idx]
+    pred_label = rf_model.predict([sample])[0]
+    pred_proba = rf_model.predict_proba([sample])[0]
+    
+    print(f"\n--- Sample {idx + 1} ---")
+    print(f"True Label: {true_label}")
+    print(f"Predicted Label: {pred_label}")
+    print(f"Prediction Probability: {pred_proba}")
+    
+    # Generate LIME explanation
+    exp = explainer.explain_instance(
+        sample,
+        rf_model.predict_proba,
+        num_features=10
+    )
+    
+    # Show explanation
+    print("\nTop 10 features influencing this prediction:")
+    for feature, weight in exp.as_list():
+        print(f"  {feature}: {weight:.3f}")
+    
+    # Plot explanation
+    fig = exp.as_pyplot_figure()
+    plt.tight_layout()
+    plt.show()
+
+# Global feature importance from LIME (sample-based)
+print("\n📈 Computing global LIME feature importance (sampling 100 instances)...")
+
+# Sample instances for global importance
+sample_size = min(100, len(X_test))
+sample_indices_global = np.random.choice(len(X_test), size=sample_size, replace=False)
+
+lime_weights = {feature: [] for feature in X.columns}
+
+for i in sample_indices_global:
+    exp = explainer.explain_instance(
+        X_test.iloc[i].values,
+        rf_model.predict_proba,
+        num_features=len(X.columns)
+    )
+    
+    for feature, weight in exp.as_list():
+        # Extract feature name (LIME returns feature with value range)
+        feature_name = feature.split('<=')[0].split('>')[0].split('=')[0].strip()
+        # Find matching column (partial match)
+        for col in X.columns:
+            if col in feature_name or feature_name in col:
+                lime_weights[col].append(abs(weight))
+                break
+
+# Compute average absolute weight for each feature
+lime_importance = pd.DataFrame({
+    'feature': list(lime_weights.keys()),
+    'lime_importance': [np.mean(weights) if weights else 0 for weights in lime_weights.values()]
+}).sort_values('lime_importance', ascending=False)
+
+print("\n🔍 Top 15 Most Important Features (LIME Global):")
+print(lime_importance.head(15))
+
+# Compare Random Forest vs LIME importance
+plt.figure(figsize=(12, 8))
+comparison = feature_importance.merge(lime_importance, on='feature', how='left')
+comparison['lime_importance'] = comparison['lime_importance'].fillna(0)
+top_features = comparison.nlargest(15, 'importance')
+
+x = np.arange(len(top_features))
+width = 0.35
+
+plt.barh(x - width/2, top_features['importance'], width, label='Random Forest', alpha=0.8)
+plt.barh(x + width/2, top_features['lime_importance'], width, label='LIME', alpha=0.8)
+
+plt.yticks(x, top_features['feature'])
+plt.xlabel('Importance Score')
+plt.title('Feature Importance Comparison: Random Forest vs LIME')
+plt.legend()
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.show()
+
+print("\n✅ Classification and LIME analysis complete!")
+print(f"\nFinal model uses {len(X.columns)} features to predict student outcomes.")
+```
