@@ -41,14 +41,7 @@ These figures underline the seriousness of dropouts in higher education and the 
 We chose this topic because predicting student dropout not only helps optimize institutional resources but also supports students in achieving their academic goals. Understanding the factors that influence academic success, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems. This subject is particularly meaningful in data science, as it allows us to combine analytical and predictive methods to better understand and prevent student dropout.
 
 
-## 1.1 - Background and Motivation
-
-Student retention and academic success are crucial issues for higher education institutions. Universities increasingly rely on data-driven insights to identify at-risk students and to design early intervention strategies.
-We chose this topic because predicting student dropout not only helps optimize institutional resources but also supports students in achieving their academic goals. Understanding the factors that influence academic success, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems.
-This subject is particularly meaningful in data science, because we can combine analytical and predictive methods to better understand and prevent student dropout. 
-
-
-## 1.2 - Project Goals
+## 1.1 - Project Goals
 
 The main objective of this project is to identify the factors that influence students to drop out, stay enrolled, or graduate from higher education. The dataset provides detailed information on each student’s academic performance, socioeconomic background, and demographic profile, offering a comprehensive view of the variables that shape educational outcomes. By the end of our analysis, we seek to identify the most significant combinations of academic and personal factors that influence student success. 
 First, our analysis will focus on academic performance, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether early academic performance can serve as a reliable predictor of future dropout risk. We will then explore the influence of socioeconomic and personal factors, including parental education, occupation, and financial situation, to understand their impact on academic achievement. Lastly,  the dataset will be used to build and evaluate classification models that predict students’ academic status (Dropout, Enrolled, or Graduate). 
@@ -58,7 +51,9 @@ In summary, this study combines exploratory analysis, visualization, and predict
 
 - I.  How do academic performance indicators and study conditions influence students’ likelihood of graduation or dropout?
 - II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out?
+      a.  To what extent do financial factors (debtor status, scholarship holder) affect student retention ?
 - III. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?
+        a.Which features category, academic (grades, units), socioeconomic (debt, scholarship) or demographic (age, gender)  contribute the most in predicting students’ dropout?
 
 ## 2. - Data 
 
@@ -70,7 +65,7 @@ The dataset, containing data from a Portuguese higher education institution, is 
 
 We didn't encounter any difficult challenges. The dataset was already clean and encoded, so we didn't need to perform variable merging, one-hot encoding or ordinal encoding. We only had to translate categorical variables into readable labels to facilitate our visualization analysis.
 
-## 2.2.1 - Data Loading
+### 2.2.1 - Data Loading
 
 ```{python}
 #| label: setup
@@ -102,7 +97,7 @@ print(f"Dataset shape: {df.shape}")
 
 ---
 
-## 2.2.2 - Variable Selection
+### 2.2.2 - Variable Selection
 
 We selected 35 relevant variables for analysis:
 
@@ -151,7 +146,7 @@ df = df[selected_columns].copy()
 print(f"Selected {len(selected_columns)} variables")
 ```
 
-## 2.2.3 - Selected Variable Descriptions
+### 2.2.3 - Selected Variable Descriptions
 ```{python}
 #| label: variable-descriptions
 #| echo: false
@@ -280,7 +275,7 @@ Through this step, we didn't encounter any difficult challenges. The dataset was
 
 ---
 
-## 3. Preprocessing (Data Cleaning and Wrangling)
+## 3.- Preprocessing (Data Cleaning and Wrangling)
 
 One of the most important steps in our project is data cleaning and wrangling. After running the code to check for missing values and undefined numerical data, we found that the dataset contains no missing values, no mistakes and no data entry mistakes.
 
@@ -1335,7 +1330,7 @@ plt.show()
 
 ## Conclusion and Next Steps
 To the extent covered so far in this project, we achieved the fundamental steps for a rigorous analysis of our work. We described the context of the research background, presented relevant research questions and prepared the dataset for analysis.
-We collected and examined the dataset from the UCI Machine Learning Repository, verified its reliability by conducting systematic preprocessing. During this stage, we checked for any missing values, identified  anomalies (outliers), translated categorical variables into readable format for visualization, and removed irrelevant or redundant variables. Through EDA, we analyzed academic, demographic and socioeconomic factors, and identified initial patterns related to student outcomes. In exploring these key insights such as performance indicators, course progression, enrollment behavior, socioeconomic and demographic characteristics, we established the preliminary steps for the predictive modeling phase that will be built in the following weeks.
+We collected and examined the dataset from the UCI Machine Learning Repository, verified its reliability by conducting systematic preprocessing. During this stage, we checked for any missing values, identified  anomalies (outliers), translated categorical variables into readable format for visualization, and removed irrelevant or redundant variables. Through EDA, we analyzed academic, demographic and socioeconomic factors, and identified initial patterns associated with the “Target” variable (Dropout, Enrolled, Graduate). In exploring these key insights such as first-semester performance, age at enrollment, scholarship status, and financial stability. We established the preliminary steps for the predictive modeling phase that will be built in the following weeks.
 
 During the upcoming weeks (November 18 to December 7, Weeks 5 to 7), we will focus on building and evaluating the predictive models. We will have to test and determine a suitable modeling technique, such as random forests or decision trees. Our objective is also to assess model performance, using appropriate metrics. We also have to identify the most important variables that contribute to prediction accuracy, and determine which modeling approach best predicts student outcomes related to the research questions.
 From December 8 to December 14 (Week 8), we will analyze and interpret the results of the predictive model to determine the insights that help answer our research questions. After evaluating the relevant variables and their effects, we will link the modeling outcomes to the patterns observed during the EDA. This will allow us to provide clearer answers to our research questions. 
