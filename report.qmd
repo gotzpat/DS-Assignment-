@@ -66,7 +66,7 @@ The dataset is publicly available on UCI Machine Learning Repository and was cre
 ## 2.2 - Data Description
 The dataset, containing data from a Portuguese higher education institution, is provided as a CSV file, approximately 520 KB in size, and contains detailed information about students’demographic, academic and socio-economic characteristics. It includes 4424 student records and 37 variables (features). After reviewing the dataset variables, we removed two irrelevant ones, resulting in 35 relevant variables selected  for analysis.
 
-The clean data is provided as below ..
+We didn't encounter any difficult challenges. The dataset was already clean and encoded, so we didn't need to perform variable merging, one-hot encoding or ordinal encoding. We only had to translate categorical variables into readable labels to facilitate our visualization analysis.
 
 ## 2.2.1 - Data Loading
 
@@ -148,6 +148,132 @@ selected_columns = [
 df = df[selected_columns].copy()
 print(f"Selected {len(selected_columns)} variables")
 ```
+
+## 2.2.3 - Variable Descriptions
+```{python}
+#| label: variable-descriptions
+#| echo: false
+# Create variable information table
+variable_info = pd.DataFrame({
+    'Variable': [
+        'Marital Status',
+        'Application order',
+        'Course',
+        'Daytime/evening attendance',
+        'Previous qualification',
+        'Previous qualification (grade)',
+        'Nacionality',
+        "Mother's qualification",
+        "Father's qualification",
+        "Mother's occupation",
+        "Father's occupation",
+        'Admission grade',
+        'Educational special needs',
+        'Gender',
+        'Scholarship holder',
+        'Age at enrollment',
+        'Displaced',
+        'Debtor',
+        'International',
+        'Curricular units 1st sem (credited)',
+        'Curricular units 1st sem (enrolled)',
+        'Curricular units 1st sem (evaluations)',
+        'Curricular units 1st sem (approved)',
+        'Curricular units 1st sem (grade)',
+        'Curricular units 1st sem (without evaluations)',
+        'Curricular units 2nd sem (credited)',
+        'Curricular units 2nd sem (enrolled)',
+        'Curricular units 2nd sem (evaluations)',
+        'Curricular units 2nd sem (approved)',
+        'Curricular units 2nd sem (grade)',
+        'Curricular units 2nd sem (without evaluations)',
+        'Unemployment rate',
+        'Inflation rate',
+        'GDP',
+        'Target'
+    ],
+    'Description': [
+        'Student marital status',
+        'Application preference order',
+        'Course taken by student',
+        'Attendance type (daytime or evening)',
+        'Type of previous qualification',
+        'Grade of previous qualification',
+        'Student nationality',
+        'Educational qualification of mother',
+        'Educational qualification of father',
+        'Occupation of mother',
+        'Occupation of father',
+        'Admission grade to the program',
+        'Whether student has special educational needs',
+        'Student gender',
+        'Whether student is scholarship holder',
+        'Age of student at enrollment',
+        'Whether student is displaced from home',
+        'Whether student is a debtor',
+        'Whether student is international',
+        'Credited units in 1st semester',
+        'Enrolled units in 1st semester',
+        'Number of evaluations in 1st semester',
+        'Approved units in 1st semester',
+        'Average grade in 1st semester',
+        'Units without evaluations in 1st semester',
+        'Credited units in 2nd semester',
+        'Enrolled units in 2nd semester',
+        'Number of evaluations in 2nd semester',
+        'Approved units in 2nd semester',
+        'Average grade in 2nd semester',
+        'Units without evaluations in 2nd semester',
+        'Unemployment rate at time of enrollment',
+        'Inflation rate at time of enrollment',
+        'GDP at time of enrollment',
+        'Student status (Dropout, Enrolled, or Graduate)'
+    ],
+    'Type': [
+        'Categorical',
+        'Categorical',
+        'Categorical',
+        'Categorical',
+        'Categorical',
+        'Numerical (Continuous)',
+        'Categorical',
+        'Categorical',
+        'Categorical',
+        'Categorical',
+        'Categorical',
+        'Numerical (Continuous)',
+        'Binary',
+        'Binary',
+        'Binary',
+        'Numerical (Discrete)',
+        'Binary',
+        'Binary',
+        'Binary',
+        'Numerical (Discrete)',
+        'Numerical (Discrete)',
+        'Numerical (Discrete)',
+        'Numerical (Discrete)',
+        'Numerical (Continuous)',
+        'Numerical (Discrete)',
+        'Numerical (Discrete)',
+        'Numerical (Discrete)',
+        'Numerical (Discrete)',
+        'Numerical (Discrete)',
+        'Numerical (Continuous)',
+        'Numerical (Discrete)',
+        'Numerical (Continuous)',
+        'Numerical (Continuous)',
+        'Numerical (Continuous)',
+        'Categorical'
+    ]
+})
+# Display table
+from IPython.display import Markdown, display
+# Create markdown table
+table_md = variable_info.to_markdown(index=False)
+display(Markdown(table_md))
+```
+
 Through this step, we didn't encounter any difficult challenges. The dataset was already clean and encoded, so we didn't need to perform variable merging, one-hot encoding or ordinal encoding. We only had to convert categorical variables into readable labels to facilitate our visualization analysis.
 
 ---
@@ -156,7 +282,9 @@ Through this step, we didn't encounter any difficult challenges. The dataset was
 
 One of the most important steps in our project is data cleaning and wrangling. After running the code to check for missing values and undefined numerical data, we found that the dataset contains no missing values, no mistakes and no data entry mistakes.
 
-The dataset was already encoded, and we removed “Application mode” and “Tuition fees up to date” variables because they are not relevant to our research questions. Therefore we dropped two columns from the dataset. Ensuring that the numeric columns are numeric, categorical variables such as “Gender”, “Debtor”, “Displaced” , “Daytime/Evening attendance” were converted to readable string labels for analysis.
+The dataset was already encoded, and we removed “Application mode” and “Tuition fees up to date” variables because they are not relevant to our research questions. Therefore we dropped two columns from the dataset.
+Ensuring that the numeric columns are numeric, categorical variables such as “Gender”, “Debtor”, “Displaced” , “Daytime/Evening attendance” were translated to readable string labels for analysis.
+Although we had a well-structured and clean dataset, our main challenge was to determine the reliability of our dataset. We verified if there were any missing values, spotting mistakes, and determined irrelevant variables for our analysis. We pursue our cleaning work with the conversion of the categorical variables. Therefore, the reliable dataset was ready to be analyzed. 
 
 
 ```{python}
@@ -215,7 +343,7 @@ Although we had a well-structured and clean dataset, our main challenge was to d
 
 ---
 
-## 4. -  Exploratory Data Analysis
+## 4. -  Exploratory Data Analysis (EDA)
 
 
 ---
@@ -265,6 +393,9 @@ plt.show()
 
 ## 4.2 - Correlation Analysis
 
+We compute a correlation matrix for all numeric variables to understand relationships between academic performance indicators, course load variables, and demographic measures. The heatmap reveals several strong correlations, especially among variables describing semester performance (credited units, approved units, evaluations, grades).
+These variables essentially measure the same underlying concepts, creating multicollinearity.
+
 ```{python}
 #| label: correlation-matrix
 #| fig-height: 12
@@ -297,7 +428,13 @@ plt.tight_layout()
 plt.show()
 ```
 
-Based on this correlation analysis, we identified several highly correlated variable pairs that suggest multicollinearity. We excluded 8 redundant semester variables that were highly correlated with other metrics.
+We found a very strong correlation between Nationality and International status, which is expected since International is just a simplified version of Nationality. Because Nationality contains more detailed information, we removed International.
+
+Parent-related variables (mother’s/father’s occupation and qualification) are also correlated, but this reflects household socioeconomic structure rather than redundancy. Since each parent may influence student outcomes differently, we kept all four variables.
+
+Some first- and second-semester curricular features are highly correlated (e.g., enrolled units, approved units, grades). However, they capture academic progression, which is important for predicting dropout. Instead of removing these core indicators, we eliminated eight other semester-related variables that were clearly redundant.
+
+In total, we removed nine variables: one nationality variable (International) and eight overlapping semester variables, reducing multicollinearity while keeping the most meaningful predictors.
 
 ---
 
@@ -351,14 +488,14 @@ def detect_outliers_intelligent(df, var_type_dict):
     results = []
     
     # Binary variables - skip
-    print("\n📊 Binary variables (skipping outlier detection):")
+    print("\n Binary variables (skipping outlier detection):")
     for col in var_type_dict.get('binary', []):
         if col in df.columns:
             unique_vals = sorted(df[col].dropna().unique())
             print(f"  - {col}: values = {unique_vals}")
     
     # Nominal categorical
-    print("\n📊 Nominal Categorical (no natural order):")
+    print("\n Nominal Categorical (no natural order):")
     for col in var_type_dict.get('nominal', []):
         if col not in df.columns:
             continue
@@ -366,7 +503,7 @@ def detect_outliers_intelligent(df, var_type_dict):
         print(f"  - {col}: {len(series.unique())} categories")
     
     # Ordinal categorical
-    print("\n📊 Ordinal Categorical (meaningful order):")
+    print("\n Ordinal Categorical (meaningful order):")
     for col in var_type_dict.get('ordinal', []):
         if col not in df.columns:
             continue
@@ -374,7 +511,7 @@ def detect_outliers_intelligent(df, var_type_dict):
         print(f"  - {col}: {len(series.unique())} levels")
     
     # Grade variables (0-200 scale + Z-score)
-    print("\n📊 Grade variables (0-200 range + Z-score > 3):")
+    print("\n Grade variables (0-200 range + Z-score > 3):")
     for col in var_type_dict.get('grades', []):
         if col not in df.columns:
             continue
@@ -405,7 +542,7 @@ def detect_outliers_intelligent(df, var_type_dict):
             })
     
     # Count variables (Z-score > 3)
-    print("\n📊 Count variables (Z-score > 3):")
+    print("\n Count variables (Z-score > 3):")
     for col in var_type_dict.get('counts', []):
         if col not in df.columns:
             continue
@@ -432,7 +569,7 @@ def detect_outliers_intelligent(df, var_type_dict):
             })
     
     # Continuous variables (Z-score > 3)
-    print("\n📊 Continuous variables (Z-score > 3):")
+    print("\n Continuous variables (Z-score > 3):")
     for col in var_type_dict.get('continuous', []):
         if col not in df.columns:
             continue
@@ -522,6 +659,15 @@ else:
     print("\n✅ No significant outliers detected!")
 ```
 
+We identified outliers in five different variables.
+Curricular units 1st semester (enrolled) and Curricular units 2nd semester (enrolled), which represent the number of courses students register for each semester. We observed 106 potential outliers in the first curricularsemester and 82 in the second semester. Since the average course load is usually 5 to 6 classes, students taking a much higher or lower number of courses are naturally flagged as outliers. In the first semester, the highest value reaches 26 classes. Although this is an ambitious workload, it remains possible. Several situations could explain such a high number: for instance, a student trying to complete their degree quickly, or a student retaking courses after previous failures. These cases can reflect meaningful academic behaviours, so removing them would risk losing useful information. For the second semester, the maximum value is around 20 classes, leading to similar conclusions. In both semesters, we also observe students enrolled in zero courses, which appears as an extreme value as well. This may correspond to students who completed most of their required courses earlier, or students taking a temporary break while still being officially enrolled. These profiles are still relevant and should be included. In this context, these extreme values are not problematic. On the contrary, they may help us understand whether taking unusually many, or unusually few, courses has an impact on college dropout. For this reason, we decided not to remove or cap these observations.
+
+
+The next variable with detected outliers is Age at enrollment, for which 101 potential outliers were identified. Since the average age at enrollment is around 20 years old, students beginning their studies at 40 or 50 naturally appear as unusual cases. The oldest student is 70 years old, which is uncommon but not problematic for our analysis. Starting university at 70 does not change the fact that this person is a student, and these cases should be included. These values represent real and meaningful student profiles, such as mature students or individuals returning to education after a long break. Excluding them would remove important diversity from the dataset and limit our understanding of the different types of students who may or may not drop out. For this reason, we chose not to remove or cap the age-related outliers.
+Finally, outliers were also detected in Admission grade (22 cases) and Previous qualification grade (21 cases). These extreme values reflect either exceptionally high academic performance or, conversely, unusually low grades. Since these cases may provide insights into how prior academic achievement relates to dropout behavior, removing or capping them would not be appropriate. We therefore opted to retain all outliers in these grade variables as well.
+Based on our research questions, we conclude that removing these outliers would not benefit our analysis, as they do not represent errors but rather uncommon yet meaningful observations. Retaining them allows us to capture the full diversity of student profiles and provides a more accurate understanding of the factors that may influence college dropout.
+
+
 ## 4.6 - Feature Importance Analysis
 
 ### 4.6.1 - Methodology
@@ -593,6 +739,25 @@ plt.show()
 ```
 
 Students who graduate generally start with higher admission grades than those who drop out, while enrolled students sit in between. Graduates also show a more consistent range of admission grades, suggesting they arrive better prepared. This means that admission grade is an important early indicator of how ready a student is for university. Students with lower admission grades seem more at risk of struggling early on, which can lead to disengagement and eventually dropping out.
+
+```{python}
+#| label: fig-prev-qual-grade
+#| fig-cap: "Previous qualification grade by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Previous qualification (grade)',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Previous qualification (grade) by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-prev-qual-grade for details.
 
 ```{python}
 #| label: fig-st-sem-grade
@@ -674,6 +839,71 @@ In the second semester, the same general pattern seen in the first semester rema
 
 However, the differences between groups are less pronounced compared to the first semester. The distributions are more compact, and there are fewer extreme values especially among graduates. Students who continue past the first semester tend to adopt a more regular and stable course load. 
 
+```{python}
+#| label: fig-daytime-evening
+#| fig-cap: "Daytime/evening attendance by student outcome"
+
+tab = (pd.crosstab(df[target_col], df['Daytime/evening attendance'])
+       .apply(lambda r: r / r.sum(), axis=1))
+tab = tab.reindex(columns=sorted(tab.columns.tolist()))
+
+tab.plot(kind="bar", stacked=True,
+        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+plt.ylabel("Proportion within target group")
+plt.title('Daytime/evening attendance by Target', fontsize=12, fontweight='bold')
+plt.legend(title='Attendance', labels=['Evening', 'Daytime'],
+         bbox_to_anchor=(1.02, 1), loc="upper left")
+plt.ylim(0, 1)
+plt.grid(alpha=0.3, axis='y')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-daytime-evening for details.
+
+```{python}
+#| label: fig-application-order
+#| fig-cap: "Application order by student outcome"
+
+plt.figure(figsize=(8, 5))
+sns.boxplot(
+    x=target_col,
+    y='Application order',
+    data=df,
+    palette=['#e74c3c', '#f39c12', '#2ecc71']
+)
+plt.title('Application order by Target', fontsize=12, fontweight='bold')
+plt.grid(alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-application-order for details.
+
+```{python}
+#| label: fig-displaced
+#| fig-cap: "Displaced status by student outcome"
+
+tab = (pd.crosstab(df[target_col], df['Displaced'])
+       .apply(lambda r: r / r.sum(), axis=1))
+tab = tab.reindex(columns=sorted(tab.columns.tolist()))
+
+tab.plot(kind="bar", stacked=True,
+        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+plt.ylabel("Proportion within target group")
+plt.title('Displaced by Target', fontsize=12, fontweight='bold')
+plt.legend(title='Displaced', labels=['No', 'Yes'],
+         bbox_to_anchor=(1.02, 1), loc="upper left")
+plt.ylim(0, 1)
+plt.grid(alpha=0.3, axis='y')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-displaced for details.
+
 ### 4.7.2 - Key Findings: Academic Performance and Study Conditions
 
 **Academic Performance Impact:**
@@ -687,7 +917,7 @@ However, the differences between groups are less pronounced compared to the firs
 - Course type is significantly associated with dropout risk, with [specific courses] showing higher retention
 
 
-### Demographic & Socioeconomic Background
+### 4.7.3 Demographic & Socioeconomic Background
 
 
 ```{python}
@@ -708,6 +938,29 @@ plt.show()
 ```
 
 See @fig-age for details.
+
+```{python}
+#| label: fig-gender
+#| fig-cap: "Gender by student outcome"
+
+tab = (pd.crosstab(df[target_col], df['Gender'])
+       .apply(lambda r: r / r.sum(), axis=1))
+tab = tab.reindex(columns=sorted(tab.columns.tolist()))
+
+tab.plot(kind="bar", stacked=True,
+        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+plt.ylabel("Proportion within target group")
+plt.title('Gender by Target', fontsize=12, fontweight='bold')
+plt.legend(title='Gender', labels=['Female', 'Male'],
+         bbox_to_anchor=(1.02, 1), loc="upper left")
+plt.ylim(0, 1)
+plt.grid(alpha=0.3, axis='y')
+plt.xticks(rotation=0)
+plt.tight_layout()
+plt.show()
+```
+
+See @fig-gender for details.
 
 ```{python}
 #| label: fig-scholarship
@@ -756,70 +1009,6 @@ plt.show()
 
 See @fig-debtor for details.
 
-```{python}
-#| label: fig-gender
-#| fig-cap: "Gender by student outcome"
-
-tab = (pd.crosstab(df[target_col], df['Gender'])
-       .apply(lambda r: r / r.sum(), axis=1))
-tab = tab.reindex(columns=sorted(tab.columns.tolist()))
-
-tab.plot(kind="bar", stacked=True,
-        color=['#e74c3c', '#2ecc71'], edgecolor='black')
-plt.ylabel("Proportion within target group")
-plt.title('Gender by Target', fontsize=12, fontweight='bold')
-plt.legend(title='Gender', labels=['Female', 'Male'],
-         bbox_to_anchor=(1.02, 1), loc="upper left")
-plt.ylim(0, 1)
-plt.grid(alpha=0.3, axis='y')
-plt.xticks(rotation=0)
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-gender for details.
-
-```{python}
-#| label: fig-displaced
-#| fig-cap: "Displaced status by student outcome"
-
-tab = (pd.crosstab(df[target_col], df['Displaced'])
-       .apply(lambda r: r / r.sum(), axis=1))
-tab = tab.reindex(columns=sorted(tab.columns.tolist()))
-
-tab.plot(kind="bar", stacked=True,
-        color=['#e74c3c', '#2ecc71'], edgecolor='black')
-plt.ylabel("Proportion within target group")
-plt.title('Displaced by Target', fontsize=12, fontweight='bold')
-plt.legend(title='Displaced', labels=['No', 'Yes'],
-         bbox_to_anchor=(1.02, 1), loc="upper left")
-plt.ylim(0, 1)
-plt.grid(alpha=0.3, axis='y')
-plt.xticks(rotation=0)
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-displaced for details.
-
-```{python}
-#| label: fig-prev-qual-grade
-#| fig-cap: "Previous qualification grade by student outcome"
-
-plt.figure(figsize=(8, 5))
-sns.boxplot(
-    x=target_col,
-    y='Previous qualification (grade)',
-    data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
-)
-plt.title('Previous qualification (grade) by Target', fontsize=12, fontweight='bold')
-plt.grid(alpha=0.3, axis='y')
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-prev-qual-grade for details.
 
 ```{python}
 #| label: fig-marital-status
@@ -841,49 +1030,6 @@ plt.show()
 See @fig-marital-status for details.
 
 ```{python}
-#| label: fig-application-order
-#| fig-cap: "Application order by student outcome"
-
-plt.figure(figsize=(8, 5))
-sns.boxplot(
-    x=target_col,
-    y='Application order',
-    data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
-)
-plt.title('Application order by Target', fontsize=12, fontweight='bold')
-plt.grid(alpha=0.3, axis='y')
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-application-order for details.
-
-
-```{python}
-#| label: fig-daytime-evening
-#| fig-cap: "Daytime/evening attendance by student outcome"
-
-tab = (pd.crosstab(df[target_col], df['Daytime/evening attendance'])
-       .apply(lambda r: r / r.sum(), axis=1))
-tab = tab.reindex(columns=sorted(tab.columns.tolist()))
-
-tab.plot(kind="bar", stacked=True,
-        color=['#e74c3c', '#2ecc71'], edgecolor='black')
-plt.ylabel("Proportion within target group")
-plt.title('Daytime/evening attendance by Target', fontsize=12, fontweight='bold')
-plt.legend(title='Attendance', labels=['Evening', 'Daytime'],
-         bbox_to_anchor=(1.02, 1), loc="upper left")
-plt.ylim(0, 1)
-plt.grid(alpha=0.3, axis='y')
-plt.xticks(rotation=0)
-plt.tight_layout()
-plt.show()
-```
-
-See @fig-daytime-evening for details.
-
-```{python}
 
 #| label: fig-mother-qualification
 #| fig-cap: "Mother's qualification by student outcome"
@@ -902,6 +1048,9 @@ plt.show()
 ```
 
 See @fig-mother-qualification for details.
+
+4.7.2 - Key Findings: Demographic & Socioeconomic Background 
+....
 
 ### 4.8 - Predictive Modelling
 
