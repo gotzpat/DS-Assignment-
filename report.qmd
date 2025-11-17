@@ -1,10 +1,13 @@
 ---
 title: "Predicting Student Dropout and Academic Success"
-subtitle: "Exploratory Data Analysis"
 authors: 
-    - "Patricia Gotz"
-    - "Lana Kabanni"
+    - "Patricia Götz"
+    - "Lana Kabbani"
+    - "Noémie Glaus"
+    - "Estela Gonzalez Vizcarra"
+institute: University of Lausanne
 date: today
+title-block-banner: "#0095C8"
 format:
   html:
     theme: cosmo
@@ -31,41 +34,41 @@ execute:
   message: false
 ---
 
-## I. Introduction
+## 1. - Introduction
 
 This analysis examines data from a Portuguese higher education institution to identify factors that contribute to student dropout and academic success. The dataset contains information on 4,424 students enrolled across various undergraduate programs.
 
 
-## I.I - Background and Motivation
+## 1.1 - Background and Motivation
 
 Student retention and academic success are crucial issues for higher education institutions. Universities increasingly rely on data-driven insights to identify at-risk students and to design early intervention strategies.
 We chose this topic because predicting student dropout not only helps optimize institutional resources but also supports students in achieving their academic goals. Understanding the factors that influence academic success, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems.
 This subject is particularly meaningful in data science, because we can combine analytical and predictive methods to better understand and prevent student dropout. 
 
 
-## I.II - Project Goals
+## 1.2 - Project Goals
 
 The main objective of this project is to identify the factors that influence students to drop out, stay enrolled, or graduate from higher education. The dataset provides detailed information on each student’s academic performance, socioeconomic background, and demographic profile, offering a comprehensive view of the variables that shape educational outcomes. By the end of our analysis, we seek to identify the most significant combinations of academic and personal factors that influence student success. 
 First, our analysis will focus on academic performance, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether early academic performance can serve as a reliable predictor of future dropout risk. We will then explore the influence of socioeconomic and personal factors, including parental education, occupation, and financial situation, to understand their impact on academic achievement. Lastly,  the dataset will be used to build and evaluate classification models that predict students’ academic status (Dropout, Enrolled, or Graduate). 
 In summary, this study combines exploratory analysis, visualization, and predictive modeling to generate actionable insights that help universities detect at-risk students early and strengthen academic success.
 
-## I.III - Research Questions
+## I.3 - Research Questions
 
 - I.  How do academic performance indicators and study conditions influence students’ likelihood of graduation or dropout?
 - II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out?
 - III. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?
 
-## Data 
+## 2. - Data 
 
-## Data Sourcing
+## 2.1 - Data Sourcing
 The dataset is publicly available on UCI Machine Learning Repository and was created from multiple databases of higher education institutions in Portugal. It is related to enrolled students in different undergraduate programs and shows how different demographic, socioeconomic and academic factors are related to the dropout. Since the data has already been collected and can be directly downloaded from [UCI MLR - Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict%2Bstudents%2Bdropout%2Band%2Bacademic%2Bsuccess){target="_blank"} - [Accessed on 20th October] , there is no need to collect more data via webscraping or APIs. 
 
-## Data Description
+## 2.2 - Data Description
 The dataset, containing data from a Portuguese higher education institution, is provided as a CSV file, approximately 520 KB in size, and contains detailed information about students’demographic, academic and socio-economic characteristics. It includes 4424 student records and 37 variables (features). After reviewing the dataset variables, we removed two irrelevant ones, resulting in 35 relevant variables selected  for analysis.
 
 The clean data is provided as below ..
 
-## Data Loading
+## 2.2.1 - Data Loading
 
 ```{python}
 #| label: setup
@@ -97,7 +100,7 @@ print(f"Dataset shape: {df.shape}")
 
 ---
 
-## Variable Selection
+## 2.2.2 - Variable Selection
 
 We selected 35 relevant variables for analysis:
 
@@ -149,7 +152,7 @@ Through this step, we didn't encounter any difficult challenges. The dataset was
 
 ---
 
-## Preprocessing (Data Cleaning and Wrangling)
+## 3. Preprocessing (Data Cleaning and Wrangling)
 
 One of the most important steps in our project is data cleaning and wrangling. After running the code to check for missing values and undefined numerical data, we found that the dataset contains no missing values, no mistakes and no data entry mistakes.
 
@@ -212,7 +215,12 @@ Although we had a well-structured and clean dataset, our main challenge was to d
 
 ---
 
-## Target Variable
+## 4. -  Exploratory Data Analysis
+
+
+---
+
+## 4.1 - Target Variable
 
 ```{python}
 #| label: target-distribution
@@ -255,7 +263,7 @@ plt.show()
 ---
 
 
-## Correlation Analysis
+## 4.2 - Correlation Analysis
 
 ```{python}
 #| label: correlation-matrix
@@ -293,7 +301,7 @@ Based on this correlation analysis, we identified several highly correlated vari
 
 ---
 
-## Feature Selection
+## 4.3 - Feature Selection
 
 ```{python}
 #| label: feature-selection
@@ -317,7 +325,7 @@ print(f"Remaining variables: {df.shape[1]}")
 
 ---
 
-## Outlier Detection
+## 4.4 - Outlier Detection
 
 We implemented a type-aware outlier detection strategy that applies different methods based on the nature of each variable:
 
@@ -479,7 +487,7 @@ var_types = {
 outlier_results = detect_outliers_intelligent(df, var_types)
 ```
 
-### Outlier Summary
+### 4.5 - Outlier Summary
 
 ```{python}
 #| label: outlier-summary
@@ -514,9 +522,9 @@ else:
     print("\n✅ No significant outliers detected!")
 ```
 
-## Feature Importance Analysis
+## 4.6 - Feature Importance Analysis
 
-### Methodology
+### 4.6.1 - Methodology
 
 We used one-way ANOVA (Analysis of Variance) to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:
 
@@ -561,9 +569,9 @@ print(f"Significant variables (p < 0.05): {anova_df['significant'].sum()}")
 anova_df.head(15)
 ```
 
-## Top Predictive Variables
+## 4.7 - Top Predictive Variables
 
-### Acadamic Performance Indicators
+### 4.7.1 - Acadamic Performance Indicators
 
 Our exploratory analysis shows clear and consistent relationships between academic performance measures and student outcomes (Dropout, Enrolled, Graduate). Several patterns emerge across admission grades, semester performance, and course load.
 
@@ -666,7 +674,7 @@ In the second semester, the same general pattern seen in the first semester rema
 
 However, the differences between groups are less pronounced compared to the first semester. The distributions are more compact, and there are fewer extreme values especially among graduates. Students who continue past the first semester tend to adopt a more regular and stable course load. 
 
-### Key Findings: Academic Performance and Study Conditions
+### 4.7.2 - Key Findings: Academic Performance and Study Conditions
 
 **Academic Performance Impact:**
 - Students who graduate have significantly higher admission grades (mean: X) compared to dropouts (mean: Y)
@@ -895,7 +903,7 @@ plt.show()
 
 See @fig-mother-qualification for details.
 
-### Predictive Modelling
+### 4.8 - Predictive Modelling
 
 ```{python}
 #| label: classification-model
