@@ -8,6 +8,8 @@ authors:
 institute: University of Lausanne
 date: today
 title-block-banner: "#0095C8"
+bibliography: reference.bib
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
 format:
   html:
     theme: cosmo
@@ -16,11 +18,9 @@ format:
     code-fold: true
     code-tools: true
     df-print: paged
-    css: styles.css
   pdf:
-       # wrapping the code also in the pdf (otherwise, it overflows)
     toc: false
-    echo: false          # HIDE code completely in PDF
+    echo: false
     include-in-header:
       text: |
         \usepackage{fvextra}
@@ -36,7 +36,9 @@ execute:
 
 ## 1. - Introduction
 
-This analysis examines data from a Portuguese higher education institution to identify factors that contribute to student dropout and academic success. The dataset contains information on 4,424 students enrolled across various undergraduate programs.
+Student retention and academic success are crucial challenges for higher education institutions worldwide. Recent international observations show rising university dropout trends across multiple regions, including Australia and the United States [@sokolova2024dropout]. Looking closer at Europe, recent data from the German Center for Higher Education Research and Science Studies (2022), show that almost 30% of bachelor’s students in Germany leave university without graduating [@hachmeister2024german]. In Portugal, which is the focus of our analysis, recent data by Statistics Portugal reveal that a considerable portion of young adults (16.8%) aged from 15 to 34 have dropped out at least one level of education during their academic path [@europedata2024portugal]. Moreover, among those who dropped out, over more than half (50.8%) did not complete their tertiary studies, highlighting that higher education represents a critical point of disengagement [@europedata2024portugal].
+These figures underline the seriousness of dropouts in higher education and the reinforce need for universities to rely on data-driven insights to identify at-risk students and to design early intervention strategies. 
+We chose this topic because predicting student dropout not only helps optimize institutional resources but also supports students in achieving their academic goals. Understanding the factors that influence academic success, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems. This subject is particularly meaningful in data science, as it allows us to combine analytical and predictive methods to better understand and prevent student dropout.
 
 
 ## 1.1 - Background and Motivation
@@ -345,10 +347,12 @@ Although we had a well-structured and clean dataset, our main challenge was to d
 
 ## 4. -  Exploratory Data Analysis (EDA)
 
-
 ---
+In this section, we explore the dataset to understand the main characteristics of the variables and how they relate to student outcomes (Dropout, Enrolled, Graduate). The goal of the EDA is to identify patterns, detect anomalies, and determine which features are most informative for predicting dropout.
 
 ## 4.1 - Target Variable
+We begin by examining the distribution of the target variable.
+The three student outcomes (Dropout, Enrolled, and Graduate) are highly imbalanced, with Graduates representing the largest group, followed by Dropouts, and a smaller proportion of Enrolled students.
 
 ```{python}
 #| label: target-distribution
@@ -393,8 +397,7 @@ plt.show()
 
 ## 4.2 - Correlation Analysis
 
-We compute a correlation matrix for all numeric variables to understand relationships between academic performance indicators, course load variables, and demographic measures. The heatmap reveals several strong correlations, especially among variables describing semester performance (credited units, approved units, evaluations, grades).
-These variables essentially measure the same underlying concepts, creating multicollinearity.
+
 
 ```{python}
 #| label: correlation-matrix
@@ -428,13 +431,14 @@ plt.tight_layout()
 plt.show()
 ```
 
-We found a very strong correlation between Nationality and International status, which is expected since International is just a simplified version of Nationality. Because Nationality contains more detailed information, we removed International.
+Based on our correlation analysis, we identified several moderately and highly correlated variable pairs that indicate multicollinearity.
 
-Parent-related variables (mother’s/father’s occupation and qualification) are also correlated, but this reflects household socioeconomic structure rather than redundancy. Since each parent may influence student outcomes differently, we kept all four variables.
+A high correlation between international and nationality students can be observed, therefore we choose to remove the variable “international”, since it won’t be as relevant as the "nacionality" variable.
 
-Some first- and second-semester curricular features are highly correlated (e.g., enrolled units, approved units, grades). However, they capture academic progression, which is important for predicting dropout. Instead of removing these core indicators, we eliminated eight other semester-related variables that were clearly redundant.
+We can see that the variables “father’s occupation” and “mother’s occupation” are highly correlated, but in this case the correlation reflects social structure. They represent two distinct individuals and two potentially different socioeconomic effects. Same thing applies for “mother’s qualification” and “father’s qualification”.
 
-In total, we removed nine variables: one nationality variable (International) and eight overlapping semester variables, reducing multicollinearity while keeping the most meaningful predictors.
+Although the variables “Curricular units 1st sem (enrolled)”-“Curricular units 2nd sem (enrolled)” and  “Curricular units 1st sem (grade)” - “Curricular units 2nd sem (grade)” are respectively highly correlated, we keep them because they provide performance progression across different time periods, which is relevant for predicting dropout. Therefore, we excluded 8 redundant semester variables and one nationality variable.
+
 
 ---
 
@@ -452,7 +456,8 @@ columns_to_remove = [
     "Curricular units 2nd sem (credited)", 
     "Curricular units 2nd sem (evaluations)", 
     "Curricular units 2nd sem (approved)",
-    "Curricular units 2nd sem (without evaluations)"
+    "Curricular units 2nd sem (without evaluations)",
+    "International",
 ]
 
 df = df.drop(columns=columns_to_remove)
@@ -719,7 +724,7 @@ anova_df.head(15)
 
 ### 4.7.1 - Acadamic Performance Indicators
 
-Our exploratory analysis shows clear and consistent relationships between academic performance measures and student outcomes (Dropout, Enrolled, Graduate). Several patterns emerge across admission grades, semester performance, and course load.
+Our exploratory analysis shows relationships between academic performance measures and student outcomes (Dropout, Enrolled, Graduate). Several patterns emerge across admission grades, semester performance, and course load.
 
 ```{python}
 #| label: fig-admission-grade
@@ -738,7 +743,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-Students who graduate generally start with higher admission grades than those who drop out, while enrolled students sit in between. Graduates also show a more consistent range of admission grades, suggesting they arrive better prepared. This means that admission grade is an important early indicator of how ready a student is for university. Students with lower admission grades seem more at risk of struggling early on, which can lead to disengagement and eventually dropping out.
+In Figure 1, we observe the distribution of the admission grade across the three categories (Dropout, Enrolled Target, and Graduate). Dropout students have an average admission grade of around 122, with several outliers reaching above 160. Enrolled Target students show a very similar average grade to Dropout students, but with fewer extreme values. Graduate students display a slightly higher average admission grade, around 125, and similarly present a few outliers above 160.
+Overall, the three groups show comparable distributions, with considerable overlap in their admission grades. Graduate students tend to have a marginally higher average, which may suggest that stronger academic preparation is associated with a greater likelihood of graduating. However, the presence of high admission grades in both the Dropout and Graduate categories indicates that good grades alone do not fully determine academic outcomes. In other words, while admission grade may play a role, it is not a decisive predictor of whether a student will graduate or drop out.
+
 
 ```{python}
 #| label: fig-prev-qual-grade
@@ -757,7 +764,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-prev-qual-grade for details.
+Figure 2 shows the distribution of the Previous qualification (grade) across the three target students which are Dropout, Enrolled, and Graduate. All three boxplots display similar characteristics, with medians around 130-133. The minimum and maximum values are also comparable from 100 to 165. The three groups have multiple outliers at both lower and upper extremes of the grade distribution, dropout and graduates are the one that show more extreme values.
+
+
+For the interpretation, as the distributions and medians are quite similar this suggests that previous qualification grade is not a strong predictor of students' performance. Interestingly the Dropout group’s median is quite high which indicates that students who drop out have not necessarily lower prior grades than those who graduate or stay enrolled.The outliers indicate that in each category there are both very high and very low grades, which suggests that there are other factors beyond academic performance.
+
 
 ```{python}
 #| label: fig-st-sem-grade
@@ -776,7 +787,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-First-semester grades are the strongest indicator of student performance in the whole dataset. Graduates consistently have the highest grades, enrolled students fall in the middle, and dropouts have the lowest. 
+In Figure 3, we see the first-semester grades for the three target groups: Dropout, Enrolled Target, and Graduate. Dropout students show a wide range of grades. Enrolled Target students have grades around a median of 12.5, with moderate spread. Graduate students have the highest median, around 13.5, and a tighter distribution.
+For interpretation, the wide spread of Dropout students suggests that leaving the program is not only due to low grades. Enrolled Target students show average performance, indicating steady progress but not full completion. Graduate students perform consistently better, suggesting that higher and more stable first-semester grades are associated with graduation.
+
 
 ```{python}
 #| label: fig-boxplot-grades
@@ -796,7 +809,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Second-semester grades show the same trend, though the differences between groups become slightly smaller once first-semester results are considered. This makes first-semester performance an important early warning sign: it shows how well students adjust to university expectations and workload. Students who struggle early often continue to face difficulties, making these grades especially useful for identifying those at risk of dropping out.
+Figure 4 reveals distinct patterns across the three groups. The Dropout category displays the widest range of performance. Enrolled students demonstrate moderate variability with a median near 12 units. Graduates show the tightest distribution and highest median at approximately 13 units. By the second semester, the gaps between groups widen. Many dropouts completed few or no units (the distribution starts at 0), indicating this is likely when they left the program. Graduates continued performing well with consistent results around 13 units. Enrolled students fell somewhere in between with decent but mixed performance. The second semester appears to be a turning point where struggling students drop out while successful students keep their momentum.
 
 ```{python}
 #| label: fig-1st-sem-enrolled
@@ -815,7 +828,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-Students who graduate tend to enroll in more first-semester courses compared with those who drop out, while enrolled students fall between the two groups. Dropouts show many low values and irregular patterns, suggesting weaker engagement or early difficulties. Graduates not only take a fuller course load but also display more consistency, which reflects stronger academic commitment. Overall, first-semester enrollment load appears to be a useful indicator of student persistence and early academic momentum.
+Figure 5 demonstrates the relationship between Curricular units 1st Sem (enrolled) and the three Target outcomes (Dropout, Enrolled, Graduate). All three groups show similar box positions with medians around 5-6 units. Dropouts and Enrolled students have nearly identical distributions, while Graduates have a slightly higher box position. All groups show numerous outliers, particularly on the upper end, with some students enrolling in 15-26 units.
+Figure 5 reveals that the number of courses taken is not a factor influencing different outcomes, since all groups show similar enrollment patterns. Many high outliers appear across all groups, suggesting that ambitious enrollment is common regardless of eventual outcome.
+
 
 ```{python}
 
@@ -835,9 +850,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-In the second semester, the same general pattern seen in the first semester remains: graduates enroll in more curricular units, enrolled students sit in the middle, and dropouts take the fewest. 
+As shown in Figure 6, Dropout and Enrolled students have similar distributions with their boxes positioned in the lower range. Graduate students show a noticeably higher box position and a wider spread. All three groups display numerous outliers, particularly on the upper end.
+Like the 1st semester enrollment patterns, the 2nd semester shows that graduates tend to enroll in slightly more courses, though the differences remain modest. The similar enrollment behavior between dropouts and enrolled students suggests that course load decisions in the 2nd semester don't strongly differentiate these groups - the key difference lies in completion rates rather than enrollment ambitions.
 
-However, the differences between groups are less pronounced compared to the first semester. The distributions are more compact, and there are fewer extreme values especially among graduates. Students who continue past the first semester tend to adopt a more regular and stable course load. 
 
 ```{python}
 #| label: fig-daytime-evening
@@ -860,7 +875,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-daytime-evening for details.
+Figure 7 shows the proportion of daytime and evening attendance within the three groups (Dropout, Enrolled, Graduate). Daytime attendance dominates across all three groups, representing approximately 85-90% of students. However, Dropout students show a slightly higher proportion of evening attendance (around 15%) compared to Enrolled and Graduate students (around 10%). 
+This small difference might indicate that evening students face additional challenges, though the similarity across all groups suggests attendance timing is not a primary driver of dropout rates.
+
 
 ```{python}
 #| label: fig-application-order
@@ -879,7 +896,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-application-order for details.
+Figure 8 shows the Application order by the three target students. All three groups show similar distributions and are positioned in the lower range. The medians are approximately 1.5-2 for all categories. The upper whisker is similar for the three groups, reaching 3 and the lower whisker is at 0 for Graduates and around 1 for Dropout and Enrolled. There are numerous outliers that are at 4, 5 and 6, and even 9 for Enrolled category, indicating that some students applied as their 4th, 5th, 6th and 9th choice.
+Regarding the interpretation, as the distribution is similar in the three categories this implies that the application order has not a strong relationship with students' success. Most students have applied to this institution as their first or second choice, suggesting that institutional preferences do not really predict if a student will drop out, stay enrolled or graduate. We can also confirm that, as the outliers are similar, the application order is not a meaningful predictor of a student's performance.
+
 
 ```{python}
 #| label: fig-displaced
@@ -902,7 +921,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-displaced for details.
+Figure 9 shows the proportion of displaced students (those who moved or changed residence) across the three target groups. Dropout students have the highest proportion of non-displaced students at around 53%. Enrolled students show about 45% non-displaced. Graduate students have the lowest at approximately 40% non-displaced, meaning 60% of graduates relocated.
+The pattern shows that students who relocated for their studies were more likely to graduate. This could be because moving demonstrates stronger commitment to education, or because staying home means dealing with work, family responsibilities, or other obligations that interfere with studying. Dropouts were the least likely to have relocated, suggesting that remaining in their original environment may have made it harder to focus on academics.
+
 
 ### 4.7.2 - Key Findings: Academic Performance and Study Conditions
 
@@ -937,7 +958,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-age for details.
+Figure 10 demonstrates the relationship between Age at enrollment and the three students outcomes. The Dropout group has the highest median age, which is approximately 23 and the widest interquartile range. The Enrolled group has a median age around 20-21, while the Graduate group shows the lowest median age at around 19. It is also the narrowest. The three groups contain numerous outliers, showing particularly older students from late 30th to 70 years old.
+
+
+This suggests that age at enrollment is a significant predictor of students' performance. We see that students who enroll at a younger age are more likely to graduate, while older students face more risk of dropping out. This can be caused by several factors, such as the fact that younger students may have fewer external responsibilities compared to older students that may deal with multiple commitments that can interfere with their studies. The wider distribution dropout’s group shows that students can occur at any age. However, older students do successfully graduate, showing that age does not determine success alone.
 
 ```{python}
 #| label: fig-gender
@@ -960,7 +984,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-gender for details.
+Figure 11 shows the proportion of genders within each of the three target groups (Dropout, Enrolled Target, Graduate). In the Dropout group, the proportion of male and female students is almost equal. In contrast, both the Enrolled Target and Graduate groups have a higher proportion of female students than male students. 
+
+
+This suggests that female students tend to persist and complete their studies at higher rates than male students. Male students appear slightly more likely to interrupt or drop out of their programs, which may contribute to the lower proportions observed in the Enrolled Target and Graduate groups.
 
 ```{python}
 #| label: fig-scholarship
@@ -984,7 +1011,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-scholarship for details.
+Figure 12 shows the proportion of scholarship holders within each target group (Dropout, Enrolled Target, Graduate).
+In both the Dropout and Enrolled Target groups, the vast majority of students do not receive a scholarship, with only a small proportion being scholarship holders. In contrast, the Graduate group contains a noticeably higher proportion of scholarship recipients.
+This suggests that students who receive a scholarship may be more likely to graduate than those who do not. Scholarships often reduce financial pressure and provide support that may help students remain enrolled and complete their studies. Conversely, students without scholarships seem more represented among dropouts and ongoing enrollments.
+
 
 ```{python}
 #| label: fig-debtor
@@ -1007,7 +1037,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-See @fig-debtor for details.
+The Figure 13 shows that the dropout group has the largest proportion of students who are debtors. Enrolled students still include some debtors, but the proportion is noticeably smaller. In the graduate group, almost all students have no debt, with only a very small fraction appearing as debtors.
+
+
+This trend suggests that having debt is more common among students who end up dropping out, hinting that financial pressure may contribute to early departure. Conversely, students without debt seem more likely to remain enrolled and reach graduation.
+
 
 
 ```{python}
