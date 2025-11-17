@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-11-16">
+<meta name="dcterms.date" content="2025-11-17">
 
 <title>Predicting Student Dropout and Academic Success</title>
 <style>
@@ -86,7 +86,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
-  <ul class="collapse">
+  <ul>
   <li><a href="#i.-introduction" id="toc-i.-introduction" class="nav-link active" data-scroll-target="#i.-introduction">I. Introduction</a></li>
   <li><a href="#i.i---background-and-motivation" id="toc-i.i---background-and-motivation" class="nav-link" data-scroll-target="#i.i---background-and-motivation">I.I - Background and Motivation</a></li>
   <li><a href="#i.ii---project-goals" id="toc-i.ii---project-goals" class="nav-link" data-scroll-target="#i.ii---project-goals">I.II - Project Goals</a></li>
@@ -100,9 +100,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#target-variable" id="toc-target-variable" class="nav-link" data-scroll-target="#target-variable">Target Variable</a></li>
   <li><a href="#correlation-analysis" id="toc-correlation-analysis" class="nav-link" data-scroll-target="#correlation-analysis">Correlation Analysis</a></li>
   <li><a href="#feature-selection" id="toc-feature-selection" class="nav-link" data-scroll-target="#feature-selection">Feature Selection</a></li>
-  <li><a href="#outlier-detection" id="toc-outlier-detection" class="nav-link" data-scroll-target="#outlier-detection">Outlier Detection</a></li>
-  <li><a href="#feature-importance-analysis" id="toc-feature-importance-analysis" class="nav-link" data-scroll-target="#feature-importance-analysis">Feature Importance Analysis</a></li>
-  <li><a href="#top-predictive-variables" id="toc-top-predictive-variables" class="nav-link" data-scroll-target="#top-predictive-variables">Top Predictive Variables</a></li>
+  <li><a href="#outlier-detection" id="toc-outlier-detection" class="nav-link" data-scroll-target="#outlier-detection">Outlier Detection</a>
+  <ul>
+  <li><a href="#outlier-summary" id="toc-outlier-summary" class="nav-link" data-scroll-target="#outlier-summary">Outlier Summary</a></li>
+  </ul></li>
+  <li><a href="#feature-importance-analysis" id="toc-feature-importance-analysis" class="nav-link" data-scroll-target="#feature-importance-analysis">Feature Importance Analysis</a>
+  <ul>
+  <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">Methodology</a></li>
+  </ul></li>
+  <li><a href="#top-predictive-variables" id="toc-top-predictive-variables" class="nav-link" data-scroll-target="#top-predictive-variables">Top Predictive Variables</a>
+  <ul>
+  <li><a href="#acadamic-performance-indicators" id="toc-acadamic-performance-indicators" class="nav-link" data-scroll-target="#acadamic-performance-indicators">Acadamic Performance Indicators</a></li>
+  <li><a href="#key-findings-academic-performance-and-study-conditions" id="toc-key-findings-academic-performance-and-study-conditions" class="nav-link" data-scroll-target="#key-findings-academic-performance-and-study-conditions">Key Findings: Academic Performance and Study Conditions</a></li>
+  <li><a href="#demographic-socioeconomic-background" id="toc-demographic-socioeconomic-background" class="nav-link" data-scroll-target="#demographic-socioeconomic-background">Demographic &amp; Socioeconomic Background</a></li>
+  <li><a href="#predictive-modelling" id="toc-predictive-modelling" class="nav-link" data-scroll-target="#predictive-modelling">Predictive Modelling</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
@@ -129,7 +141,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 16, 2025</p>
+      <p class="date">November 17, 2025</p>
     </div>
   </div>
   
@@ -774,7 +786,7 @@ Remaining variables: 27</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Significant variables (p &lt; 0.05): 21</code></pre>
 </div>
-<div id="anova-analysis" class="cell-output cell-output-display" data-execution_count="509">
+<div id="anova-analysis" class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
 
@@ -2223,7 +2235,7 @@ Final model uses 26 features to predict student outcomes.</code></pre>
 <span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
 <span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 2</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 4</span></span>
 <span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
 <span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
 <span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co">    df-print: paged</span></span>
