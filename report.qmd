@@ -18,6 +18,7 @@ format:
     code-fold: true
     code-tools: true
     df-print: paged
+    self-contained: true
   pdf:
     toc: false
     echo: false
@@ -1179,7 +1180,7 @@ print(f"\nTraining set size: {X_train.shape[0]}")
 print(f"Test set size: {X_test.shape[0]}")
 
 # Train Random Forest model
-print("\n🌲 Training Random Forest Classifier...")
+print("\n Training Random Forest Classifier...")
 rf_model = RandomForestClassifier(
     n_estimators=100,
     max_depth=10,
@@ -1214,7 +1215,7 @@ feature_importance = pd.DataFrame({
     'importance': rf_model.feature_importances_
 }).sort_values('importance', ascending=False)
 
-print("\n🔍 Top 15 Most Important Features (Random Forest):")
+print("\n Top 15 Most Important Features (Random Forest):")
 print(feature_importance.head(15))
 
 # Plot feature importance
@@ -1239,7 +1240,7 @@ explainer = lime.lime_tabular.LimeTabularExplainer(
 )
 
 # Explain a few predictions
-print("\n💡 LIME Explanations for Sample Predictions:")
+print("\n LIME Explanations for Sample Predictions:")
 
 # Select 3 random test samples
 np.random.seed(42)
@@ -1304,7 +1305,7 @@ lime_importance = pd.DataFrame({
     'lime_importance': [np.mean(weights) if weights else 0 for weights in lime_weights.values()]
 }).sort_values('lime_importance', ascending=False)
 
-print("\n🔍 Top 15 Most Important Features (LIME Global):")
+print("\n Top 15 Most Important Features (LIME Global):")
 print(lime_importance.head(15))
 
 # Compare Random Forest vs LIME importance
