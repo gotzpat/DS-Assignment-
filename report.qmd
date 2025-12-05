@@ -1078,9 +1078,8 @@ plt.tight_layout()
 plt.show()
 ```
 
-@fig-marital-status shows the distribution of marital status across the three target groups using a jittered scatter plot. The points align in nearly identical horizontal bands for each category, indicating that the marital status profiles are essentially the same among Dropout, Enrolled, and Graduate students.
-The visual clearly shows that the vast majority of students are single, which is expected given the typical age range of university students. The less common marital statuses—married, divorced, widower, facto union, and legally separated—appear only sporadically and are spread evenly across the three groups.
-Overall, the plot suggests that marital status has no meaningful relationship with student outcomes. Since the three distributions look almost identical, marital status offers very limited predictive value for distinguishing at-risk students or for explaining academic success. this aligns with Anova since in the test, Marital Status was above the tenth place in importance.
+@fig-marital-status shows the distribution of marital status across the three target groups using a jittered scatter plot. While marital status achieved statistical significance in the ANOVA test (p < 0.001), its effect size is negligible (η² = 0.009), explaining less than 1% of the variance in student outcomes. This small effect is evident in the plot, where points align in nearly identical horizontal bands for each category, indicating that the marital status profiles are essentially the same among Dropout, Enrolled, and Graduate students.
+The visual clearly shows that the vast majority of students are single, which is expected given the typical age range of university students. The less common marital statuses—married, divorced, widower, facto union, and legally separated—appear only sporadically and are spread evenly across the three groups, further confirming the lack of meaningful differences.
 
 
 ```{python}
@@ -1135,16 +1134,17 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+from sklearn.utils.class_weight import compute_class_weight
 import lime
 import lime.lime_tabular
 import matplotlib.pyplot as plt
 import seaborn as sns
+from IPython.display import display, Markdown
 
 # Use the dataframe after feature selection (columns already removed)
-# This df already has the 8 redundant columns removed
 print(f"Starting with {df.shape[1]} features (after feature selection)")
 
-# Create working dataframe - use all columns that exist
+# Create working dataframe
 df_model = df.copy()
 
 # Remove rows with missing values
@@ -1165,13 +1165,13 @@ print(f"\nUsing {X.shape[1]} features for classification")
 categorical_cols = X.select_dtypes(include=['object', 'category']).columns
 label_encoders = {}
 
-print(f"\n Encoding {len(categorical_cols)} categorical variables...")
+print(f"\nEncoding {len(categorical_cols)} categorical variables...")
 for col in categorical_cols:
     le = LabelEncoder()
     X[col] = le.fit_transform(X[col].astype(str))
     label_encoders[col] = le
 
-# Split data
+# Split data with stratification
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
@@ -1179,13 +1179,28 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(f"\nTraining set size: {X_train.shape[0]}")
 print(f"Test set size: {X_test.shape[0]}")
 
-# Train Random Forest model
-print("\n Training Random Forest Classifier...")
+# Compute class weights to handle imbalance
+class_weights = compute_class_weight(
+    class_weight='balanced',
+    classes=np.unique(y_train),
+    y=y_train
+)
+class_weight_dict = dict(zip(np.unique(y_train), class_weights))
+
+print("\nClass weights (to handle imbalance):")
+for class_label, weight in class_weight_dict.items():
+    print(f"  {class_label}: {weight:.3f}")
+
+# Train Random Forest model with class weights
+print("\nTraining Random Forest Classifier with balanced class weights...")
 rf_model = RandomForestClassifier(
-    n_estimators=100,
+    n_estimators=100,  
     max_depth=10,
+    min_samples_split=10,
+    min_samples_leaf=5,
     random_state=42,
-    n_jobs=-1
+    n_jobs=-1,
+    class_weight='balanced'
 )
 rf_model.fit(X_train, y_train)
 
@@ -1193,30 +1208,78 @@ rf_model.fit(X_train, y_train)
 y_pred = rf_model.predict(X_test)
 y_pred_proba = rf_model.predict_proba(X_test)
 
-# Evaluate model
-print("\n Model Performance:")
-print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
-print("\nClassification Report:")
-print(classification_report(y_test, y_pred))
+# ============================================================================
+# MODEL EVALUATION
+# ============================================================================
+
+print("\n## Model Performance\n")
+
+# Accuracy as a formatted statement
+accuracy = accuracy_score(y_test, y_pred)
+display(Markdown(f"**Overall Accuracy:** {accuracy:.3f} ({accuracy*100:.1f}%)"))
+
+# Classification Report as DataFrame
+report_dict = classification_report(y_test, y_pred, output_dict=True)
+report_df = pd.DataFrame(report_dict).transpose()
+
+# Format the dataframe nicely
+report_df = report_df.round(3)
+if 'support' in report_df.columns:
+    report_df['support'] = report_df['support'].astype(int)
+
+# Main classes only
+main_classes_df = report_df.loc[['Dropout', 'Enrolled', 'Graduate']].copy()
+display(Markdown("\n### Performance by Class\n"))
+display(main_classes_df)
+
+# Summary metrics
+summary_df = report_df.loc[['accuracy', 'macro avg', 'weighted avg']].copy()
+display(Markdown("\n### Summary Metrics\n"))
+display(summary_df)
 
 # Confusion Matrix
 plt.figure(figsize=(8, 6))
 cm = confusion_matrix(y_test, y_pred)
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-plt.title('Confusion Matrix')
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=['Dropout', 'Enrolled', 'Graduate'],
+            yticklabels=['Dropout', 'Enrolled', 'Graduate'])
+plt.title('Confusion Matrix - Balanced Model')
 plt.ylabel('True Label')
 plt.xlabel('Predicted Label')
 plt.tight_layout()
 plt.show()
 
-# Feature Importance from Random Forest
+# Class distribution comparison
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+y_test.value_counts().sort_index().plot(kind='bar', ax=axes[0], color='skyblue')
+axes[0].set_title('True Class Distribution (Test Set)')
+axes[0].set_xlabel('Class')
+axes[0].set_ylabel('Count')
+axes[0].tick_params(axis='x', rotation=45)
+
+pd.Series(y_pred).value_counts().sort_index().plot(kind='bar', ax=axes[1], color='lightcoral')
+axes[1].set_title('Predicted Class Distribution')
+axes[1].set_xlabel('Class')
+axes[1].set_ylabel('Count')
+axes[1].tick_params(axis='x', rotation=45)
+
+plt.tight_layout()
+plt.show()
+
+# ============================================================================
+# RANDOM FOREST FEATURE IMPORTANCE
+# ============================================================================
+
+display(Markdown("\n## Random Forest Feature Importance\n"))
+
 feature_importance = pd.DataFrame({
     'feature': X.columns,
     'importance': rf_model.feature_importances_
 }).sort_values('importance', ascending=False)
 
-print("\n Top 15 Most Important Features (Random Forest):")
-print(feature_importance.head(15))
+display(Markdown("\n### Top 15 Most Important Features (Random Forest)\n"))
+display(feature_importance.head(15).round(4))
 
 # Plot feature importance
 plt.figure(figsize=(10, 8))
@@ -1229,22 +1292,49 @@ plt.gca().invert_yaxis()
 plt.tight_layout()
 plt.show()
 
-# LIME Explainer
-print("\n Setting up LIME explainer...")
+# ============================================================================
+# LIME SETUP - Enhanced for Class Imbalance
+# ============================================================================
+
+# Create a custom discretizer that respects class distributions
 explainer = lime.lime_tabular.LimeTabularExplainer(
     training_data=X_train.values,
     feature_names=X.columns.tolist(),
     class_names=[str(c) for c in sorted(y.unique())],
     mode='classification',
-    random_state=42
+    random_state=42,
+    discretize_continuous=True,  # Better for imbalanced data
+    sample_around_instance=True  # More focused local sampling
 )
 
-# Explain a few predictions
-print("\n LIME Explanations for Sample Predictions:")
+# Also create a wrapper that can handle class weights in predictions
+def balanced_predict_proba(X_sample):
+    """Prediction function that applies class weights to probabilities"""
+    probs = rf_model.predict_proba(X_sample)
+    
+    # Optional: Apply class weight adjustment to probabilities
+    # This helps LIME understand the balanced decision boundaries
+    weights = np.array([class_weight_dict[c] for c in sorted(y.unique())])
+    adjusted_probs = probs * weights
+    
+    # Renormalize
+    adjusted_probs = adjusted_probs / adjusted_probs.sum(axis=1, keepdims=True)
+    
+    return adjusted_probs
 
-# Select 3 random test samples
-np.random.seed(42)
-sample_indices = np.random.choice(X_test.index, size=min(3, len(X_test)), replace=False)
+# ============================================================================
+# PART 1: INDIVIDUAL EXAMPLES (One per class for illustration)
+# ============================================================================
+
+display(Markdown("\n## LIME Explanations - Individual Examples\n"))
+display(Markdown("*Showing one representative example from each class*\n"))
+
+# Select one sample from each class
+sample_indices = []
+for class_label in sorted(y.unique()):
+    class_indices = X_test[y_test == class_label].index
+    if len(class_indices) > 0:
+        sample_indices.append(np.random.choice(class_indices, size=1)[0])
 
 for idx, sample_idx in enumerate(sample_indices):
     sample = X_test.loc[sample_idx].values
@@ -1252,36 +1342,308 @@ for idx, sample_idx in enumerate(sample_indices):
     pred_label = rf_model.predict([sample])[0]
     pred_proba = rf_model.predict_proba([sample])[0]
     
-    print(f"\n--- Sample {idx + 1} ---")
-    print(f"True Label: {true_label}")
-    print(f"Predicted Label: {pred_label}")
-    print(f"Prediction Probability: {pred_proba}")
+    display(Markdown(f"\n### Sample {idx + 1}: {true_label}\n"))
     
-    # Generate LIME explanation
+    sample_info = pd.DataFrame({
+        'Metric': ['True Label', 'Predicted Label', 'Dropout Prob', 'Enrolled Prob', 'Graduate Prob'],
+        'Value': [true_label, pred_label, f"{pred_proba[0]:.3f}", f"{pred_proba[1]:.3f}", f"{pred_proba[2]:.3f}"]
+    })
+    display(sample_info)
+    
+    # Generate LIME explanation with more samples for better stability
     exp = explainer.explain_instance(
         sample,
-        rf_model.predict_proba,
-        num_features=10
+        rf_model.predict_proba,  # Use standard predictions for individual examples
+        num_features=10,
+        num_samples=5000  # Increased from default 5000 for more stable explanations
     )
     
-    # Show explanation
-    print("\nTop 10 features influencing this prediction:")
+    # Show explanation as table
+    explanation_data = []
     for feature, weight in exp.as_list():
-        print(f"  {feature}: {weight:.3f}")
+        explanation_data.append({'Feature': feature, 'Weight': f"{weight:.3f}"})
+    
+    explanation_df = pd.DataFrame(explanation_data)
+    display(Markdown("\n**Top 10 features influencing this prediction:**\n"))
+    display(explanation_df)
     
     # Plot explanation
     fig = exp.as_pyplot_figure()
     plt.tight_layout()
     plt.show()
 
-# Global feature importance from LIME (sample-based)
-print("\n Computing global LIME feature importance (sampling 100 instances)...")
+# ============================================================================
+# PART 2: CLASS-WISE LIME ANALYSIS (Multiple samples per class)
+# ============================================================================
 
-# Sample instances for global importance
+display(Markdown("\n## LIME Analysis - Class-Wise Aggregation\n"))
+display(Markdown("*Analyzing multiple samples per class to identify robust patterns*\n"))
+
+# Number of samples to analyze per class
+samples_per_class = 100  # Increased from 20 for more robust analysis
+
+# For minority classes, we might want to analyze more
+class_sample_sizes = {}
+for class_label in sorted(y.unique()):
+    class_count = len(X_test[y_test == class_label])
+    # Use up to 30 samples, or all available if less
+    class_sample_sizes[class_label] = min(samples_per_class, class_count)
+    
+print(f"\nSample sizes per class: {class_sample_sizes}")
+
+# Store LIME weights for each class separately
+class_lime_weights = {
+    'Dropout': {feature: [] for feature in X.columns},
+    'Enrolled': {feature: [] for feature in X.columns},
+    'Graduate': {feature: [] for feature in X.columns}
+}
+
+# Track prediction accuracy
+prediction_tracking = {
+    'Dropout': {'correct': 0, 'incorrect': 0},
+    'Enrolled': {'correct': 0, 'incorrect': 0},
+    'Graduate': {'correct': 0, 'incorrect': 0}
+}
+
+print(f"\nAnalyzing {samples_per_class} samples per class...")
+
+# Process each class
+for class_label in sorted(y.unique()):
+    print(f"\nProcessing class: {class_label}")
+    
+    # Get indices for this class
+    class_indices = X_test[y_test == class_label].index
+    
+    # Sample
+    n_samples = class_sample_sizes[class_label]
+    sample_indices_class = np.random.choice(class_indices, size=n_samples, replace=False)
+    
+    # Generate LIME explanations for each sample
+    for idx, sample_idx in enumerate(sample_indices_class):
+        sample = X_test.loc[sample_idx].values
+        true_label = y_test.loc[sample_idx]
+        pred_label = rf_model.predict([sample])[0]
+        
+        # Track prediction accuracy
+        if pred_label == true_label:
+            prediction_tracking[class_label]['correct'] += 1
+        else:
+            prediction_tracking[class_label]['incorrect'] += 1
+        
+        # Generate LIME explanation with increased samples
+        exp = explainer.explain_instance(
+            sample,
+            rf_model.predict_proba,
+            num_features=len(X.columns),
+            num_samples=5000  # More samples = more stable explanations
+        )
+        
+        # Extract weights for this class
+        for feature, weight in exp.as_list():
+            feature_name = feature.split('<=')[0].split('>')[0].split('=')[0].strip()
+            
+            for col in X.columns:
+                if col in feature_name or feature_name in col:
+                    class_lime_weights[class_label][col].append(abs(weight))
+                    break
+        
+        if (idx + 1) % 5 == 0:
+            print(f"  Processed {idx + 1}/{n_samples} samples")
+
+# Compute class-wise average importance
+print("\n" + "="*80)
+print("COMPUTING CLASS-WISE FEATURE IMPORTANCE")
+print("="*80)
+
+class_importance_dfs = {}
+
+for class_label in sorted(y.unique()):
+    importance_list = []
+    
+    for feature in X.columns:
+        weights = class_lime_weights[class_label][feature]
+        avg_importance = np.mean(weights) if len(weights) > 0 else 0
+        std_importance = np.std(weights) if len(weights) > 0 else 0
+        n_appearances = len(weights)
+        
+        importance_list.append({
+            'feature': feature,
+            'mean_importance': avg_importance,
+            'std_importance': std_importance,
+            'appearances': n_appearances
+        })
+    
+    class_df = pd.DataFrame(importance_list).sort_values('mean_importance', ascending=False)
+    class_importance_dfs[class_label] = class_df
+    
+    display(Markdown(f"\n### Top 15 Features for Predicting: **{class_label}**\n"))
+    display(Markdown(f"*Based on {n_samples} samples*\n"))
+    
+    top_15 = class_df.head(15).copy()
+    top_15['mean_importance'] = top_15['mean_importance'].round(4)
+    top_15['std_importance'] = top_15['std_importance'].round(4)
+    display(top_15)
+
+# Prediction accuracy summary
+display(Markdown("\n### Prediction Accuracy in LIME Sample\n"))
+
+accuracy_data = []
+for class_label, tracking in prediction_tracking.items():
+    total = tracking['correct'] + tracking['incorrect']
+    accuracy_data.append({
+        'Class': class_label,
+        'Correct': tracking['correct'],
+        'Incorrect': tracking['incorrect'],
+        'Total': total,
+        'Accuracy': f"{tracking['correct'] / total:.2%}" if total > 0 else "N/A"
+    })
+
+accuracy_df = pd.DataFrame(accuracy_data)
+display(accuracy_df)
+
+# ============================================================================
+# DETAILED MISCLASSIFICATION ANALYSIS
+# ============================================================================
+
+display(Markdown("\n### Where Does the Model Struggle?\n"))
+
+# Analyze confusion patterns in LIME sample
+confusion_patterns = {
+    'Dropout': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}},
+    'Enrolled': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}},
+    'Graduate': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}}
+}
+
+# Recount predictions with details
+for class_label in sorted(y.unique()):
+    class_indices = X_test[y_test == class_label].index
+    n_samples = class_sample_sizes[class_label]
+    sample_indices_class = np.random.choice(class_indices, size=n_samples, replace=False)
+    
+    for sample_idx in sample_indices_class:
+        sample = X_test.loc[sample_idx].values
+        pred_label = rf_model.predict([sample])[0]
+        confusion_patterns[class_label]['predicted_as'][pred_label] += 1
+
+# Create confusion matrix for LIME sample
+confusion_display_data = []
+for true_class in sorted(y.unique()):
+    row = {'True Class': true_class}
+    for pred_class in sorted(y.unique()):
+        count = confusion_patterns[true_class]['predicted_as'][pred_class]
+        total = sum(confusion_patterns[true_class]['predicted_as'].values())
+        row[f'Pred: {pred_class}'] = f"{count} ({count/total*100:.0f}%)"
+    confusion_display_data.append(row)
+
+confusion_display_df = pd.DataFrame(confusion_display_data)
+display(Markdown("\n**Confusion patterns in LIME sample:**\n"))
+display(confusion_display_df)
+
+# Identify problematic patterns
+display(Markdown("\n**Key Issues:**\n"))
+
+for true_class in sorted(y.unique()):
+    total = sum(confusion_patterns[true_class]['predicted_as'].values())
+    correct = confusion_patterns[true_class]['predicted_as'][true_class]
+    
+    if correct / total < 0.7:  # Less than 70% accuracy
+        main_confusion = max(
+            [(pred, count) for pred, count in confusion_patterns[true_class]['predicted_as'].items() if pred != true_class],
+            key=lambda x: x[1]
+        )
+        display(Markdown(
+            f"- **{true_class}** students are often misclassified as **{main_confusion[0]}** "
+            f"({main_confusion[1]}/{total} cases, {main_confusion[1]/total*100:.0f}%)"
+        ))
+
+
+# ============================================================================
+# COMPARISON ACROSS CLASSES
+# ============================================================================
+
+display(Markdown("\n## Feature Importance Comparison Across Classes\n"))
+
+# Get top features from all classes
+all_top_features = set()
+for class_label in sorted(y.unique()):
+    all_top_features.update(class_importance_dfs[class_label].head(10)['feature'].tolist())
+
+# Create comparison dataframe
+comparison_data = []
+for feature in all_top_features:
+    row = {'Feature': feature}
+    for class_label in sorted(y.unique()):
+        class_df = class_importance_dfs[class_label]
+        importance = class_df[class_df['feature'] == feature]['mean_importance'].values
+        row[class_label] = importance[0] if len(importance) > 0 else 0
+    comparison_data.append(row)
+
+comparison_df = pd.DataFrame(comparison_data)
+
+# Sort by average importance
+comparison_df['avg'] = comparison_df[sorted(y.unique())].mean(axis=1)
+comparison_df = comparison_df.sort_values('avg', ascending=False).drop('avg', axis=1)
+
+display(Markdown("\n*Shows how the same features have different importance for each outcome*\n"))
+comparison_display = comparison_df.copy()
+for col in sorted(y.unique()):
+    comparison_display[col] = comparison_display[col].round(4)
+display(comparison_display.head(15))
+
+# Grouped bar chart
+fig, ax = plt.subplots(figsize=(14, 10))
+
+plot_features = comparison_df.head(15)['Feature'].tolist()
+plot_data = comparison_df[comparison_df['Feature'].isin(plot_features)].set_index('Feature')
+
+x = np.arange(len(plot_features))
+width = 0.25
+colors = ['#e74c3c', '#f39c12', '#27ae60']
+
+for idx, class_label in enumerate(sorted(y.unique())):
+    values = [plot_data.loc[feat, class_label] for feat in plot_features]
+    offset = (idx - 1) * width
+    ax.barh(x + offset, values, width, label=class_label, alpha=0.8, color=colors[idx])
+
+ax.set_yticks(x)
+ax.set_yticklabels(plot_features)
+ax.set_xlabel('LIME Importance (Mean Absolute Weight)', fontsize=12)
+ax.set_title('Feature Importance by Class (LIME Analysis)', fontsize=14, fontweight='bold')
+ax.legend(title='Target Class', fontsize=10)
+ax.invert_yaxis()
+plt.tight_layout()
+plt.show()
+
+# Heatmap
+fig, ax = plt.subplots(figsize=(10, 12))
+
+heatmap_features = comparison_df.head(20)['Feature'].tolist()
+heatmap_data = comparison_df[comparison_df['Feature'].isin(heatmap_features)].set_index('Feature')
+heatmap_data_norm = heatmap_data.div(heatmap_data.max(axis=1), axis=0)
+
+sns.heatmap(heatmap_data_norm, annot=heatmap_data.round(3), fmt='', cmap='YlOrRd', 
+            cbar_kws={'label': 'Normalized Importance'}, linewidths=0.5)
+
+ax.set_title('Feature Importance Heatmap by Class\n(Normalized by row)', 
+             fontsize=14, fontweight='bold')
+ax.set_xlabel('Target Class', fontsize=12)
+ax.set_ylabel('Feature', fontsize=12)
+plt.tight_layout()
+plt.show()
+
+# ============================================================================
+# PART 3: GLOBAL LIME IMPORTANCE (Optional - overall patterns)
+# ============================================================================
+
+display(Markdown("\n## Global LIME Feature Importance\n"))
+display(Markdown("*Averaged across all classes and 100 random samples*\n"))
+
+print("Computing global LIME feature importance (sampling 100 instances)...")
+
 sample_size = min(100, len(X_test))
 sample_indices_global = np.random.choice(len(X_test), size=sample_size, replace=False)
 
-lime_weights = {feature: [] for feature in X.columns}
+lime_weights_global = {feature: [] for feature in X.columns}
 
 for i in sample_indices_global:
     exp = explainer.explain_instance(
@@ -1291,28 +1653,31 @@ for i in sample_indices_global:
     )
     
     for feature, weight in exp.as_list():
-        # Extract feature name (LIME returns feature with value range)
         feature_name = feature.split('<=')[0].split('>')[0].split('=')[0].strip()
-        # Find matching column (partial match)
         for col in X.columns:
             if col in feature_name or feature_name in col:
-                lime_weights[col].append(abs(weight))
+                lime_weights_global[col].append(abs(weight))
                 break
 
-# Compute average absolute weight for each feature
-lime_importance = pd.DataFrame({
-    'feature': list(lime_weights.keys()),
-    'lime_importance': [np.mean(weights) if weights else 0 for weights in lime_weights.values()]
+# Compute average
+lime_importance_global = pd.DataFrame({
+    'feature': list(lime_weights_global.keys()),
+    'lime_importance': [np.mean(weights) if weights else 0 for weights in lime_weights_global.values()]
 }).sort_values('lime_importance', ascending=False)
 
-print("\n Top 15 Most Important Features (LIME Global):")
-print(lime_importance.head(15))
+display(Markdown("\n### Top 15 Most Important Features (LIME Global)\n"))
+display(lime_importance_global.head(15).round(4))
 
-# Compare Random Forest vs LIME importance
+# ============================================================================
+# FINAL COMPARISON: RF vs LIME (Global)
+# ============================================================================
+
+display(Markdown("\n## Random Forest vs LIME Importance Comparison\n"))
+
 plt.figure(figsize=(12, 8))
-comparison = feature_importance.merge(lime_importance, on='feature', how='left')
-comparison['lime_importance'] = comparison['lime_importance'].fillna(0)
-top_features = comparison.nlargest(15, 'importance')
+comparison_rf_lime = feature_importance.merge(lime_importance_global, on='feature', how='left')
+comparison_rf_lime['lime_importance'] = comparison_rf_lime['lime_importance'].fillna(0)
+top_features = comparison_rf_lime.nlargest(15, 'importance')
 
 x = np.arange(len(top_features))
 width = 0.35
@@ -1322,11 +1687,48 @@ plt.barh(x + width/2, top_features['lime_importance'], width, label='LIME', alph
 
 plt.yticks(x, top_features['feature'])
 plt.xlabel('Importance Score')
-plt.title('Feature Importance Comparison: Random Forest vs LIME')
+plt.title('Feature Importance Comparison: Random Forest vs LIME (Global)')
 plt.legend()
 plt.gca().invert_yaxis()
 plt.tight_layout()
 plt.show()
+
+# Final comparison table
+display(Markdown("\n### Feature Importance Comparison Table\n"))
+comparison_table = top_features[['feature', 'importance', 'lime_importance']].copy()
+comparison_table.columns = ['Feature', 'RF Importance', 'LIME Importance']
+comparison_table = comparison_table.round(4)
+display(comparison_table)
+
+# ============================================================================
+# KEY INSIGHTS
+# ============================================================================
+
+display(Markdown("\n## Key Insights Summary\n"))
+
+insights = []
+for class_label in sorted(y.unique()):
+    top_3_features = class_importance_dfs[class_label].head(3)['feature'].tolist()
+    insights.append(f"**{class_label}**: Top predictors are {', '.join(top_3_features)}")
+
+for insight in insights:
+    display(Markdown(f"- {insight}"))
+
+display(Markdown("\n### Class-Specific Important Features:\n"))
+
+for class_label in sorted(y.unique()):
+    class_top = set(class_importance_dfs[class_label].head(10)['feature'])
+    other_classes_top = set()
+    for other_label in sorted(y.unique()):
+        if other_label != class_label:
+            other_classes_top.update(class_importance_dfs[other_label].head(10)['feature'])
+    
+    unique_features = class_top - other_classes_top
+    
+    if unique_features:
+        display(Markdown(f"**{class_label}** unique indicators: {', '.join(list(unique_features)[:5])}"))
+    else:
+        display(Markdown(f"**{class_label}**: Shares top features with other classes"))
 ```
 
 ## Conclusion and Next Steps
