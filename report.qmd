@@ -715,6 +715,16 @@ print(f"Significant variables (p < 0.05): {anova_df['significant'].sum()}")
 anova_df.head(15)
 ```
 
+When evaluating feature importance, it's crucial to consider both statistical significance (p-value) and practical significance (effect size). With large sample sizes, even trivial differences can achieve statistical significance, making effect size interpretation essential.
+
+**Effect Size (η²)** measures the proportion of variance in student outcomes explained by each feature, with typical interpretations:
+
+- **η² = 0.01** (1%): Small effect
+- **η² = 0.06** (6%): Medium effect  
+- **η² = 0.14** (14%): Large effect
+
+For example, marital status has a highly significant p-value (2.66e-09) but explains less than 1% of variance (η² = 0.009), indicating negligible practical importance. In contrast, "Curricular units 2nd sem (grade)" explains 34% of variance (η² = 0.339), representing a genuinely large and meaningful effect. When identifying important predictors, prioritize features with larger effect sizes rather than relying solely on p-values.
+
 ## 4.7 - Top Predictive Variables
 
 ### 4.7.1 - Acadamic Performance Indicators
@@ -1102,10 +1112,10 @@ plt.show()
 
 Figure 15 shows the Mother’s qualification across the three target groups. Enrolled and  Graduate distributions are identical. The three groups display nearly identical distributions with all median at approximately 19. However, the Dropout group shows a slightly wider interquartile range, extending lower compared to the two other groups. They reach similar limits and there are no outliers.
 
-While the three distributions are very similar, the dropout category shows slightly fewer students with mothers who have very  low qualifications, but this is minimal.  The overall similarity indicates that a mother's qualification has little influence on whether students complete their studies.
+While the three distributions are very similar, the dropout category shows slightly fewer students with mothers who have very  low qualifications, but this is minimal.  The overall similarity indicates that a mother's qualification has little influence on whether students complete their studies. This is also supported by the small effect size.
 
 
-4.7.2 - Key Findings for Demographic & Socioeconomic Background 
+### 4.7.4 - Key Findings for Demographic & Socioeconomic Background 
 
 Younger students are more likely to graduate while older students face higher dropout risk. The dropout group also shows the widest age variation. This suggests that older students may face competing life responsibilities that interfere with their studies.
 Female students graduate at slightly higher rates, making up a larger proportion of both enrolled and graduate groups compared to dropouts (50-50 split).
@@ -1141,31 +1151,20 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from IPython.display import display, Markdown
 
-# Use the dataframe after feature selection (columns already removed)
-print(f"Starting with {df.shape[1]} features (after feature selection)")
-
 # Create working dataframe
 df_model = df.copy()
 
 # Remove rows with missing values
-print(f"Dataset shape before cleaning: {df_model.shape}")
 df_model = df_model.dropna()
-print(f"Dataset shape after removing missing values: {df_model.shape}")
-
-print(f"\nTarget distribution:")
-print(df_model['Target'].value_counts())
 
 # Separate features and target
 X = df_model.drop('Target', axis=1)
 y = df_model['Target']
 
-print(f"\nUsing {X.shape[1]} features for classification")
-
 # Encode categorical variables
 categorical_cols = X.select_dtypes(include=['object', 'category']).columns
 label_encoders = {}
 
-print(f"\nEncoding {len(categorical_cols)} categorical variables...")
 for col in categorical_cols:
     le = LabelEncoder()
     X[col] = le.fit_transform(X[col].astype(str))
@@ -1176,9 +1175,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-print(f"\nTraining set size: {X_train.shape[0]}")
-print(f"Test set size: {X_test.shape[0]}")
-
 # Compute class weights to handle imbalance
 class_weights = compute_class_weight(
     class_weight='balanced',
@@ -1187,12 +1183,7 @@ class_weights = compute_class_weight(
 )
 class_weight_dict = dict(zip(np.unique(y_train), class_weights))
 
-print("\nClass weights (to handle imbalance):")
-for class_label, weight in class_weight_dict.items():
-    print(f"  {class_label}: {weight:.3f}")
-
 # Train Random Forest model with class weights
-print("\nTraining Random Forest Classifier with balanced class weights...")
 rf_model = RandomForestClassifier(
     n_estimators=100,  
     max_depth=10,
@@ -1212,7 +1203,7 @@ y_pred_proba = rf_model.predict_proba(X_test)
 # MODEL EVALUATION
 # ============================================================================
 
-print("\n## Model Performance\n")
+display(Markdown("\n## Model Performance\n"))
 
 # Accuracy as a formatted statement
 accuracy = accuracy_score(y_test, y_pred)
@@ -1237,18 +1228,6 @@ summary_df = report_df.loc[['accuracy', 'macro avg', 'weighted avg']].copy()
 display(Markdown("\n### Summary Metrics\n"))
 display(summary_df)
 
-# Confusion Matrix
-plt.figure(figsize=(8, 6))
-cm = confusion_matrix(y_test, y_pred)
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
-            xticklabels=['Dropout', 'Enrolled', 'Graduate'],
-            yticklabels=['Dropout', 'Enrolled', 'Graduate'])
-plt.title('Confusion Matrix - Balanced Model')
-plt.ylabel('True Label')
-plt.xlabel('Predicted Label')
-plt.tight_layout()
-plt.show()
-
 # Class distribution comparison
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
@@ -1267,11 +1246,27 @@ axes[1].tick_params(axis='x', rotation=45)
 plt.tight_layout()
 plt.show()
 
+display(Markdown("""
+The Random Forest classifier achieved an overall accuracy of 67.3%, correctly predicting student outcomes for approximately two-thirds of cases. However, accuracy alone doesn't tell the full story—we need to examine how well the model performs for each class.
+
+**Performance varies significantly across the three outcomes.** The model performs best at identifying Dropout and Graduate students, with F1-scores of 0.707 and 0.773 respectively. However, it struggles with the Enrolled category, achieving only an F1-score of 0.392. This means the model has difficulty distinguishing currently enrolled students from those who will eventually dropout or graduate.
+
+**The confusion matrix reveals specific prediction patterns.** The model correctly identifies 185 out of 284 dropout cases (65.1% recall) and 338 out of 442 graduates (76.5% recall). The challenge with Enrolled students is clear: only 73 out of 159 (45.9%) are correctly classified, with many being misclassified as either future graduates (53 cases) or potential dropouts (33 cases). This reflects the inherent difficulty in predicting outcomes for students still in progress—their final status remains uncertain until they either complete or leave their program.
+
+**Handling class imbalance.** With fewer Enrolled students in the dataset (159 vs 284 Dropouts and 442 Graduates), the model has less training data to learn patterns for this group. To address this imbalance, we used the `class_weight='balanced'` parameter in the Random Forest model, which automatically adjusts weights inversely proportional to class frequencies. This ensures the model pays equal attention to all three classes during training rather than being biased toward the majority class. While this helps mitigate the imbalance, the fundamental challenge remains: enrolled students represent an "in-between" state that's harder to characterize than the definitive outcomes of dropout or graduation.
+
+**Predicted distribution.** The last figure shows the predicted distribution of classes after applying the model. Despite the class imbalance in the original data, the model with balanced class weights manages to capture the real distribution reasonably well, demonstrating that the balancing strategy is effective.
+"""))
+
 # ============================================================================
 # RANDOM FOREST FEATURE IMPORTANCE
 # ============================================================================
 
 display(Markdown("\n## Random Forest Feature Importance\n"))
+
+display(Markdown("""
+Random Forest models calculate feature importance by measuring how much each feature contributes to reducing prediction error across all decision trees in the forest. Features that consistently lead to better splits and more accurate predictions receive higher importance scores. Unlike the ANOVA analysis which examines relationships between individual features and outcomes, Random Forest importance reflects each feature's predictive value within the context of all other features—capturing complex interactions and non-linear relationships that make features useful for classification.
+"""))
 
 feature_importance = pd.DataFrame({
     'feature': X.columns,
@@ -1279,7 +1274,6 @@ feature_importance = pd.DataFrame({
 }).sort_values('importance', ascending=False)
 
 display(Markdown("\n### Top 15 Most Important Features (Random Forest)\n"))
-display(feature_importance.head(15).round(4))
 
 # Plot feature importance
 plt.figure(figsize=(10, 8))
@@ -1292,9 +1286,9 @@ plt.gca().invert_yaxis()
 plt.tight_layout()
 plt.show()
 
-# ============================================================================
-# LIME SETUP - Enhanced for Class Imbalance
-# ============================================================================
+display(Markdown("""
+Explain how these are different from ANOVA, explain a bit why could these be important
+"""))
 
 # Create a custom discretizer that respects class distributions
 explainer = lime.lime_tabular.LimeTabularExplainer(
@@ -1328,6 +1322,10 @@ def balanced_predict_proba(X_sample):
 
 display(Markdown("\n## LIME Explanations - Individual Examples\n"))
 display(Markdown("*Showing one representative example from each class*\n"))
+
+display(Markdown("""
+LIME (Local Interpretable Model-agnostic Explanations) helps us understand why the model made a specific prediction for an individual student. Unlike feature importance which shows what matters globally across all predictions, LIME reveals which features drove the decision for this particular case.
+"""))
 
 # Select one sample from each class
 sample_indices = []
@@ -1372,12 +1370,14 @@ for idx, sample_idx in enumerate(sample_indices):
     plt.tight_layout()
     plt.show()
 
+display(Markdown("""The table shows the top 10 features that most influenced this prediction. Positive weights push the prediction toward the predicted class, while negative weights push against it. The magnitude indicates the strength of influence. For example, if a student has a low 2nd semester grade (feature 0), this strongly increases their dropout probability, while being older than 25 (feature 2, negative weight) actually decreases dropout risk for this individual—even though the model still predicts dropout overall due to the combined effect of all features. CONTINUE HERE
+"""))
 # ============================================================================
 # PART 2: CLASS-WISE LIME ANALYSIS (Multiple samples per class)
 # ============================================================================
 
 display(Markdown("\n## LIME Analysis - Class-Wise Aggregation\n"))
-display(Markdown("*Analyzing multiple samples per class to identify robust patterns*\n"))
+display(Markdown("*Analyzing 100 samples per class to identify robust patterns*\n"))
 
 # Number of samples to analyze per class
 samples_per_class = 100  # Increased from 20 for more robust analysis
@@ -1388,8 +1388,6 @@ for class_label in sorted(y.unique()):
     class_count = len(X_test[y_test == class_label])
     # Use up to 30 samples, or all available if less
     class_sample_sizes[class_label] = min(samples_per_class, class_count)
-    
-print(f"\nSample sizes per class: {class_sample_sizes}")
 
 # Store LIME weights for each class separately
 class_lime_weights = {
@@ -1405,11 +1403,8 @@ prediction_tracking = {
     'Graduate': {'correct': 0, 'incorrect': 0}
 }
 
-print(f"\nAnalyzing {samples_per_class} samples per class...")
-
 # Process each class
 for class_label in sorted(y.unique()):
-    print(f"\nProcessing class: {class_label}")
     
     # Get indices for this class
     class_indices = X_test[y_test == class_label].index
@@ -1447,13 +1442,6 @@ for class_label in sorted(y.unique()):
                     class_lime_weights[class_label][col].append(abs(weight))
                     break
         
-        if (idx + 1) % 5 == 0:
-            print(f"  Processed {idx + 1}/{n_samples} samples")
-
-# Compute class-wise average importance
-print("\n" + "="*80)
-print("COMPUTING CLASS-WISE FEATURE IMPORTANCE")
-print("="*80)
 
 class_importance_dfs = {}
 
@@ -1484,6 +1472,7 @@ for class_label in sorted(y.unique()):
     top_15['std_importance'] = top_15['std_importance'].round(4)
     display(top_15)
 
+display(Markdown(""" Here Explain the difference between the most important features of the different classes"""))
 # Prediction accuracy summary
 display(Markdown("\n### Prediction Accuracy in LIME Sample\n"))
 
@@ -1556,7 +1545,7 @@ for true_class in sorted(y.unique()):
             f"({main_confusion[1]}/{total} cases, {main_confusion[1]/total*100:.0f}%)"
         ))
 
-
+display(Markdown("""Due to the class imbalance the model can struggle, since most of the cases people are Graduated, there is a bias towards that group in the data, hence, it is more likelt to predict that for cases when it is hesitant."""))
 # ============================================================================
 # COMPARISON ACROSS CLASSES
 # ============================================================================
@@ -1584,12 +1573,6 @@ comparison_df = pd.DataFrame(comparison_data)
 comparison_df['avg'] = comparison_df[sorted(y.unique())].mean(axis=1)
 comparison_df = comparison_df.sort_values('avg', ascending=False).drop('avg', axis=1)
 
-display(Markdown("\n*Shows how the same features have different importance for each outcome*\n"))
-comparison_display = comparison_df.copy()
-for col in sorted(y.unique()):
-    comparison_display[col] = comparison_display[col].round(4)
-display(comparison_display.head(15))
-
 # Grouped bar chart
 fig, ax = plt.subplots(figsize=(14, 10))
 
@@ -1598,7 +1581,7 @@ plot_data = comparison_df[comparison_df['Feature'].isin(plot_features)].set_inde
 
 x = np.arange(len(plot_features))
 width = 0.25
-colors = ['#e74c3c', '#f39c12', '#27ae60']
+colors = ['#ffb3c1', '#ffd166', '#89b0d9']
 
 for idx, class_label in enumerate(sorted(y.unique())):
     values = [plot_data.loc[feat, class_label] for feat in plot_features]
@@ -1614,31 +1597,13 @@ ax.invert_yaxis()
 plt.tight_layout()
 plt.show()
 
-# Heatmap
-fig, ax = plt.subplots(figsize=(10, 12))
-
-heatmap_features = comparison_df.head(20)['Feature'].tolist()
-heatmap_data = comparison_df[comparison_df['Feature'].isin(heatmap_features)].set_index('Feature')
-heatmap_data_norm = heatmap_data.div(heatmap_data.max(axis=1), axis=0)
-
-sns.heatmap(heatmap_data_norm, annot=heatmap_data.round(3), fmt='', cmap='YlOrRd', 
-            cbar_kws={'label': 'Normalized Importance'}, linewidths=0.5)
-
-ax.set_title('Feature Importance Heatmap by Class\n(Normalized by row)', 
-             fontsize=14, fontweight='bold')
-ax.set_xlabel('Target Class', fontsize=12)
-ax.set_ylabel('Feature', fontsize=12)
-plt.tight_layout()
-plt.show()
-
+display(Markdown("""Again talk about the different features."""))
 # ============================================================================
 # PART 3: GLOBAL LIME IMPORTANCE (Optional - overall patterns)
 # ============================================================================
 
 display(Markdown("\n## Global LIME Feature Importance\n"))
 display(Markdown("*Averaged across all classes and 100 random samples*\n"))
-
-print("Computing global LIME feature importance (sampling 100 instances)...")
 
 sample_size = min(100, len(X_test))
 sample_indices_global = np.random.choice(len(X_test), size=sample_size, replace=False)
@@ -1668,6 +1633,8 @@ lime_importance_global = pd.DataFrame({
 display(Markdown("\n### Top 15 Most Important Features (LIME Global)\n"))
 display(lime_importance_global.head(15).round(4))
 
+display(Markdown("""Again talk about the different features but now globally."""))
+
 # ============================================================================
 # FINAL COMPARISON: RF vs LIME (Global)
 # ============================================================================
@@ -1693,13 +1660,7 @@ plt.gca().invert_yaxis()
 plt.tight_layout()
 plt.show()
 
-# Final comparison table
-display(Markdown("\n### Feature Importance Comparison Table\n"))
-comparison_table = top_features[['feature', 'importance', 'lime_importance']].copy()
-comparison_table.columns = ['Feature', 'RF Importance', 'LIME Importance']
-comparison_table = comparison_table.round(4)
-display(comparison_table)
-
+display(Markdown("""Compare also with ANOVA."""))
 # ============================================================================
 # KEY INSIGHTS
 # ============================================================================
