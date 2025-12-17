@@ -1203,7 +1203,7 @@ y_pred_proba = rf_model.predict_proba(X_test)
 # MODEL EVALUATION
 # ============================================================================
 
-display(Markdown("\n## Model Performance\n"))
+display(Markdown("\n## 5.1-Model Performance\n"))
 
 # Accuracy as a formatted statement
 accuracy = accuracy_score(y_test, y_pred)
@@ -1225,7 +1225,7 @@ display(main_classes_df)
 
 # Summary metrics
 summary_df = report_df.loc[['accuracy', 'macro avg', 'weighted avg']].copy()
-display(Markdown("\n### Summary Metrics\n"))
+display(Markdown("\n### Global Performance\n"))
 display(summary_df)
 
 # Class distribution comparison
@@ -1262,7 +1262,7 @@ The Random Forest classifier achieved an overall accuracy of 67.3%, correctly pr
 # RANDOM FOREST FEATURE IMPORTANCE
 # ============================================================================
 
-display(Markdown("\n## Random Forest Feature Importance\n"))
+display(Markdown("\n## 5.2-Random Forest Feature Importance\n"))
 
 display(Markdown("""
 Random Forest models calculate feature importance by measuring how much each feature contributes to reducing prediction error across all decision trees in the forest. Features that consistently lead to better splits and more accurate predictions receive higher importance scores. Unlike the ANOVA analysis which examines relationships between individual features and outcomes, Random Forest importance reflects each feature's predictive value within the context of all other features—capturing complex interactions and non-linear relationships that make features useful for classification.
@@ -1273,7 +1273,7 @@ feature_importance = pd.DataFrame({
     'importance': rf_model.feature_importances_
 }).sort_values('importance', ascending=False)
 
-display(Markdown("\n### Top 15 Most Important Features (Random Forest)\n"))
+display(Markdown("\n### 5.2.1-Top 15 Most Important Features (Random Forest)\n"))
 
 # Plot feature importance
 plt.figure(figsize=(10, 8))
@@ -1320,7 +1320,7 @@ def balanced_predict_proba(X_sample):
 # PART 1: INDIVIDUAL EXAMPLES (One per class for illustration)
 # ============================================================================
 
-display(Markdown("\n## LIME Explanations - Individual Examples\n"))
+display(Markdown("\n## 5.3-LIME Explanations - Individual Examples\n"))
 display(Markdown("*Showing one representative example from each class*\n"))
 
 display(Markdown("""
@@ -1342,7 +1342,7 @@ class_interpretations = {
 **Interpretation:** This student was correctly identified as at risk of dropping out. The dominant factor is their poor academic performance, with a second semester grade of 10.78 or below strongly pushing toward dropout (large negative weight). Additionally, lacking scholarship support increases dropout risk. Protective factors like not being in debt, younger age (≤19), and decent first semester grades (≤11) provide some counterbalance, but are insufficient to overcome the poor second semester performance. This highlights how academic struggles, especially in later semesters, are critical indicators of dropout risk.
 """,
     'Enrolled': """
-**Interpretation:** This enrolled student presents a highly mixed profile that makes prediction challenging. Poor second semester grades (≤10.78) strongly push toward dropout, while positive factors like having no scholarship (paradoxically protective here), not being in debt, low unemployment rate, and moderate academic performance in the first semester push toward remaining enrolled or graduating. The model shows significant uncertainty, with multiple features pulling in different directions. This reflects the inherent difficulty in predicting outcomes for students still in progress—they're in a transitional state where their trajectory could go either way.
+**Interpretation:** This enrolled student presents a highly mixed profile that makes prediction challenging. Poor second semester grades (≤10.78) strongly push toward dropout, while positive factors like having no scholarship (paradoxically protective here), not being in debt, low unemployment rate, and moderate academic performance in the first semester push toward remaining enrolled or graduating. The model shows significant uncertainty, with multiple features pulling in different directions. This reflects the inherent difficulty in predicting outcomes for students still in progress, they're in a transitional state where their trajectory could go either way.
 """,
     'Graduate': """
 **Interpretation:** This student shows mixed but ultimately positive indicators of academic success. While poor second semester grades (≤10.78) push against graduation, several protective factors dominate: having no scholarship, not being in debt, low unemployment rate, being in a traditional age range (20-25), and having moderate previous qualifications all strongly predict graduation. The combination of financial stability (no debt) and adequate academic preparation outweighs the concerning second semester performance, allowing the model to confidently predict graduation. This demonstrates that graduation is driven by multiple factors beyond just grades alone.
@@ -1396,8 +1396,182 @@ for idx, sample_idx in enumerate(sample_indices):
 # PART 2: CLASS-WISE LIME ANALYSIS (Multiple samples per class)
 # ============================================================================
 
-display(Markdown("\n## LIME Analysis - Class-Wise Aggregation\n"))
-display(Markdown("*Analyzing 100 samples per class to identify robust patterns*\n"))
+# ============================================================================
+# DETAILED MISCLASSIFICATION ANALYSIS
+# ============================================================================
+# ============================================================================
+# COMPARISON ACROSS CLASSES
+# ============================================================================
+
+# ============================================================================
+# PART 3: GLOBAL LIME IMPORTANCE (Optional - overall patterns)
+# ============================================================================
+
+display(Markdown("\n## 5.6-Global LIME Feature Importance\n"))
+
+sample_size = len(X_test)
+sample_indices_global = np.random.choice(len(X_test), size=sample_size, replace=False)
+
+lime_weights_global = {feature: [] for feature in X.columns}
+
+for i in sample_indices_global:
+    exp = explainer.explain_instance(
+        X_test.iloc[i].values,
+        rf_model.predict_proba,
+        num_features=len(X.columns)
+    )
+    
+    for feature, weight in exp.as_list():
+        feature_name = feature.split('<=')[0].split('>')[0].split('=')[0].strip()
+        for col in X.columns:
+            if col in feature_name or feature_name in col:
+                lime_weights_global[col].append(abs(weight))
+                break
+
+# Compute average
+lime_importance_global = pd.DataFrame({
+    'feature': list(lime_weights_global.keys()),
+    'lime_importance': [np.mean(weights) if weights else 0 for weights in lime_weights_global.values()]
+}).sort_values('lime_importance', ascending=False)
+
+display(Markdown("\n### Top 15 Most Important Features (LIME Global)\n"))
+display(lime_importance_global.head(15).round(4))
+
+display(Markdown("""
+**Global LIME Feature Importance:** When aggregating LIME explanations across all three classes (Dropout, Enrolled, and Graduate), we obtain a global view of which features most consistently influence the model's predictions regardless of outcome. The ranking remains remarkably similar to the dropout-specific analysis, with second semester grades (0.0583) again dominating as the single most important predictor. Scholarship holder status (0.0527) and debtor status (0.0369) maintain their strong positions, reinforcing that financial factors and academic performance are universally important across all prediction scenarios.
+
+The consistency between dropout-specific and global feature importance suggests that the same fundamental factors drive all student outcomes, just in different directions. Strong academic performance and financial stability predict graduation, while their absence predicts dropout. Enrolled students fall somewhere in between, exhibiting mixed patterns of these key indicators. This global perspective validates our earlier findings and demonstrates that interventions targeting academic support and financial aid would benefit students across all outcome categories, not just those at risk of dropping out.
+"""))
+
+display(Markdown("\n### Where Does the Model Struggle?\n"))
+
+# Analyze confusion patterns in LIME sample
+confusion_patterns = {
+    'Dropout': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}},
+    'Enrolled': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}},
+    'Graduate': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}}
+}
+
+# Count predictions for each sample in the global LIME analysis
+for idx in sample_indices_global:
+    true_label = y_test.iloc[idx]
+    sample = X_test.iloc[idx].values
+    pred_label = rf_model.predict([sample])[0]
+    confusion_patterns[true_label]['predicted_as'][pred_label] += 1
+
+# Create confusion matrix for LIME sample
+confusion_display_data = []
+for true_class in sorted(y.unique()):
+    row = {'True Class': true_class}
+    for pred_class in sorted(y.unique()):
+        count = confusion_patterns[true_class]['predicted_as'][pred_class]
+        total = sum(confusion_patterns[true_class]['predicted_as'].values())
+        row[f'Pred: {pred_class}'] = f"{count} ({count/total*100:.0f}%)"
+    confusion_display_data.append(row)
+
+confusion_display_df = pd.DataFrame(confusion_display_data)
+display(Markdown("\n**Confusion patterns in LIME sample:**\n"))
+display(confusion_display_df)
+
+# Identify problematic patterns
+display(Markdown("\n**Key Issues:**\n"))
+
+for true_class in sorted(y.unique()):
+    total = sum(confusion_patterns[true_class]['predicted_as'].values())
+    correct = confusion_patterns[true_class]['predicted_as'][true_class]
+    
+    if correct / total < 0.7:  # Less than 70% accuracy
+        main_confusion = max(
+            [(pred, count) for pred, count in confusion_patterns[true_class]['predicted_as'].items() if pred != true_class],
+            key=lambda x: x[1]
+        )
+        display(Markdown(
+            f"- **{true_class}** students are often misclassified as **{main_confusion[0]}** "
+            f"({main_confusion[1]}/{total} cases, {main_confusion[1]/total*100:.0f}%)"
+        ))
+
+display(Markdown("""Due to the class imbalance the model can struggle, since most of the cases people are Graduated, there is a bias towards that group in the data, hence, it is more likelt to predict that for cases when it is hesitant."""))
+
+```
+
+
+```{python}
+display(Markdown("\n## 5.7-Feature Importance Comparison: Random Forest, LIME, and ANOVA\n"))
+
+# Prepare data from all three methods
+comparison_all = feature_importance.merge(lime_importance_global, on='feature', how='left')
+comparison_all['lime_importance'] = comparison_all['lime_importance'].fillna(0)
+
+# Add ANOVA results (eta_sq) - need to match feature names
+anova_dict = anova_df['eta_sq'].to_dict()
+comparison_all['anova_eta_sq'] = comparison_all['feature'].map(anova_dict).fillna(0)
+
+# Normalize all importance scores to 0-1 range for fair comparison
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+
+comparison_all['rf_normalized'] = scaler.fit_transform(comparison_all[['importance']])
+comparison_all['lime_normalized'] = scaler.fit_transform(comparison_all[['lime_importance']])
+comparison_all['anova_normalized'] = scaler.fit_transform(comparison_all[['anova_eta_sq']])
+
+# Select top 15 features by Random Forest importance
+top_features = comparison_all.nlargest(15, 'importance')
+
+# Create comparison plot
+plt.figure(figsize=(14, 8))
+x = np.arange(len(top_features))
+width = 0.25
+
+plt.barh(x - width, top_features['rf_normalized'], width, label='Random Forest', alpha=0.8)
+plt.barh(x, top_features['lime_normalized'], width, label='LIME', alpha=0.8)
+plt.barh(x + width, top_features['anova_normalized'], width, label='ANOVA (η²)', alpha=0.8)
+
+plt.yticks(x, top_features['feature'])
+plt.xlabel('Normalized Importance Score (0-1)')
+plt.title('Feature Importance Comparison: Random Forest vs LIME vs ANOVA')
+plt.legend()
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.show()
+
+display(Markdown("""
+**Comparing Three Approaches to Feature Importance:**
+
+This comparison reveals how different methods assess feature importance:
+
+- **Random Forest (blue)**: Global feature importance based on how much each feature reduces prediction error across all decision trees. Captures complex interactions and non-linear relationships.
+
+- **LIME (orange)**: Local feature importance averaged across 100 samples from each class. Explains individual predictions by measuring how changes in feature values affect model outputs locally.
+
+- **ANOVA η² (green)**: Statistical effect size measuring the proportion of variance each feature explains in the target variable. Captures linear relationships and univariate associations.
+
+**Key Observations:**
+
+All three methods agree that **2nd semester grades** and **1st semester grades** are the most important predictors, validating academic performance as the dominant factor. However, they diverge on other features:
+
+- **Scholarship holder** and **Debtor** rank highly in LIME (practical prediction influence) but lower in Random Forest, suggesting these features work through interactions rather than independently.
+- **ANOVA** identifies strong linear relationships (high η² for grades) but may underestimate features that work through complex interactions.
+- **Random Forest** balances both direct effects and feature interactions, providing a comprehensive view of predictive power in the classification context.
+
+The convergence on academic performance across all three methods strongly validates its critical role, while divergences highlight how financial and demographic factors contribute through different mechanisms, some through direct effects (captured by ANOVA), others through complex interactions (captured by Random Forest and LIME).
+"""))
+
+```
+
+## 6-Conclusion and Next Steps
+To the extent covered so far in this project, we achieved the fundamental steps for a rigorous analysis of our work. We described the context of the research background, presented relevant research questions and prepared the dataset for analysis.
+We collected and examined the dataset from the UCI Machine Learning Repository, verified its reliability by conducting systematic preprocessing. During this stage, we checked for any missing values, identified  anomalies (outliers), translated categorical variables into readable format for visualization, and removed irrelevant or redundant variables. Through EDA, we analyzed academic, demographic and socioeconomic factors, and identified initial patterns associated with the “Target” variable (Dropout, Enrolled, Graduate). In exploring these key insights such as first-semester performance, age at enrollment, scholarship status, and financial stability. We established the preliminary steps for the predictive modeling phase that will be built in the following weeks.
+
+During the upcoming weeks (November 18 to December 7, Weeks 5 to 7), we will focus on building and evaluating the predictive models. We will have to test and determine a suitable modeling technique, such as random forests or decision trees. Our objective is also to assess model performance, using appropriate metrics. We also have to identify the most important variables that contribute to prediction accuracy, and determine which modeling approach best predicts student outcomes related to the research questions.
+From December 8 to December 14 (Week 8), we will analyze and interpret the results of the predictive model to determine the insights that help answer our research questions. After evaluating the relevant variables and their effects, we will link the modeling outcomes to the patterns observed during the EDA. This will allow us to provide clearer answers to our research questions. 
+In the final week (December 15th, week 9), we will dedicate our time to preparing the video presentation and finalizing the written report in Quarto, ensuring coherent and clear findings aligned with our overall analysis.
+
+## Appendix
+Analyzing 100 samples per class to identify robust patterns and handle class imbalance. Why we put it in appendix?
+
+```{python}
+
+display(Markdown("\n## 5.4-LIME Analysis - Class-Wise Aggregation\n"))
 
 # Number of samples to analyze per class
 samples_per_class = 100  # Increased from 20 for more robust analysis
@@ -1485,7 +1659,7 @@ for class_label in sorted(y.unique()):
     class_importance_dfs[class_label] = class_df
     
     if class_label == "Dropout":
-        display(Markdown(f"\n### Top 15 Features for Predicting: **{class_label}**\n"))
+        display(Markdown(f"\n### 5.4.1-Top 15 Features for Predicting: **{class_label}**\n"))
         display(Markdown(f"*Based on {n_samples} samples*\n"))
     
     top_15 = class_df.head(15).copy()
@@ -1495,86 +1669,10 @@ for class_label in sorted(y.unique()):
         display(top_15)
 
 display(Markdown("""
-**Analysis of Dropout Risk Factors:** The aggregated LIME analysis across 100 dropout samples reveals the most influential features driving dropout predictions. Second semester grades emerge as the dominant predictor with a mean importance of 0.0852—significantly higher than any other feature. This is followed by scholarship holder status (0.0525) and debtor status (0.0370), highlighting how financial pressures compound academic struggles. Age at enrollment (0.0283) and first semester grades (0.0234) also play important roles. Notably, all top features appear in all 100 samples, demonstrating their consistent relevance across different dropout cases. The relatively low standard deviations (especially for scholarship holder and debtor status) indicate these features have stable, predictable effects—making them reliable indicators for early intervention systems targeting at-risk students.
+**Analysis of Dropout Risk Factors:** The aggregated LIME analysis across 100 dropout samples reveals the most influential features driving dropout predictions. Second semester grades emerge as the dominant predictor with a mean importance of 0.0852—significantly higher than any other feature. This is followed by scholarship holder status (0.0525) and debtor status (0.0370), highlighting how financial pressures compound academic struggles. Age at enrollment (0.0283) and first semester grades (0.0234) also play important roles. Notably, all top features appear in all 100 samples, demonstrating their consistent relevance across different dropout cases. The relatively low standard deviations (especially for scholarship holder and debtor status) indicate these features have stable, predictable effects, making them reliable indicators for early intervention systems targeting at-risk students.
 """))
-# Prediction accuracy summary
-display(Markdown("\n### Prediction Accuracy in LIME Sample\n"))
 
-accuracy_data = []
-for class_label, tracking in prediction_tracking.items():
-    total = tracking['correct'] + tracking['incorrect']
-    accuracy_data.append({
-        'Class': class_label,
-        'Correct': tracking['correct'],
-        'Incorrect': tracking['incorrect'],
-        'Total': total,
-        'Accuracy': f"{tracking['correct'] / total:.2%}" if total > 0 else "N/A"
-    })
-
-accuracy_df = pd.DataFrame(accuracy_data)
-display(accuracy_df)
-
-# ============================================================================
-# DETAILED MISCLASSIFICATION ANALYSIS
-# ============================================================================
-
-display(Markdown("\n### Where Does the Model Struggle?\n"))
-
-# Analyze confusion patterns in LIME sample
-confusion_patterns = {
-    'Dropout': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}},
-    'Enrolled': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}},
-    'Graduate': {'predicted_as': {'Dropout': 0, 'Enrolled': 0, 'Graduate': 0}}
-}
-
-# Recount predictions with details
-for class_label in sorted(y.unique()):
-    class_indices = X_test[y_test == class_label].index
-    n_samples = class_sample_sizes[class_label]
-    sample_indices_class = np.random.choice(class_indices, size=n_samples, replace=False)
-    
-    for sample_idx in sample_indices_class:
-        sample = X_test.loc[sample_idx].values
-        pred_label = rf_model.predict([sample])[0]
-        confusion_patterns[class_label]['predicted_as'][pred_label] += 1
-
-# Create confusion matrix for LIME sample
-confusion_display_data = []
-for true_class in sorted(y.unique()):
-    row = {'True Class': true_class}
-    for pred_class in sorted(y.unique()):
-        count = confusion_patterns[true_class]['predicted_as'][pred_class]
-        total = sum(confusion_patterns[true_class]['predicted_as'].values())
-        row[f'Pred: {pred_class}'] = f"{count} ({count/total*100:.0f}%)"
-    confusion_display_data.append(row)
-
-confusion_display_df = pd.DataFrame(confusion_display_data)
-display(Markdown("\n**Confusion patterns in LIME sample:**\n"))
-display(confusion_display_df)
-
-# Identify problematic patterns
-display(Markdown("\n**Key Issues:**\n"))
-
-for true_class in sorted(y.unique()):
-    total = sum(confusion_patterns[true_class]['predicted_as'].values())
-    correct = confusion_patterns[true_class]['predicted_as'][true_class]
-    
-    if correct / total < 0.7:  # Less than 70% accuracy
-        main_confusion = max(
-            [(pred, count) for pred, count in confusion_patterns[true_class]['predicted_as'].items() if pred != true_class],
-            key=lambda x: x[1]
-        )
-        display(Markdown(
-            f"- **{true_class}** students are often misclassified as **{main_confusion[0]}** "
-            f"({main_confusion[1]}/{total} cases, {main_confusion[1]/total*100:.0f}%)"
-        ))
-
-display(Markdown("""Due to the class imbalance the model can struggle, since most of the cases people are Graduated, there is a bias towards that group in the data, hence, it is more likelt to predict that for cases when it is hesitant."""))
-# ============================================================================
-# COMPARISON ACROSS CLASSES
-# ============================================================================
-
-display(Markdown("\n## Feature Importance Comparison Across Classes\n"))
+display(Markdown("\n## 5.5-Feature Importance Comparison Across Classes\n"))
 
 # Get top features from all classes
 all_top_features = set()
@@ -1622,116 +1720,4 @@ plt.tight_layout()
 plt.show()
 
 display(Markdown("""Again talk about the different features."""))
-# ============================================================================
-# PART 3: GLOBAL LIME IMPORTANCE (Optional - overall patterns)
-# ============================================================================
-
-display(Markdown("\n## Global LIME Feature Importance\n"))
-display(Markdown("*Averaged across all classes and 100 random samples*\n"))
-
-sample_size = min(100, len(X_test))
-sample_indices_global = np.random.choice(len(X_test), size=sample_size, replace=False)
-
-lime_weights_global = {feature: [] for feature in X.columns}
-
-for i in sample_indices_global:
-    exp = explainer.explain_instance(
-        X_test.iloc[i].values,
-        rf_model.predict_proba,
-        num_features=len(X.columns)
-    )
-    
-    for feature, weight in exp.as_list():
-        feature_name = feature.split('<=')[0].split('>')[0].split('=')[0].strip()
-        for col in X.columns:
-            if col in feature_name or feature_name in col:
-                lime_weights_global[col].append(abs(weight))
-                break
-
-# Compute average
-lime_importance_global = pd.DataFrame({
-    'feature': list(lime_weights_global.keys()),
-    'lime_importance': [np.mean(weights) if weights else 0 for weights in lime_weights_global.values()]
-}).sort_values('lime_importance', ascending=False)
-
-display(Markdown("\n### Top 15 Most Important Features (LIME Global)\n"))
-display(lime_importance_global.head(15).round(4))
-
-display(Markdown("""
-**Global LIME Feature Importance:** When aggregating LIME explanations across all three classes (Dropout, Enrolled, and Graduate) and 100 random samples from each, we obtain a global view of which features most consistently influence the model's predictions regardless of outcome. The ranking remains remarkably similar to the dropout-specific analysis, with second semester grades (0.0583) again dominating as the single most important predictor. Scholarship holder status (0.0527) and debtor status (0.0369) maintain their strong positions, reinforcing that financial factors and academic performance are universally important across all prediction scenarios.
-
-The consistency between dropout-specific and global feature importance suggests that the same fundamental factors drive all student outcomes—just in different directions. Strong academic performance and financial stability predict graduation, while their absence predicts dropout. Enrolled students fall somewhere in between, exhibiting mixed patterns of these key indicators. This global perspective validates our earlier findings and demonstrates that interventions targeting academic support and financial aid would benefit students across all outcome categories, not just those at risk of dropping out.
-"""))
 ```
-
-
-```{python}
-display(Markdown("\n## Feature Importance Comparison: Random Forest, LIME, and ANOVA\n"))
-
-# Prepare data from all three methods
-comparison_all = feature_importance.merge(lime_importance_global, on='feature', how='left')
-comparison_all['lime_importance'] = comparison_all['lime_importance'].fillna(0)
-
-# Add ANOVA results (eta_sq) - need to match feature names
-anova_dict = anova_df['eta_sq'].to_dict()
-comparison_all['anova_eta_sq'] = comparison_all['feature'].map(anova_dict).fillna(0)
-
-# Normalize all importance scores to 0-1 range for fair comparison
-from sklearn.preprocessing import MinMaxScaler
-scaler = MinMaxScaler()
-
-comparison_all['rf_normalized'] = scaler.fit_transform(comparison_all[['importance']])
-comparison_all['lime_normalized'] = scaler.fit_transform(comparison_all[['lime_importance']])
-comparison_all['anova_normalized'] = scaler.fit_transform(comparison_all[['anova_eta_sq']])
-
-# Select top 15 features by Random Forest importance
-top_features = comparison_all.nlargest(15, 'importance')
-
-# Create comparison plot
-plt.figure(figsize=(14, 8))
-x = np.arange(len(top_features))
-width = 0.25
-
-plt.barh(x - width, top_features['rf_normalized'], width, label='Random Forest', alpha=0.8)
-plt.barh(x, top_features['lime_normalized'], width, label='LIME', alpha=0.8)
-plt.barh(x + width, top_features['anova_normalized'], width, label='ANOVA (η²)', alpha=0.8)
-
-plt.yticks(x, top_features['feature'])
-plt.xlabel('Normalized Importance Score (0-1)')
-plt.title('Feature Importance Comparison: Random Forest vs LIME vs ANOVA')
-plt.legend()
-plt.gca().invert_yaxis()
-plt.tight_layout()
-plt.show()
-
-display(Markdown("""
-**Comparing Three Approaches to Feature Importance:**
-
-This comparison reveals how different methods assess feature importance:
-
-- **Random Forest (blue)**: Global feature importance based on how much each feature reduces prediction error across all decision trees. Captures complex interactions and non-linear relationships.
-
-- **LIME (orange)**: Local feature importance averaged across 100 samples from each class. Explains individual predictions by measuring how changes in feature values affect model outputs locally.
-
-- **ANOVA η² (green)**: Statistical effect size measuring the proportion of variance each feature explains in the target variable. Captures linear relationships and univariate associations.
-
-**Key Observations:**
-
-All three methods agree that **2nd semester grades** and **1st semester grades** are the most important predictors, validating academic performance as the dominant factor. However, they diverge on other features:
-
-- **Scholarship holder** and **Debtor** rank highly in LIME (practical prediction influence) but lower in Random Forest, suggesting these features work through interactions rather than independently.
-- **ANOVA** identifies strong linear relationships (high η² for grades) but may underestimate features that work through complex interactions.
-- **Random Forest** balances both direct effects and feature interactions, providing a comprehensive view of predictive power in the classification context.
-
-The convergence on academic performance across all three methods strongly validates its critical role, while divergences highlight how financial and demographic factors contribute through different mechanisms—some through direct effects (captured by ANOVA), others through complex interactions (captured by Random Forest and LIME).
-"""))
-
-```
-
-## Conclusion and Next Steps
-To the extent covered so far in this project, we achieved the fundamental steps for a rigorous analysis of our work. We described the context of the research background, presented relevant research questions and prepared the dataset for analysis.
-We collected and examined the dataset from the UCI Machine Learning Repository, verified its reliability by conducting systematic preprocessing. During this stage, we checked for any missing values, identified  anomalies (outliers), translated categorical variables into readable format for visualization, and removed irrelevant or redundant variables. Through EDA, we analyzed academic, demographic and socioeconomic factors, and identified initial patterns associated with the “Target” variable (Dropout, Enrolled, Graduate). In exploring these key insights such as first-semester performance, age at enrollment, scholarship status, and financial stability. We established the preliminary steps for the predictive modeling phase that will be built in the following weeks.
-
-During the upcoming weeks (November 18 to December 7, Weeks 5 to 7), we will focus on building and evaluating the predictive models. We will have to test and determine a suitable modeling technique, such as random forests or decision trees. Our objective is also to assess model performance, using appropriate metrics. We also have to identify the most important variables that contribute to prediction accuracy, and determine which modeling approach best predicts student outcomes related to the research questions.
-From December 8 to December 14 (Week 8), we will analyze and interpret the results of the predictive model to determine the insights that help answer our research questions. After evaluating the relevant variables and their effects, we will link the modeling outcomes to the patterns observed during the EDA. This will allow us to provide clearer answers to our research questions. 
-In the final week (December 15th, week 9), we will dedicate our time to preparing the video presentation and finalizing the written report in Quarto, ensuring coherent and clear findings aligned with our overall analysis.
