@@ -48,7 +48,21 @@ The main objective of this project is to identify the factors that influence stu
 First, our analysis will focus on academic performance, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether early academic performance can serve as a reliable predictor of future dropout risk. We will then explore the influence of socioeconomic and personal factors, including parental education, occupation, and financial situation, to understand their impact on academic achievement. Lastly,  the dataset will be used to build and evaluate classification models that predict students’ academic status (Dropout, Enrolled, or Graduate). 
 In summary, this study combines exploratory analysis, visualization, and predictive modeling to generate actionable insights that help universities detect at-risk students early and strengthen academic success.
 
-## I.3 - Research Questions
+## 1.2 - Related Work
+
+As students' dropout is a major challenge in higher education, it represents a well-established area of research that has widely been studied in the literature over the years. Previous research articles have helped us acquire information about the topic, including the methods used in order to address the different research questions. 
+
+One relevant study titled “Predicting Students’ Academic Success and Dropout Using Supervised Machine Learning” investigates the prediction of student academic success using supervised machine learning classification models. Throughout the paper, the authors compare multiple classification algorithms such as Decision Trees, Random Forest or Logistic Regression to assess their ability to predict student outcomes on student data. Their results show that these models are in fact an effective tool for identifying students at risk of dropping out and thus highlights the relevance of formulating this issue as a classification task. 
+
+Other articles emphasize the importance of constructing robust predictive models, but also the role of feature selection. In particular a recent paper by Anaíle Mendes Rabelo and Luis Enrique Zarate (2024) demonstrates how combining academic performance indicators with contextual variables such as course selection, improves the reliability of dropout prediction models.
+
+In addition, an article published in 2022 named “Towards a Students’ Dropout Prediction Model in Higher Education Institutions Using Machine Learning Algorithms” focuses on the overall analytical pipeline used in educational data mining, from data preprocessing to model evaluation. The authors underline that data quality and preprocessing decisions play a key role in model performance. 
+
+Overall, these research articles guided our methodological choices, particularly our choice of a classification framework, our focus on feature selection and our complete analysis process. Based on this literature, our project combines exploratory data analysis, predictive modeling, and interpretability techniques to better understand student outcomes.
+
+
+
+## 1.3 - Research Questions
 
 - I.  How do academic performance indicators and study conditions influence students’ likelihood of graduation or dropout?
 - II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out?
@@ -63,8 +77,6 @@ The dataset is publicly available on UCI Machine Learning Repository and was cre
 
 ## 2.2 - Data Description
 The dataset, containing data from a Portuguese higher education institution, is provided as a CSV file, approximately 520 KB in size, and contains detailed information about students’demographic, academic and socio-economic characteristics. It includes 4424 student records and 37 variables (features). After reviewing the dataset variables, we removed two irrelevant ones, resulting in 35 relevant variables selected  for analysis.
-
-We didn't encounter any difficult challenges. The dataset was already clean and encoded, so we didn't need to perform variable merging, one-hot encoding or ordinal encoding. We only had to translate categorical variables into readable labels to facilitate our visualization analysis.
 
 ### 2.2.1 - Data Loading
 
@@ -368,7 +380,7 @@ df[target_col] = pd.Categorical(
 # Visualize
 fig, ax = plt.subplots(figsize=(8, 5))
 target_counts = df[target_col].value_counts()
-colors = ['#e74c3c', '#f39c12', '#2ecc71']
+colors = ['#F46968', '#BCDCED', '#31709D']
 bars = ax.bar(range(len(target_counts)), target_counts.values, 
               color=colors, edgecolor='black', linewidth=1.5)
 
@@ -656,7 +668,7 @@ if not outlier_results.empty:
         plt.tight_layout()
         plt.show()
 else:
-    print("\n✅ No significant outliers detected!")
+    print("\n No significant outliers detected!")
 ```
 
 We identified outliers in five different variables.
@@ -715,15 +727,15 @@ print(f"Significant variables (p < 0.05): {anova_df['significant'].sum()}")
 anova_df.head(15)
 ```
 
-When evaluating feature importance, it's crucial to consider both statistical significance (p-value) and practical significance (effect size). With large sample sizes, even trivial differences can achieve statistical significance, making effect size interpretation essential.
+When evaluating feature importance, both statistical significance (p-value) and practical significance (effect size) must be considered. With large sample sizes, even trivial differences can reach statistical significance, making effect size interpretation essential.
 
-**Effect Size (η²)** measures the proportion of variance in student outcomes explained by each feature, with typical interpretations:
+**Effect Size (η²)** measures the proportion of variance in student outcomes explained by each feature, with interpretations:
 
 - **η² = 0.01** (1%): Small effect
 - **η² = 0.06** (6%): Medium effect  
 - **η² = 0.14** (14%): Large effect
 
-For example, marital status has a highly significant p-value (2.66e-09) but explains less than 1% of variance (η² = 0.009), indicating negligible practical importance. In contrast, "Curricular units 2nd sem (grade)" explains 34% of variance (η² = 0.339), representing a genuinely large and meaningful effect. When identifying important predictors, prioritize features with larger effect sizes rather than relying solely on p-values.
+For example, marital status has a highly significant p-value (2.66e-09) but explains less than 1% of variance (η² = 0.009), indicating negligible practical importance. In contrast, "Curricular units 2nd sem (grade)" explains 34% of variance (η² = 0.339), representing a large and meaningful effect. When identifying important predictors, it's better to prioritize features with larger effect sizes rather than relying only on p-values. 
 
 ## 4.7 - Top Predictive Variables
 
@@ -740,7 +752,7 @@ sns.boxplot(
     x=target_col,
     y='Admission grade',
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#326E9E']
 )
 plt.title('Admission grade by Target', fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
@@ -761,7 +773,7 @@ sns.boxplot(
     x=target_col,
     y='Previous qualification (grade)',
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#326E9E']
 )
 plt.title('Previous qualification (grade) by Target', fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
@@ -784,7 +796,7 @@ sns.boxplot(
     x=target_col,
     y='Curricular units 1st sem (grade)',
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#326E9E']
 )
 plt.title('Curricular units 1st sem (grade) by Target', fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
@@ -805,7 +817,7 @@ sns.boxplot(
     x=target_col,
     y='Curricular units 2nd sem (grade)',
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#326E9E']
 )
 
 plt.title(f"Curricular units 2nd sem (grade) by {target_col}", fontsize=12, fontweight='bold')
@@ -825,7 +837,7 @@ sns.boxplot(
     x=target_col,
     y='Curricular units 1st sem (enrolled)',
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#326E9E']
 )
 plt.title('Curricular units 1st sem (enrolled) by Target', fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
@@ -847,7 +859,7 @@ sns.boxplot(
     x=target_col,
     y='Curricular units 2nd sem (enrolled)',
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#326E9E']
 )
 plt.title('Curricular units 2nd sem (enrolled) by Target', fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
@@ -868,7 +880,7 @@ tab = (pd.crosstab(df[target_col], df['Daytime/evening attendance'])
 tab = tab.reindex(columns=sorted(tab.columns.tolist()))
 
 tab.plot(kind="bar", stacked=True,
-        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+        color=['#F46968', '#8BC68A'], edgecolor='black')
 plt.ylabel("Proportion within target group")
 plt.title('Daytime/evening attendance by Target', fontsize=12, fontweight='bold')
 plt.legend(title='Attendance', labels=['Evening', 'Daytime'],
@@ -893,7 +905,7 @@ sns.boxplot(
     x=target_col,
     y='Application order',
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#326E9E']
 )
 plt.title('Application order by Target', fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
@@ -914,7 +926,7 @@ tab = (pd.crosstab(df[target_col], df['Displaced'])
 tab = tab.reindex(columns=sorted(tab.columns.tolist()))
 
 tab.plot(kind="bar", stacked=True,
-        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+        color=['#F46968', '#8BC68A'], edgecolor='black')
 plt.ylabel("Proportion within target group")
 plt.title('Displaced by Target', fontsize=12, fontweight='bold')
 plt.legend(title='Displaced', labels=['No', 'Yes'],
@@ -959,7 +971,7 @@ sns.boxplot(
     x=target_col,
     y='Age at enrollment',
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#31709D']
 )
 plt.title('Age at enrollment by Target', fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
@@ -981,7 +993,7 @@ tab = (pd.crosstab(df[target_col], df['Gender'])
 tab = tab.reindex(columns=sorted(tab.columns.tolist()))
 
 tab.plot(kind="bar", stacked=True,
-        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+        color=['#F8A88E', '#8CB3D5'], edgecolor='black')
 plt.ylabel("Proportion within target group")
 plt.title('Gender by Target', fontsize=12, fontweight='bold')
 plt.legend(title='Gender', labels=['Female', 'Male'],
@@ -1008,7 +1020,7 @@ tab = (pd.crosstab(df[target_col], df['Scholarship holder'])
 tab = tab.reindex(columns=sorted(tab.columns.tolist()))
 
 tab.plot(kind="bar", stacked=True, 
-        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+        color=['#F46968', '#8BC68A'], edgecolor='black')
 plt.ylabel("Proportion within target group")
 plt.title('Scholarship holder by Target', fontsize=12, fontweight='bold')
 plt.legend(title='Scholarship holder', labels=['No', 'Yes'], 
@@ -1034,7 +1046,7 @@ tab = (pd.crosstab(df[target_col], df['Debtor'])
 tab = tab.reindex(columns=sorted(tab.columns.tolist()))
 
 tab.plot(kind="bar", stacked=True,
-        color=['#e74c3c', '#2ecc71'], edgecolor='black')
+        color=['#F46968', '#8BC68A'], edgecolor='black')
 plt.ylabel("Proportion within target group")
 plt.title('Debtor by Target', fontsize=12, fontweight='bold')
 plt.legend(title='Debtor', labels=['No', 'Yes'],
@@ -1102,7 +1114,7 @@ sns.boxplot(
     x=target_col,
     y="Mother's qualification",
     data=df,
-    palette=['#e74c3c', '#f39c12', '#2ecc71']
+    palette=['#F46968', '#BCDCED', '#31709D']
 )
 plt.title("Mother's qualification by Target", fontsize=12, fontweight='bold')
 plt.grid(alpha=0.3, axis='y')
@@ -1247,15 +1259,16 @@ plt.tight_layout()
 plt.show()
 
 display(Markdown("""
-The Random Forest classifier achieved an overall accuracy of 67.3%, correctly predicting student outcomes for approximately two-thirds of cases. However, accuracy alone doesn't tell the full story—we need to examine how well the model performs for each class.
+The Random Forest classifier achieved an overall accuracy of 67.3%, correctly predicting students' academic performance in approximately two-thirds of cases. However, accuracy by itself is not enough; it is necessary to examine the model's performance for each class.
 
-**Performance varies significantly across the three outcomes.** The model performs best at identifying Dropout and Graduate students, with F1-scores of 0.707 and 0.773 respectively. However, it struggles with the Enrolled category, achieving only an F1-score of 0.392. This means the model has difficulty distinguishing currently enrolled students from those who will eventually dropout or graduate.
+**Performance varies significantly across the three outcomes.** The model performs best at identifying Dropout and Graduate students, with F1-scores of 0.707 and 0.773 respectively. However, it struggles with the Enrolled category, achieving only an F1-score of 0.392. This means that the model has difficulty distinguishing between currently enrolled students and those who will drop out or graduate.
 
-**The confusion matrix reveals specific prediction patterns.** The model correctly identifies 185 out of 284 dropout cases (65.1% recall) and 338 out of 442 graduates (76.5% recall). The challenge with Enrolled students is clear: only 73 out of 159 (45.9%) are correctly classified, with many being misclassified as either future graduates (53 cases) or potential dropouts (33 cases). This reflects the inherent difficulty in predicting outcomes for students still in progress—their final status remains uncertain until they either complete or leave their program.
+**The confusion matrix reveals specific prediction patterns.** The model correctly identifies 185 out of 284 dropouts (65.1% recall) and 338 out of 442 graduates (76.5% recall). The struggle with Enrolled students is evident: only 73 out of 159 (45.9%) are correctly classified, with many being misclassified as either future graduates (53 cases) or potential dropouts (33 cases). This reflects the inherent difficulty in predicting outcomes for students still in progress, their final status remains uncertain until they complete their program or drop out.
 
-**Handling class imbalance.** With fewer Enrolled students in the dataset (159 vs 284 Dropouts and 442 Graduates), the model has less training data to learn patterns for this group. To address this imbalance, we used the `class_weight='balanced'` parameter in the Random Forest model, which automatically adjusts weights inversely proportional to class frequencies. This ensures the model pays equal attention to all three classes during training rather than being biased toward the majority class. While this helps mitigate the imbalance, the fundamental challenge remains: enrolled students represent an "in-between" state that's harder to characterize than the definitive outcomes of dropout or graduation.
+**Handling class imbalance.** With a smaller number of Enrolled students in the dataset (159 vs 284 Dropouts and 442 Graduates), the model has less training data to learn patterns for this group. To address this imbalance, we used the `class_weight='balanced'` parameter in the Random Forest model, which automatically adjusts weights inversely proportional to the frequency of classes.  This ensures the model gives equal attention to all three classes during training rather than being biased toward the majority class. While this helps mitigate the imbalance, the fundamental challenge remains: enrolled students represent an "in-between" state that is harder to characterize than the final outcomes of dropping out or graduating.
 
-**Predicted distribution.** The last figure shows the predicted distribution of classes after applying the model. Despite the class imbalance in the original data, the model with balanced class weights manages to capture the real distribution reasonably well, demonstrating that the balancing strategy is effective.
+**Predicted distribution.** The last figure shows the predicted distribution of classes after applying the model. Despite the class imbalance in the original data, the model with balanced class weights manages to capture quite well the real distribution, proving that the balancing strategy is effective.
+
 """))
 
 # ============================================================================
@@ -1265,7 +1278,7 @@ The Random Forest classifier achieved an overall accuracy of 67.3%, correctly pr
 display(Markdown("\n## 5.2-Random Forest Feature Importance\n"))
 
 display(Markdown("""
-Random Forest models calculate feature importance by measuring how much each feature contributes to reducing prediction error across all decision trees in the forest. Features that consistently lead to better splits and more accurate predictions receive higher importance scores. Unlike the ANOVA analysis which examines relationships between individual features and outcomes, Random Forest importance reflects each feature's predictive value within the context of all other features—capturing complex interactions and non-linear relationships that make features useful for classification.
+Random Forest models calculate feature importance by measuring how much each feature contributes to reducing prediction error across all decision trees in the forest. Features that consistently lead to better splits and more accurate predictions receive higher importance scores. It measures each variable’s contribution to prediction while considering all other features, capturing interactions and non-linear relationships.
 """))
 
 feature_importance = pd.DataFrame({
@@ -1287,7 +1300,9 @@ plt.tight_layout()
 plt.show()
 
 display(Markdown("""
-Explain how these are different from ANOVA, explain a bit why could these be important
+Even though Random Forest differs from ANOVA by evaluating variables in combination rather than in isolation, results obtained in both cases show that academic performance variables (_1st and 2nd semester grade_) are dominant.
+
+Variables like financial or administrative factors showed weak effects in ANOVA but appear among the top 15 Random Forest  features because they interact with academic variables to improve predictions. Therefore, these variables reveal conditional effects such as financial stress that can increase academic risk when performance is already low. Thus, these interactions enhance both predictive accuracy and the interpretation of underlying patterns in the data.
 """))
 
 # Create a custom discretizer that respects class distributions
@@ -1339,7 +1354,7 @@ for class_label in sorted(y.unique()):
 # Dictionary to store class-specific interpretations
 class_interpretations = {
     'Dropout': """
-**Interpretation:** This student was correctly identified as at risk of dropping out. The dominant factor is their poor academic performance, with a second semester grade of 10.78 or below strongly pushing toward dropout (large negative weight). Additionally, lacking scholarship support increases dropout risk. Protective factors like not being in debt, younger age (≤19), and decent first semester grades (≤11) provide some counterbalance, but are insufficient to overcome the poor second semester performance. This highlights how academic struggles, especially in later semesters, are critical indicators of dropout risk.
+**Interpretation:** This student was correctly identified as at risk of dropping out. The dominant factor is their poor academic performance, with a second semester grade of 10.78 or below strongly pushing toward dropout (large negative weight). Additionally, lacking scholarship support increases dropout risk. Protective factors such as not being in debt, younger age (≤19), and decent first semester grades (≤11) provide some counterbalance, are not enough to overcome poor results in the second semester. This highlights how academic difficulties, especially in later semesters, are key indicators of the risk of dropping out.
 """,
     'Enrolled': """
 **Interpretation:** This enrolled student presents a highly mixed profile that makes prediction challenging. Poor second semester grades (≤10.78) strongly push toward dropout, while positive factors like having no scholarship (paradoxically protective here), not being in debt, low unemployment rate, and moderate academic performance in the first semester push toward remaining enrolled or graduating. The model shows significant uncertainty, with multiple features pulling in different directions. This reflects the inherent difficulty in predicting outcomes for students still in progress, they're in a transitional state where their trajectory could go either way.
@@ -1407,7 +1422,7 @@ for idx, sample_idx in enumerate(sample_indices):
 # PART 3: GLOBAL LIME IMPORTANCE (Optional - overall patterns)
 # ============================================================================
 
-display(Markdown("\n## 5.6-Global LIME Feature Importance\n"))
+display(Markdown("\n## 5.4 - Global LIME Feature Importance\n"))
 
 sample_size = len(X_test)
 sample_indices_global = np.random.choice(len(X_test), size=sample_size, replace=False)
@@ -1496,7 +1511,7 @@ display(Markdown("""Due to the class imbalance the model can struggle, since mos
 
 
 ```{python}
-display(Markdown("\n## 5.7-Feature Importance Comparison: Random Forest, LIME, and ANOVA\n"))
+display(Markdown("\n## 5.5 - Feature Importance Comparison: Random Forest, LIME, and ANOVA\n"))
 
 # Prepare data from all three methods
 comparison_all = feature_importance.merge(lime_importance_global, on='feature', how='left')
@@ -1558,7 +1573,7 @@ The convergence on academic performance across all three methods strongly valida
 
 ```
 
-## 6-Conclusion and Next Steps
+## 6 - Conclusion and Next Steps
 To the extent covered so far in this project, we achieved the fundamental steps for a rigorous analysis of our work. We described the context of the research background, presented relevant research questions and prepared the dataset for analysis.
 We collected and examined the dataset from the UCI Machine Learning Repository, verified its reliability by conducting systematic preprocessing. During this stage, we checked for any missing values, identified  anomalies (outliers), translated categorical variables into readable format for visualization, and removed irrelevant or redundant variables. Through EDA, we analyzed academic, demographic and socioeconomic factors, and identified initial patterns associated with the “Target” variable (Dropout, Enrolled, Graduate). In exploring these key insights such as first-semester performance, age at enrollment, scholarship status, and financial stability. We established the preliminary steps for the predictive modeling phase that will be built in the following weeks.
 
@@ -1566,12 +1581,13 @@ During the upcoming weeks (November 18 to December 7, Weeks 5 to 7), we will foc
 From December 8 to December 14 (Week 8), we will analyze and interpret the results of the predictive model to determine the insights that help answer our research questions. After evaluating the relevant variables and their effects, we will link the modeling outcomes to the patterns observed during the EDA. This will allow us to provide clearer answers to our research questions. 
 In the final week (December 15th, week 9), we will dedicate our time to preparing the video presentation and finalizing the written report in Quarto, ensuring coherent and clear findings aligned with our overall analysis.
 
-## Appendix
-Analyzing 100 samples per class to identify robust patterns and handle class imbalance. Why we put it in appendix?
+## 7 - Appendix
+Analyzing 100 samples per class to identify robust patterns and handle class imbalance. 
+This following analysis is used to validate the robustness of our results, while the main body focuses on the full dataset to reflect real student outcome distributions.
 
 ```{python}
 
-display(Markdown("\n## 5.4-LIME Analysis - Class-Wise Aggregation\n"))
+display(Markdown("\n## LIME Analysis - Class-Wise Aggregation\n"))
 
 # Number of samples to analyze per class
 samples_per_class = 100  # Increased from 20 for more robust analysis
@@ -1659,7 +1675,7 @@ for class_label in sorted(y.unique()):
     class_importance_dfs[class_label] = class_df
     
     if class_label == "Dropout":
-        display(Markdown(f"\n### 5.4.1-Top 15 Features for Predicting: **{class_label}**\n"))
+        display(Markdown(f"\n###Top 15 Features for Predicting: **{class_label}**\n"))
         display(Markdown(f"*Based on {n_samples} samples*\n"))
     
     top_15 = class_df.head(15).copy()
@@ -1669,10 +1685,10 @@ for class_label in sorted(y.unique()):
         display(top_15)
 
 display(Markdown("""
-**Analysis of Dropout Risk Factors:** The aggregated LIME analysis across 100 dropout samples reveals the most influential features driving dropout predictions. Second semester grades emerge as the dominant predictor with a mean importance of 0.0852—significantly higher than any other feature. This is followed by scholarship holder status (0.0525) and debtor status (0.0370), highlighting how financial pressures compound academic struggles. Age at enrollment (0.0283) and first semester grades (0.0234) also play important roles. Notably, all top features appear in all 100 samples, demonstrating their consistent relevance across different dropout cases. The relatively low standard deviations (especially for scholarship holder and debtor status) indicate these features have stable, predictable effects, making them reliable indicators for early intervention systems targeting at-risk students.
+**Analysis of Dropout Risk Factors:** The aggregated LIME analysis across 100 dropout samples reveals the most influential features driving dropout predictions. Second semester grades emerge as the dominant predictor with a mean importance of 0.0852, significantly higher than any other feature. This is followed by scholarship holder status (0.0525) and debtor status (0.0370), highlighting how financial pressures compound academic struggles. Age at enrollment (0.0283) and first semester grades (0.0234) also play important roles. Notably, all top features appear in all 100 samples, demonstrating their consistent relevance across different dropout cases. The relatively low standard deviations (especially for scholarship holder and debtor status) indicate these features have stable, predictable effects, making them reliable indicators for early intervention systems targeting at-risk students.
 """))
 
-display(Markdown("\n## 5.5-Feature Importance Comparison Across Classes\n"))
+display(Markdown("\n## Feature Importance Comparison Across Classes\n"))
 
 # Get top features from all classes
 all_top_features = set()
@@ -1703,7 +1719,7 @@ plot_data = comparison_df[comparison_df['Feature'].isin(plot_features)].set_inde
 
 x = np.arange(len(plot_features))
 width = 0.25
-colors = ['#ffb3c1', '#ffd166', '#89b0d9']
+colors = ['#F46968', '#BCDCED', '#31709D']
 
 for idx, class_label in enumerate(sorted(y.unique())):
     values = [plot_data.loc[feat, class_label] for feat in plot_features]
@@ -1719,5 +1735,15 @@ ax.invert_yaxis()
 plt.tight_layout()
 plt.show()
 
-display(Markdown("""Again talk about the different features."""))
+display(Markdown("""Derived from aggregated local LIME,  this figure shows which variables influence the most the decision of the model for each predictive class. For the Dropout class, the features with the strongest influence are _Curricular units 2nd sem (grade)_, _Scholarship holder_, _Debtor_ and _Age_ at enrollment. This indicates that the model frequently relies on these variables when producing predictions classified as Dropout. 
+
+For the Enrolled class, Curricular units 2nd sem (grade), Scholarship holder, Debtor and Curricular units 1st sem (grade) are found to have the highest contributions, indicating a greater reliance upon academic performance and enrollment-related variables in the model decision process.
+
+Finally, for the Graduate class, Scholarship holder, Curricular units 2nd sem (grade), Debtor and Curricular units 1st sem (enrolled) are the most influential features. Overall, the results show that several features are consistently influential across all classes, with Age at enrollment being particularly distinctive for the Dropout class compared to the other classes where it appears with slightly lower influence. These contributions reflect aggregated local decision patterns of the model rather than global feature importance or causal relationships.
+
+Conversely, some features show lower aggregated LIME contributions across all predicted classes, suggesting that the model relies less frequently on these variables in its local decisions, although this doesn’t mean they are unimportant in certain individual cases. Across all classes, the least influential features are Course, Educational special needs, Unemployment rate and Curricular units 1st sem (enrolled).
+
+Overall, these results indicate that the importance of the academic and financial individual characteristics overcomes the importance of contextual characteristics in the predictions. The prevalence of grades and financial variables, like Scholarship holder or Debtor, indicates that the characteristics of individual students have been taken into consideration. On the other hand, environmental characteristics, like Course or Unemployment rate, have less influence over the predictions.
+
+"""))
 ```
