@@ -43,30 +43,28 @@ execute:
 
 ## 1. - Introduction
 
-**Student retention** and **academic success** are crucial challenges for higher education institutions worldwide. Recent international observations show **rising university dropout** trends across multiple regions, including Australia and the United States [@sokolova2024dropout]. Looking closer at Europe, recent data from the German Center for Higher Education Research and Science Studies (2022), show that **almost 30% of bachelor’s students in Germany** leave university **without graduating** [@hachmeister2024german]. **In Portugal**, which is the focus of our analysis, recent data by Statistics Portugal reveal that a considerable portion of **young adults (16.8%) aged from 15 to 34 have dropped out at least one level of education during their academic path** [@europedata2024portugal]. Moreover, among those who dropped out, over more than half **(50.8%) did not complete their tertiary studies**, highlighting that higher education represents a **critical point of disengagement** [@europedata2024portugal].
-These figures underline the **seriousness of dropouts in higher education** and the reinforced **need for universities to rely on data-driven insights** to identify at-risk students and to **design early intervention strategies**. We chose this topic because **predicting student dropout** not only helps **optimize institutional resources** but also supports students in **achieving their academic goals**. Understanding the **factors that influence academic success**, such as **socio-economic background, previous academic performance, or family situation**, can improve educational policies and personalized support systems. This subject is particularly meaningful in data science, as it allows us to combine analytical and predictive methods to **better understand and prevent student dropout**.
+Student retention and academic success are crucial challenges for higher education institutions worldwide. Recent international observations show **rising university dropout** trends across multiple regions, including Australia and the United States [@sokolova2024dropout]. Looking closer at Europe, recent data from the German Center for Higher Education Research and Science Studies (2022), show that almost 30% of bachelor’s students in Germany leave university without graduating [@hachmeister2024german]. **In Portugal**, which is the focus of our analysis, recent data by Statistics Portugal reveal that a considerable portion of young adults (16.8%) aged from 15 to 34 have dropped out at least one level of education during their academic path [@europedata2024portugal]. Moreover, among those who dropped out, over more than half (50.8%)** did not complete their tertiary studies, highlighting that higher education represents a **critical point of disengagement** [@europedata2024portugal].
+These figures underline the seriousness of dropouts in higher education and the reinforced need for universities to rely on data-driven insights to identify at-risk students and to design early intervention strategies. We chose this topic because predicting student dropout not only helps **optimize institutional resources** but also supports students in achieving their **academic goals**. Understanding **the factors that influence academic success**, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems. This subject is particularly meaningful in data science, as it allows us to combine analytical and predictive methods to **better understand and prevent** student dropout.
 
 
 ## 1.1 - Project Goals
 
-The **main objective** of this project is to **identify the factors that influence students to drop out, stay enrolled, or graduate from higher education**. The dataset provides detailed information on each student’s academic performance, socioeconomic background, and demographic profile, offering a **comprehensive view of the variables that shape educational outcomes**. By the end of our analysis, we seek to **identify the most significant combinations of academic and personal factors that influence student success**. First, our analysis will focus on **academic performance**, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether **early academic performance** can serve as a **reliable predictor of future dropout risk**. We will then explore the **influence of socioeconomic and personal factors**, including parental education, occupation, and financial situation, to understand their **impact on academic achievement**. Lastly, the dataset will be used to build and evaluate **classification models that predict students’ academic status** (**Dropout, Enrolled**, or **Graduate**). In summary, this study combines exploratory analysis, visualization, and predictive modeling to generate **actionable insights that help universities detect at-risk students early and strengthen academic success**.
+The main objective of this project is to identify the factors that influence students to drop out, stay enrolled, or graduate from higher education. The dataset provides detailed information on each student’s academic performance, socioeconomic background, and demographic profile, offering a comprehensive view of the variables that shape educational outcomes. By the end of our analysis, we seek to identify the most **significant combinations** of academic and personal factors that influence student success. First, our analysis will focus on **academic performance**, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether early academic performance can serve as a reliable predictor of future dropout risk. We will then explore the influence of **socioeconomic and personal factors**, including parental education, occupation, and financial situation, to understand their impact on academic achievement. Lastly, the dataset will be used to build and evaluate **classification models** that predict students’ academic status (Dropout, Enrolled, or Graduate). In summary, this study combines exploratory analysis, visualization, and predictive modeling to generate actionable insights that help universities **detect at-risk students** early and strengthen academic success.
 
 ---
 
 ## 2 - Related Work
 
+As students' dropout is a major challenge in higher education, it represents a well-established area of research that has widely been studied in the literature over the years. Previous research articles have helped us acquire information about the topic, including the **methodological approaches** used to address the different research questions. 
 
-As students' dropout is a **major challenge** in higher education, it represents a well-established area of research that has widely been studied in the literature over the years. Previous research articles have helped us acquire information about the topic, including the **methodological approaches** used to address the different research questions. 
-
-
-One relevant study titled _“Predicting Students’ Academic Success and Dropout Using Supervised Machine Learning”_ [@arora2024predicting] investigates the prediction of student academic success using **supervised machine learning classification models**. Throughout the paper, the authors compare multiple classification algorithms such as **Decision Trees**, **Random Forest** or **Logistic Regression** to assess their ability to predict student outcomes on student data. Their results show that these models are in fact an effective tool for identifying students at risk of dropping out and thus highlights the relevance of formulating this issue as a classification task. 
+One relevant study titled _“Predicting Students’ Academic Success and Dropout Using Supervised Machine Learning”_ [@arora2024predicting] investigates the prediction of student academic success using **supervised machine learning classification models**. Throughout the paper, the authors compare multiple classification algorithms such as Decision Trees, Random Forest or Logistic Regression to assess their ability to predict student outcomes on student data. Their results show that these models are in fact an effective tool for identifying students at risk of dropping out and thus highlights the relevance of formulating this issue as a classification task. 
 
 
 Other articles emphasize the importance of constructing **robust predictive models**, but also the role of **feature selection**. In particular a recent paper by _Anaíle Mendes Rabelo_ and _Luis Enrique Zarate_ (2024) [@sciencedirect2024] demonstrates how combining academic performance indicators with contextual variables such as course selection, improves the reliability of dropout prediction models.
 
-In addition, an article published in 2022 named _“Towards a Students’ Dropout Prediction Model in Higher Education Institutions Using Machine Learning Algorithms”_ [@oqaidi2022dropout] focuses on the overall **analytical pipeline** used in educational **data mining**, from **data preprocessing** to **model evaluation**. The authors underline that data quality and preprocessing decisions play a **key role in model performance**. 
+In addition, an article published in 2022 named _“Towards a Students’ Dropout Prediction Model in Higher Education Institutions Using Machine Learning Algorithms”_ [@oqaidi2022dropout] focuses on the overall **analytical pipeline** used in educational data mining, from data preprocessing to model evaluation. The authors underline that **data quality** and **preprocessing decisions** play a key role in model performance**. 
 
-Overall, these research articles guided our methodological choices, particularly our use of a classification framework, our focus on feature selection and our structured analytical process, with additional emphasis on **exploratory data analysis** and **model interpretability**.
+Overall, these research articles guided our methodological choices, particularly our use of a classification-based predictive framework and the selection of Random Forest models, which are well suited to capturing non-linear relationships and interactions among features. We complement our analysis with feature importance and LIME explanations to ensure interpretability alongside predictive performance.
 
 
 
@@ -81,10 +79,10 @@ Overall, these research articles guided our methodological choices, particularly
 ## 4 - Data 
 
 ## 4.1 - Data Sourcing
-The dataset is publicly available on UCI Machine Learning Repository and was created from multiple databases of higher education institutions in Portugal. It is related to enrolled students in different undergraduate programs and shows **how different demographic, socioeconomic and academic factors are related to the dropout**. Since the data has already been collected and can be directly downloaded from [UCI MLR - Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict%2Bstudents%2Bdropout%2Band%2Bacademic%2Bsuccess){target="_blank"} - [Accessed on 20th October] , there is no need to collect more data via webscraping or APIs. 
+The dataset is publicly available on **UCI Machine Learning Repository** and was created from multiple databases of higher education institutions in Portugal. It is related to enrolled students in different undergraduate programs and shows how different demographic, socioeconomic and academic factors are related to the dropout. Since the data has already been collected and can be directly downloaded from [UCI MLR - Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict%2Bstudents%2Bdropout%2Band%2Bacademic%2Bsuccess){target="_blank"} - [Accessed on 20th October] , there is no need to collect more data via webscraping or APIs. 
 
 ## 4.2 - Data Description
-The dataset, containing data from a Portuguese higher education institution, is provided as a CSV file, approximately 520 KB in size, and contains detailed information about students’demographic, academic and socio-economic characteristics. It includes 4424 student records and 37 variables (features). After reviewing the dataset variables, we removed two irrelevant ones, resulting in **35 relevant variables selected  for analysis**.
+The dataset, containing data from a Portuguese higher education institution, is provided as a CSV file, approximately 520 KB in size, and contains detailed information about students’demographic, academic and socio-economic characteristics. It includes 4424 student records and 37 variables (features). After reviewing the dataset variables, we removed two irrelevant ones, resulting in **35 relevant variables** selected  for analysis.
 
 ### 4.2.1 - Data Loading
 
@@ -300,9 +298,8 @@ Through this step, we didn't encounter any difficult challenges. The dataset was
 
 One of the most important steps in our project is data cleaning and wrangling. After running the code to check for missing values and undefined numerical data, we found that the dataset contains no missing values, no mistakes and no data entry mistakes.
 
-The dataset was already encoded, and we removed “Application mode” and “Tuition fees up to date” variables because they are not relevant to our research questions. Therefore we dropped two columns from the dataset.
-Ensuring that the numeric columns are numeric, categorical variables such as “Gender”, “Debtor”, “Displaced” , “Daytime/Evening attendance” were translated to readable string labels for analysis.
-Although we had a well-structured and clean dataset, our main challenge was to determine the reliability of our dataset. We verified if there were any missing values, spotting mistakes, and determined irrelevant variables for our analysis. We pursue our cleaning work with the conversion of the categorical variables. Therefore, the reliable dataset was ready to be analyzed. 
+The dataset was already encoded, and we removed _Application mode_ and _Tuition fees up to date_ variables because they are not relevant to our research questions. Therefore we dropped two columns from the dataset. Ensuring that the numeric columns are numeric, categorical variables such as _Gender_, _Debtor_, _Displaced_ , _Daytime/Evening attendance_ were translated to readable string labels for analysis. Although we had a well-structured and clean dataset, our main challenge was to determine the reliability of our dataset. We verified if there were any missing values, spotting mistakes, and determined irrelevant variables for our analysis. We pursue our cleaning work with the conversion of the categorical variables. Therefore, the reliable dataset was ready to be analyzed.
+
 
 
 ```{python}
@@ -367,7 +364,7 @@ In this section, we explore the dataset to understand the main characteristics o
 
 ## 5.1 - Target Variable
 We begin by examining the distribution of the target variable.
-The three student outcomes (Dropout, Enrolled, and Graduate) are highly imbalanced, with Graduates representing the largest group, followed by Dropouts, and a smaller proportion of Enrolled students.
+The three student outcomes (Dropout, Enrolled, and Graduate) are highly **imbalanced**, with Graduates representing the largest group, followed by Dropouts, and a smaller proportion of Enrolled students.
 
 ```{python}
 #| label: target-distribution
@@ -388,9 +385,9 @@ df[target_col] = pd.Categorical(
 # Visualize
 fig, ax = plt.subplots(figsize=(8, 5))
 target_counts = df[target_col].value_counts()
-colors = ['#F46968', '#BCDCED', '#31709D']
+colors = ['#31709D', '#F46968', '#BCDCED']
 bars = ax.bar(range(len(target_counts)), target_counts.values, 
-              color=colors, edgecolor='black', linewidth=1.5)
+              color=colors, edgecolor='black', linewidth=1)
 
 ax.set_xticks(range(len(target_counts)))
 ax.set_xticklabels(target_counts.index)
@@ -443,10 +440,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-Based on our correlation analysis, we identified several moderately and highly correlated variable pairs that indicate multicollinearity.
+Based on our correlation analysis, we identified several moderately and highly correlated variable pairs that indicate **multicollinearity**.
 A high correlation between international and nationality students can be observed, therefore we choose to remove the variable _international_, since it won’t be as relevant as the _nacionality_ variable.
 We can see that the variables _father’s occupation_ and _mother’s occupation_  are highly correlated, but in this case the correlation reflects social structure. They represent two distinct individuals and two potentially different socioeconomic effects. Same thing applies for _mother’s qualification_ and _father’s qualification_.
-Although the variables _Curricular units 1st sem (enrolled)_ _Curricular units 2nd sem (enrolled)_ and _Curricular units 1st sem (grade)_ _Curricular units 2nd sem (grade)_ are respectively highly correlated, we keep them because they provide performance progression across different time periods, which is relevant for predicting dropout. Therefore, we excluded 8 redundant semester variables and one nationality variable.
+Although the variables _Curricular units 1st sem (enrolled)_ _Curricular units 2nd sem (enrolled)_ and _Curricular units 1st sem (grade)_ _Curricular units 2nd sem (grade)_ are respectively highly correlated, we keep them because they provide performance progression across different time periods, which is relevant for predicting dropout. Therefore, we excluded **8 redundant semester variables and one nationality variable**.
 
 
 ---
@@ -673,19 +670,19 @@ else:
     print("\n No significant outliers detected!")
 ```
 
-We identified outliers in five different variables. _Curricular units 1st semester (enrolled)_ and _Curricular units 2nd semester (enrolled)_, which represent the **number of courses students register for each semester**. We observed **106 potential outliers** in the **first** curricular semester and **82** in the **second semester**. Since the average course load is usually 5 to 6 classes, students taking a **much higher** or **lower number of courses** are naturally flagged as **outliers**. 
+We identified outliers in five different variables. _Curricular units 1st semester (enrolled)_ and _Curricular units 2nd semester (enrolled)_, which represent the number of courses students register for each semester. We observed **106 potential outliers** in the first curricular semester and **82** in the second semester**. Since the average course load is usually 5 to 6 classes, students taking a much higher or lower number of courses are naturally flagged as outliers. 
 
-In the first semester, the **highest value** reaches **26 classes**. Although this is an **ambitious workload**, it remains **possible**. Several situations could explain such a high number: for instance, a student trying to complete their degree quickly, or a student retaking courses after previous failures. These cases can reflect **meaningful academic behaviours**, so removing them would risk losing useful information. 
+In the first semester, the highest value reaches **26 classes**. Although this is an ambitious workload, it remains possible. Several situations could explain such a high number: for instance, a student trying to complete their degree quickly, or a student retaking courses after previous failures. These cases can reflect **meaningful academic behaviours**, so removing them would risk losing useful information. 
 
-For the second semester, the **maximum value** is around **20 classes**, leading to **similar conclusions**. In both semesters, we also observe students enrolled in **zero courses**, which appears as an **extreme value** as well. This may correspond to students who completed most of their required courses earlier, or students taking a temporary break while still being officially enrolled. These profiles are **still relevant** and **should be included**. 
+For the second semester, the maximum value is around **20 classes**, leading to similar conclusions. In both semesters, we also observe students enrolled in zero courses, which appears as an **extreme value** as well. This may correspond to students who completed most of their required courses earlier, or students taking a temporary break while still being officially enrolled. These profiles are still relevant and **should be included**. 
 
-In this context, **these extreme values are not problematic**. On the contrary, they may help us understand whether taking unusually many, or unusually few, courses has an impact on college dropout. For this reason, we decided not to remove or cap these observations. 
+In this context, these extreme values are not problematic. On the contrary, they may help us understand whether taking unusually many, or unusually few, courses has an impact on college dropout. For this reason, we decided not to remove or cap these observations. 
 
-The next variable with detected outliers is _Age at enrollment_ , for which **101 potential outliers** were identified. Since the **average age at enrollment** is around **20 years old**, students beginning their studies at 40 or 50 naturally appear as **unusual cases**. The oldest student is 70 years old, which, while rare, is no need for concern regarding methodology within our analysis. Being 70 years old is no different regarding being classified as a student and this data point **should be included**. These values represent **real and meaningful student profiles**, such as mature students or individuals returning to education after a long break. Excluding them would remove **important diversity** from the dataset and limit our understanding of the different types of students who may or may not drop out. For this reason, **we chose not to remove or limit the age-related outliers.** 
+The next variable with detected outliers is _Age at enrollment_ , for which **101 potential outliers** were identified. Since the average age at enrollment is around **20 years old**, students beginning their studies at 40 or 50 naturally appear as **unusual cases**. The oldest student is 70 years old, which, while rare, is no need for concern regarding methodology within our analysis. Being 70 years old is no different regarding being classified as a student and this data point **should be included**. These values represent real and meaningful student profiles, such as mature students or individuals returning to education after a long break. Excluding them would remove **important diversity** from the dataset and limit our understanding of the different types of students who may or may not drop out. For this reason, we chose not to remove or limit the age-related outliers. 
 
-Finally, outliers were also detected in _Admission grade_ (22 cases) and _Previous qualification grade_ (21 cases). **These extreme values** reflect either **exceptionally high academic performance** or, conversely, unusually **low grades**. Since these cases may provide **insights into how prior academic achievement relates to dropout behavior**, removing or capping them would not be appropriate. We therefore **opted to retain all outliers in these grade variables** as well. 
+Finally, outliers were also detected in _Admission grade_ (22 cases) and _Previous qualification grade_ (21 cases). These extreme values reflect either **exceptionally high academic performance** or, conversely, unusually **low grades**. Since these cases may provide insights into how prior academic achievement relates to dropout behavior, removing or capping them would not be appropriate. We therefore opted to **retain all outliers** in these grade variables as well. 
 
-Based on our **research questions**, we conclude that **removing these outliers would not benefit our analysis**, as they do not represent errors but rather uncommon yet meaningful observations. **Retaining them allows us to capture the full diversity of student profiles** and provides a **more accurate understanding of the factors that may influence college dropout**.
+Based on our research questions, we conclude that removing these outliers would not benefit our analysis, as they **do not represent errors** but rather uncommon yet meaningful observations. Retaining them allows us to capture the full diversity of student profiles and provides a more **accurate understanding of the factors** that may influence college dropout.
 
 
 
@@ -693,7 +690,7 @@ Based on our **research questions**, we conclude that **removing these outliers 
 
 ### 6.1 - Methodology (ANOVA)
 
-We used **one-way ANOVA (Analysis of Variance)*** to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:
+We used one-way **ANOVA (Analysis of Variance)*** to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:
 
 - **p-value**: Statistical significance of differences between groups (α = 0.05)
 - **Eta-squared (η²)**: Effect size measure representing the proportion of variance explained by the target variable (ranges from 0 to 1, where higher values indicate stronger association)
@@ -744,7 +741,7 @@ When evaluating feature importance, both statistical significance (p-value) and 
 - **η² = 0.06 (6%)** : Medium effect  
 - **η² = 0.14 (14%)** : Large effect
 
-For example, marital status as a highly significant **p-value (2.66e-0)**but explains ***less than 1% of variance (η² = 0.009)**,  indicating negligible practical importance. In contrast, **Curricular units 2nd sem (grade)** explains **34% of variance (η² = 0.339)**, representing a large and meaningful effect. When identifying important predictors, the features with **larger effect sizes** should be **prioritized** rather than relying only on p-values.
+For example, marital status as a highly significant p-value (2.66e-0)but explains less than 1% of variance (η² = 0.009),  indicating **negligible practical importance**. In contrast, Curricular units 2nd sem (grade)** explains 34% of variance (η² = 0.339), representing a **large and meaningful effect**. When identifying important predictors, the features with **larger effect sizes** should be **prioritized** rather than relying only on p-values.
 
 ## 6.2 - Top Predictive Variables
 
@@ -1561,8 +1558,11 @@ This comparison reveals how different methods assess feature importance:
 
 **Key Observations:**
 All three methods agree that **_2nd semester grades_** and **_1st semester grades_** are the most important predictors, validating academic performance as the dominant factor. However, they diverge on other features:
+
 - **_Scholarship holder_** and **_Debtor_** rank highly in LIME (practical prediction influence) but lower in Random Forest, suggesting these features work through interactions rather than independently.
+
 - **ANOVA** identifies strong linear relationships (high η² for grades) but may underestimate features that work through complex interactions.
+
 - **Random Forest** balances both direct effects and feature interactions, providing a comprehensive view of predictive power in the classification context.
 
 """))
