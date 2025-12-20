@@ -354,7 +354,6 @@ df = clean_dataframe(df)
 print(f"Shape after cleaning: {df.shape}")
 print(f"Missing values: {df.isna().sum().sum()}")
 ```
-Although we had a well-structured and clean dataset, our main challenge was to determine the reliability of our dataset. We verified if there were any missing values, spotting mistakes, and determined irrelevant variables for our analysis. We pursue our cleaning work with the conversion of the categorical variables. Therefore, the reliable dataset was ready to be analyzed.
 
 ---
 
