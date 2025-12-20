@@ -735,7 +735,7 @@ anova_df.head(15)
 
 When evaluating feature importance, both statistical significance (p-value) and practical significance (effect size) must be considered. With large sample sizes, even trivial differences can reach statistical significance, making **effect size interpretation essential**.
 
-**Effect Size (η²)* measures the proportion of variance in student outcomes explained by each feature, with interpretations:
+**Effect Size (η²)** measures the proportion of variance in student outcomes explained by each feature, with interpretations:
 
 - **η² = 0.01 (1%)** : Small effect
 - **η² = 0.06 (6%)** : Medium effect  
