@@ -7,7 +7,8 @@ authors:
     - "Estela Gonzalez Vizcarra"
 institute: University of Lausanne
 date: today
-title-block-banner: "#0095C8"
+title-block-banner: "#1C3F60"
+title-block-banner-color: "white"
 bibliography: reference.bib
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
 format:
@@ -19,6 +20,7 @@ format:
     code-tools: true
     df-print: paged
     self-contained: true
+    css: styles.css
   pdf:
     toc: false
     echo: false
@@ -35,50 +37,54 @@ execute:
   message: false
 ---
 
+![](images/dropout.png){width=100% fig-align="center"}
+
+
+
 ## 1. - Introduction
 
-Student retention and academic success are crucial challenges for higher education institutions worldwide. Recent international observations show rising university dropout trends across multiple regions, including Australia and the United States [@sokolova2024dropout]. Looking closer at Europe, recent data from the German Center for Higher Education Research and Science Studies (2022), show that almost 30% of bachelor’s students in Germany leave university without graduating [@hachmeister2024german]. In Portugal, which is the focus of our analysis, recent data by Statistics Portugal reveal that a considerable portion of young adults (16.8%) aged from 15 to 34 have dropped out at least one level of education during their academic path [@europedata2024portugal]. Moreover, among those who dropped out, over more than half (50.8%) did not complete their tertiary studies, highlighting that higher education represents a critical point of disengagement [@europedata2024portugal].
-These figures underline the seriousness of dropouts in higher education and the reinforced need for universities to rely on data-driven insights to identify at-risk students and to design early intervention strategies. 
-We chose this topic because predicting student dropout not only helps optimize institutional resources but also supports students in achieving their academic goals. Understanding the factors that influence academic success, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems. This subject is particularly meaningful in data science, as it allows us to combine analytical and predictive methods to better understand and prevent student dropout.
+**Student retention** and **academic success** are crucial challenges for higher education institutions worldwide. Recent international observations show **rising university dropout** trends across multiple regions, including Australia and the United States [@sokolova2024dropout]. Looking closer at Europe, recent data from the German Center for Higher Education Research and Science Studies (2022), show that **almost 30% of bachelor’s students in Germany** leave university **without graduating** [@hachmeister2024german]. **In Portugal**, which is the focus of our analysis, recent data by Statistics Portugal reveal that a considerable portion of **young adults (16.8%) aged from 15 to 34 have dropped out at least one level of education during their academic path** [@europedata2024portugal]. Moreover, among those who dropped out, over more than half **(50.8%) did not complete their tertiary studies**, highlighting that higher education represents a **critical point of disengagement** [@europedata2024portugal].
+These figures underline the **seriousness of dropouts in higher education** and the reinforced **need for universities to rely on data-driven insights** to identify at-risk students and to **design early intervention strategies**. We chose this topic because **predicting student dropout** not only helps **optimize institutional resources** but also supports students in **achieving their academic goals**. Understanding the **factors that influence academic success**, such as **socio-economic background, previous academic performance, or family situation**, can improve educational policies and personalized support systems. This subject is particularly meaningful in data science, as it allows us to combine analytical and predictive methods to **better understand and prevent student dropout**.
 
 
 ## 1.1 - Project Goals
 
-The main objective of this project is to identify the factors that influence students to drop out, stay enrolled, or graduate from higher education. The dataset provides detailed information on each student’s academic performance, socioeconomic background, and demographic profile, offering a comprehensive view of the variables that shape educational outcomes. By the end of our analysis, we seek to identify the most significant combinations of academic and personal factors that influence student success. 
-First, our analysis will focus on academic performance, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether early academic performance can serve as a reliable predictor of future dropout risk. We will then explore the influence of socioeconomic and personal factors, including parental education, occupation, and financial situation, to understand their impact on academic achievement. Lastly,  the dataset will be used to build and evaluate classification models that predict students’ academic status (Dropout, Enrolled, or Graduate). 
-In summary, this study combines exploratory analysis, visualization, and predictive modeling to generate actionable insights that help universities detect at-risk students early and strengthen academic success.
+The **main objective** of this project is to **identify the factors that influence students to drop out, stay enrolled, or graduate from higher education**. The dataset provides detailed information on each student’s academic performance, socioeconomic background, and demographic profile, offering a **comprehensive view of the variables that shape educational outcomes**. By the end of our analysis, we seek to **identify the most significant combinations of academic and personal factors that influence student success**. First, our analysis will focus on **academic performance**, examining how variables such as admission grades, semester evaluations, and course results relate to final outcomes. For instance, we will analyze whether **early academic performance** can serve as a **reliable predictor of future dropout risk**. We will then explore the **influence of socioeconomic and personal factors**, including parental education, occupation, and financial situation, to understand their **impact on academic achievement**. Lastly, the dataset will be used to build and evaluate **classification models that predict students’ academic status** (**Dropout, Enrolled**, or **Graduate**). In summary, this study combines exploratory analysis, visualization, and predictive modeling to generate **actionable insights that help universities detect at-risk students early and strengthen academic success**.
 
 ---
 
 ## 2 - Related Work
 
-As students' dropout is a major challenge in higher education, it represents a well-established area of research that has widely been studied in the literature over the years. Previous research articles have helped us acquire information about the topic, including the methods used in order to address the different research questions. 
 
-One relevant study titled “Predicting Students’ Academic Success and Dropout Using Supervised Machine Learning” investigates the prediction of student academic success using supervised machine learning classification models. Throughout the paper, the authors compare multiple classification algorithms such as Decision Trees, Random Forest or Logistic Regression to assess their ability to predict student outcomes on student data. Their results show that these models are in fact an effective tool for identifying students at risk of dropping out and thus highlights the relevance of formulating this issue as a classification task. 
+As students' dropout is a **major challenge** in higher education, it represents a well-established area of research that has widely been studied in the literature over the years. Previous research articles have helped us acquire information about the topic, including the **methodological approaches** used to address the different research questions. 
 
-Other articles emphasize the importance of constructing robust predictive models, but also the role of feature selection. In particular a recent paper by Anaíle Mendes Rabelo and Luis Enrique Zarate (2024) demonstrates how combining academic performance indicators with contextual variables such as course selection, improves the reliability of dropout prediction models.
 
-In addition, an article published in 2022 named “Towards a Students’ Dropout Prediction Model in Higher Education Institutions Using Machine Learning Algorithms” focuses on the overall analytical pipeline used in educational data mining, from data preprocessing to model evaluation. The authors underline that data quality and preprocessing decisions play a key role in model performance. 
+One relevant study titled _“Predicting Students’ Academic Success and Dropout Using Supervised Machine Learning”_ [@arora2024predicting] investigates the prediction of student academic success using **supervised machine learning classification models**. Throughout the paper, the authors compare multiple classification algorithms such as **Decision Trees**, **Random Forest** or **Logistic Regression** to assess their ability to predict student outcomes on student data. Their results show that these models are in fact an effective tool for identifying students at risk of dropping out and thus highlights the relevance of formulating this issue as a classification task. 
 
-Overall, these research articles guided our methodological choices, particularly our choice of a classification framework, our focus on feature selection and our complete analysis process. Based on this literature, our project combines exploratory data analysis, predictive modeling, and interpretability techniques to better understand student outcomes.
+
+Other articles emphasize the importance of constructing **robust predictive models**, but also the role of **feature selection**. In particular a recent paper by _Anaíle Mendes Rabelo_ and _Luis Enrique Zarate_ (2024) [@sciencedirect2024] demonstrates how combining academic performance indicators with contextual variables such as course selection, improves the reliability of dropout prediction models.
+
+In addition, an article published in 2022 named _“Towards a Students’ Dropout Prediction Model in Higher Education Institutions Using Machine Learning Algorithms”_ [@oqaidi2022dropout] focuses on the overall **analytical pipeline** used in educational **data mining**, from **data preprocessing** to **model evaluation**. The authors underline that data quality and preprocessing decisions play a **key role in model performance**. 
+
+Overall, these research articles guided our methodological choices, particularly our use of a classification framework, our focus on feature selection and our structured analytical process, with additional emphasis on **exploratory data analysis** and **model interpretability**.
 
 
 
 ## 3 - Research Questions
 
-- I.  How do academic performance indicators and study conditions influence students’ likelihood of graduation or dropout?
-- II. What is the impact of demographic and socioeconomic background on students’ probability of dropping out?
-      a.  To what extent do financial factors (debtor status, scholarship holder) affect student retention ?
-- III. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?
-        a.Which features category, academic (grades, units), socioeconomic (debt, scholarship) or demographic (age, gender)  contribute the most in predicting students’ dropout?
+- I. How do academic performance indicators and study conditions influence students' likelihood of graduation or dropout?
+- II. What is the impact of demographic and socioeconomic background on students' probability of dropping out?
+    - a. To what extent do financial factors (debtor status, scholarship holder) affect student retention?
+- III. Can we accurately predict a student's final status (Dropout, Enrolled, or Graduate) based on their demographic, socioeconomic, and academic characteristics. Which are the most relevant among them?
+    - a. Which features category, academic (grades, units), socioeconomic (debt, scholarship) or demographic (age, gender) contribute the most in predicting students' dropout?
 
 ## 4 - Data 
 
 ## 4.1 - Data Sourcing
-The dataset is publicly available on UCI Machine Learning Repository and was created from multiple databases of higher education institutions in Portugal. It is related to enrolled students in different undergraduate programs and shows how different demographic, socioeconomic and academic factors are related to the dropout. Since the data has already been collected and can be directly downloaded from [UCI MLR - Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict%2Bstudents%2Bdropout%2Band%2Bacademic%2Bsuccess){target="_blank"} - [Accessed on 20th October] , there is no need to collect more data via webscraping or APIs. 
+The dataset is publicly available on UCI Machine Learning Repository and was created from multiple databases of higher education institutions in Portugal. It is related to enrolled students in different undergraduate programs and shows **how different demographic, socioeconomic and academic factors are related to the dropout**. Since the data has already been collected and can be directly downloaded from [UCI MLR - Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict%2Bstudents%2Bdropout%2Band%2Bacademic%2Bsuccess){target="_blank"} - [Accessed on 20th October] , there is no need to collect more data via webscraping or APIs. 
 
 ## 4.2 - Data Description
-The dataset, containing data from a Portuguese higher education institution, is provided as a CSV file, approximately 520 KB in size, and contains detailed information about students’demographic, academic and socio-economic characteristics. It includes 4424 student records and 37 variables (features). After reviewing the dataset variables, we removed two irrelevant ones, resulting in 35 relevant variables selected  for analysis.
+The dataset, containing data from a Portuguese higher education institution, is provided as a CSV file, approximately 520 KB in size, and contains detailed information about students’demographic, academic and socio-economic characteristics. It includes 4424 student records and 37 variables (features). After reviewing the dataset variables, we removed two irrelevant ones, resulting in **35 relevant variables selected  for analysis**.
 
 ### 4.2.1 - Data Loading
 
@@ -667,20 +673,32 @@ else:
     print("\n No significant outliers detected!")
 ```
 
-We identified outliers in five different variables. _Curricular units 1st semester (enrolled)_ and _Curricular units 2nd semester (enrolled)_, which represent the number of courses students register for each semester. We observed 106 potential outliers in the first curricular semester and 82 in the second semester. Since the average course load is usually 5 to 6 classes, students taking a much higher or lower number of courses are naturally flagged as outliers. In the first semester, the highest value reaches 26 classes. Although this is an ambitious workload, it remains possible. Several situations could explain such a high number: for instance, a student trying to complete their degree quickly, or a student retaking courses after previous failures. These cases can reflect meaningful academic behaviours, so removing them would risk losing useful information. For the second semester, the maximum value is around 20 classes, leading to similar conclusions. In both semesters, we also observe students enrolled in zero courses, which appears as an extreme value as well. This may correspond to students who completed most of their required courses earlier, or students taking a temporary break while still being officially enrolled. These profiles are still relevant and should be included. In this context, these extreme values are not problematic. On the contrary, they may help us understand whether taking unusually many, or unusually few, courses has an impact on college dropout. For this reason, we decided not to remove or cap these observations.
-The next variable with detected outliers is _Age at enrollment_ , for which 101 potential outliers were identified. Since the average age at enrollment is around 20 years old, students beginning their studies at 40 or 50 naturally appear as unusual cases.The oldest student is 70 years old, which, while rare, is no need for concern regarding methodology within our analysis. Being 70 years old is no different regarding being classified as a student and this data point should be included. These values represent real and meaningful student profiles, such as mature students or individuals returning to education after a long break. Excluding them would remove important diversity from the dataset and limit our understanding of the different types of students who may or may not drop out. For this reason, we chose not to remove or limit the age-related outliers. Finally, outliers were also detected in Admission grade (22 cases) and Previous qualification grade (21 cases). These extreme values reflect either exceptionally high academic performance or, conversely, unusually low grades. Since these cases may provide insights into how prior academic achievement relates to dropout behavior, removing or capping them would not be appropriate. We therefore opted to retain all outliers in these grade variables as well. Based on our research questions, we conclude that removing these outliers would not benefit our analysis, as they do not represent errors but rather uncommon yet meaningful observations. Retaining them allows us to capture the full diversity of student profiles and provides a more accurate understanding of the factors that may influence college dropout.
+We identified outliers in five different variables. _Curricular units 1st semester (enrolled)_ and _Curricular units 2nd semester (enrolled)_, which represent the **number of courses students register for each semester**. We observed **106 potential outliers** in the **first** curricular semester and **82** in the **second semester**. Since the average course load is usually 5 to 6 classes, students taking a **much higher** or **lower number of courses** are naturally flagged as **outliers**. 
+
+In the first semester, the **highest value** reaches **26 classes**. Although this is an **ambitious workload**, it remains **possible**. Several situations could explain such a high number: for instance, a student trying to complete their degree quickly, or a student retaking courses after previous failures. These cases can reflect **meaningful academic behaviours**, so removing them would risk losing useful information. 
+
+For the second semester, the **maximum value** is around **20 classes**, leading to **similar conclusions**. In both semesters, we also observe students enrolled in **zero courses**, which appears as an **extreme value** as well. This may correspond to students who completed most of their required courses earlier, or students taking a temporary break while still being officially enrolled. These profiles are **still relevant** and **should be included**. 
+
+In this context, **these extreme values are not problematic**. On the contrary, they may help us understand whether taking unusually many, or unusually few, courses has an impact on college dropout. For this reason, we decided not to remove or cap these observations. 
+
+The next variable with detected outliers is _Age at enrollment_ , for which **101 potential outliers** were identified. Since the **average age at enrollment** is around **20 years old**, students beginning their studies at 40 or 50 naturally appear as **unusual cases**. The oldest student is 70 years old, which, while rare, is no need for concern regarding methodology within our analysis. Being 70 years old is no different regarding being classified as a student and this data point **should be included**. These values represent **real and meaningful student profiles**, such as mature students or individuals returning to education after a long break. Excluding them would remove **important diversity** from the dataset and limit our understanding of the different types of students who may or may not drop out. For this reason, **we chose not to remove or limit the age-related outliers.** 
+
+Finally, outliers were also detected in _Admission grade_ (22 cases) and _Previous qualification grade_ (21 cases). **These extreme values** reflect either **exceptionally high academic performance** or, conversely, unusually **low grades**. Since these cases may provide **insights into how prior academic achievement relates to dropout behavior**, removing or capping them would not be appropriate. We therefore **opted to retain all outliers in these grade variables** as well. 
+
+Based on our **research questions**, we conclude that **removing these outliers would not benefit our analysis**, as they do not represent errors but rather uncommon yet meaningful observations. **Retaining them allows us to capture the full diversity of student profiles** and provides a **more accurate understanding of the factors that may influence college dropout**.
+
 
 
 ## 6 - Feature Importance Analysis
 
 ### 6.1 - Methodology (ANOVA)
 
-We used one-way ANOVA (Analysis of Variance) to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:
+We used **one-way ANOVA (Analysis of Variance)*** to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:
 
 - **p-value**: Statistical significance of differences between groups (α = 0.05)
 - **Eta-squared (η²)**: Effect size measure representing the proportion of variance explained by the target variable (ranges from 0 to 1, where higher values indicate stronger association)
 
-Variables with p-value < 0.05 are considered significantly associated with student outcomes and may be strong predictors in classification models.
+Variables with **p-value < 0.05** are considered **significantly** associated with student outcomes and may be **strong predictors** in classification models.
 
 ```{python}
 #| label: anova-analysis
@@ -718,21 +736,21 @@ print(f"Significant variables (p < 0.05): {anova_df['significant'].sum()}")
 anova_df.head(15)
 ```
 
-When evaluating feature importance, both statistical significance (p-value) and practical significance (effect size) must be considered. With large sample sizes, even trivial differences can reach statistical significance, making effect size interpretation essential.
+When evaluating feature importance, both statistical significance (p-value) and practical significance (effect size) must be considered. With large sample sizes, even trivial differences can reach statistical significance, making **effect size interpretation essential**.
 
-**Effect Size (η²)** measures the proportion of variance in student outcomes explained by each feature, with interpretations:
+**Effect Size (η²)* measures the proportion of variance in student outcomes explained by each feature, with interpretations:
 
-- **η² = 0.01** (1%): Small effect
-- **η² = 0.06** (6%): Medium effect  
-- **η² = 0.14** (14%): Large effect
+- **η² = 0.01 (1%)** : Small effect
+- **η² = 0.06 (6%)** : Medium effect  
+- **η² = 0.14 (14%)** : Large effect
 
-For example, _marital status_ has a highly significant p-value (2.66e-09) but explains less than 1% of variance (η² = 0.009), indicating negligible practical importance. In contrast, _Curricular units 2nd sem (grade)_ explains 34% of variance (η² = 0.339), representing a large and meaningful effect. When identifying important predictors, the features with larger effect sizes should be prioritized rather than relying only on p-values. 
+For example, marital status as a highly significant **p-value (2.66e-0)**but explains ***less than 1% of variance (η² = 0.009)**,  indicating negligible practical importance. In contrast, **Curricular units 2nd sem (grade)** explains **34% of variance (η² = 0.339)**, representing a large and meaningful effect. When identifying important predictors, the features with **larger effect sizes** should be **prioritized** rather than relying only on p-values.
 
 ## 6.2 - Top Predictive Variables
 
 ### 6.2.1 - Acadamic Performance Indicators
 
-Our exploratory analysis shows relationships between academic performance measures and student outcomes (Dropout, Enrolled, Graduate). Several patterns emerge across admission grades, semester performance, and course load.
+Our exploratory analysis shows relationships between academic performance measures and student outcomes (Dropout, Enrolled, Graduate). Several patterns emerge across **admission grades**, **semester performance**, and **course load**.
 
 ```{python}
 #| label: fig-admission-grade
@@ -751,8 +769,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-In Figure 1, we observe the distribution of the admission grade across the three categories (Dropout, Enrolled Target, and Graduate). Dropout students have an average admission grade of around 122, with several outliers reaching above 160. Enrolled Target students show a very similar average grade to Dropout students, but with fewer extreme values. Graduate students display a slightly higher average admission grade, around 125, and similarly present a few outliers above 160.
-Overall, the three groups show comparable distributions, with considerable overlap in their admission grades. Graduate students tend to have a marginally higher average, which may suggest that stronger academic preparation is associated with a greater likelihood of graduating. However, the presence of high admission grades in both the Dropout and Graduate categories indicates that good grades alone do not fully determine academic outcomes. In other words, while admission grade may play a role, it is not a decisive predictor of whether a student will graduate or drop out.
+In **Figure 1**, we observe the distribution of the admission grade across the three categories (Dropout, Enrolled Target, and Graduate). **Dropout students* have an **average admission grade** of around **122**, with several **outliers ** reaching above **160.** **Enrolled Target students** show a very similar average grade to Dropout students, but with **fewer extreme values**. **Graduate students** display a slightly higher average admission grade, around **125**, and similarly present a few outliers above **160.** Overall, the three groups show **comparable distributions**, with considerable overlap in their admission grades. Graduate students tend to have a marginally higher average, which may suggest that stronger academic preparation is associated with a greater likelihood of graduating. However, the presence of high admission grades in both the Dropout and Graduate categories indicates that good grades alone do not fully determine academic outcomes. In other words, while **admission grade** may play a **role**, it is **not** a **decisive predictor** of whether a student will graduate or drop out.
 
 
 ```{python}
@@ -772,10 +789,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 2 shows the distribution of the Previous qualification (grade) across the three target students which are Dropout, Enrolled, and Graduate. All three boxplots display similar characteristics, with medians around 130-133. The minimum and maximum values are also comparable from 100 to 165. The three groups have multiple outliers at both lower and upper extremes of the grade distribution, dropout and graduates are the one that show more extreme values.
+**Figure 2** shows the distribution of the **Previous qualification (grade)** across the three target students which are Dropout, Enrolled, and Graduate. All three boxplots display similar characteristics, with medians around **130-133**. The minimum and maximum values are also comparable from **100 to 165**. The three groups have multiple outliers at both lower and upper extremes of the grade distribution, dropout and graduates are the one that show more **extreme values**.
 
 
-For the interpretation, as the distributions and medians are quite similar this suggests that previous qualification grade is not a strong predictor of students' performance. Interestingly the Dropout group’s median is quite high which indicates that students who drop out have not necessarily lower prior grades than those who graduate or stay enrolled.The outliers indicate that in each category there are both very high and very low grades, which suggests that there are other factors beyond academic performance.
+For the interpretation, as the distributions and medians are quite similar this suggests that previous qualification grade is not a strong predictor of students’ performance. Interestingly the **Dropout group’s median** is quite **high** which indicates that students who drop out have not necessarily lower prior grades than those who graduate or stay enrolled.The outliers indicate that in each category there are both very high and very low grades, which suggests that there are other factors **beyond academic performance**.
 
 
 ```{python}
@@ -795,8 +812,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-In Figure 3, we see the first-semester grades for the three target groups: Dropout, Enrolled Target, and Graduate. Dropout students show a wide range of grades. Enrolled Target students have grades around a median of 12.5, with moderate spread. Graduate students have the highest median, around 13.5, and a tighter distribution.
-For interpretation, the wide spread of Dropout students suggests that leaving the program is not only due to low grades. Enrolled Target students show average performance, indicating steady progress but not full completion. Graduate students perform consistently better, suggesting that higher and more stable first-semester grades are associated with graduation.
+In **Figure 3**, we see the first-semester grades for the three target groups: Dropout, Enrolled Target, and Graduate. Dropout students show a wide range of grades. Enrolled Target students have grades around a median of **12.5**, with **moderate spread**. Graduate students have the highest median, around **13.5**, and a **tighter distribution**. For interpretation, the wide spread of Dropout students suggests that leaving the program is not only due to low grades. Enrolled Target students show **average performance**, indicating steady progress but not full completion. Graduate students perform consistently better, suggesting that higher and more stable first-semester grades are associated with graduation.
 
 
 ```{python}
@@ -817,7 +833,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 4 reveals distinct patterns across the three groups. The Dropout category displays the widest range of performance. Enrolled students demonstrate moderate variability with a median near 12 units. Graduates show the tightest distribution and highest median at approximately 13 units. By the second semester, the gaps between groups widen. Many dropouts completed few or no units (the distribution starts at 0), indicating this is likely when they left the program. Graduates continued performing well with consistent results around 13 units. Enrolled students fell somewhere in between with decent but mixed performance. The second semester appears to be a turning point where struggling students drop out while successful students keep their momentum.
+**Figure 4** reveals distinct patterns across the three groups. The Dropout category displays the **widest range of performance**. Enrolled students demonstrate moderate variability with a median near **12 units**. Graduates show the tightest distribution and highest median at approximately **13 units**. By the second semester, the gaps between groups widen. Many dropouts completed few or no units (the distribution starts at 0), indicating this is likely when they left the program. Graduates continued performing well with consistent results around **13 units**. Enrolled students fell somewhere in between with decent but **mixed performance**. The second semester appears to be a turning point where struggling students drop out while successful students keep their momentum.
 
 ```{python}
 #| label: fig-1st-sem-enrolled
@@ -836,8 +852,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 5 demonstrates the relationship between Curricular units 1st Sem (enrolled) and the three Target outcomes (Dropout, Enrolled, Graduate). All three groups show similar box positions with medians around 5-6 units. Dropouts and Enrolled students have nearly identical distributions, while Graduates have a slightly higher box position. All groups show numerous outliers, particularly on the upper end, with some students enrolling in 15-26 units.
-Figure 5 reveals that the number of courses taken is not a factor influencing different outcomes, since all groups show similar enrollment patterns. Many high outliers appear across all groups, suggesting that ambitious enrollment is common regardless of eventual outcome.
+**Figure 5** demonstrates the relationship between **Curricular units 1st Sem (enrolled)** and the three Target outcomes (**Dropout, Enrolled, Graduate**). All three groups show similar box positions with medians around **5-6 units**. Dropouts and Enrolled students have nearly **identical distributions**, while Graduates have a slightly higher box position. All groups show **numerous outliers**, particularly on the upper end, with some students enrolling in **15-26 units**. **Figure 5** reveals that the number of courses taken is not a factor influencing different outcomes, since all groups show **similar enrollment patterns**. Many high outliers appear across all groups, suggesting that ambitious enrollment is common regardless of eventual outcome.
 
 
 ```{python}
@@ -858,8 +873,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-As shown in Figure 6, Dropout and Enrolled students have similar distributions with their boxes positioned in the lower range. Graduate students show a noticeably higher box position and a wider spread. All three groups display numerous outliers, particularly on the upper end.
-Like the 1st semester enrollment patterns, the 2nd semester shows that graduates tend to enroll in slightly more courses, though the differences remain modest. The similar enrollment behavior between dropouts and enrolled students suggests that course load decisions in the 2nd semester don't strongly differentiate these groups - the key difference lies in completion rates rather than enrollment ambitions.
+As shown in **Figure 6**, Dropout and Enrolled students have **similar distributions** with their boxes positioned in the lower range. Graduate students show a noticeably **higher box position** and **a wider spread**. All three groups display numerous outliers, particularly on the upper end. Like the 1st semester enrollment patterns, the **2nd semester** shows that graduates tend to **enroll in slightly more courses**, though the differences remain modest. The similar enrollment behavior between dropouts and enrolled students suggests that course load decisions in the 2nd semester don’t strongly differentiate these groups - the key difference lies in completion rates rather than enrollment ambitions.
 
 
 ```{python}
@@ -883,8 +897,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 7 shows the proportion of daytime and evening attendance within the three groups (Dropout, Enrolled, Graduate). Daytime attendance dominates across all three groups, representing approximately 85-90% of students. However, Dropout students show a slightly higher proportion of evening attendance (around 15%) compared to Enrolled and Graduate students (around 10%). 
-This small difference might indicate that evening students face additional challenges, though the similarity across all groups suggests attendance timing is not a primary driver of dropout rates.
+**Figure 7** shows the proportion of daytime and evening attendance within the three groups (Dropout, Enrolled, Graduate). Daytime attendance dominates across all three groups, representing approximately **85-90% of students**. However, Dropout students show a slightly higher proportion of evening attendance (**around 15%**) compared to Enrolled and Graduate students (**around 10%**). This small difference might indicate that evening students face additional challenges, though the similarity across all groups suggests attendance timing is not a primary driver of dropout rates.
 
 
 ```{python}
@@ -904,8 +917,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 8 shows the Application order by the three target students. All three groups show similar distributions and are positioned in the lower range. The medians are approximately 1.5-2 for all categories. The upper whisker is similar for the three groups, reaching 3 and the lower whisker is at 0 for Graduates and around 1 for Dropout and Enrolled. There are numerous outliers that are at 4, 5 and 6, and even 9 for Enrolled category, indicating that some students applied as their 4th, 5th, 6th and 9th choice.
-Regarding the interpretation, as the distribution is similar in the three categories this implies that the application order has not a strong relationship with students' success. Most students have applied to this institution as their first or second choice, suggesting that institutional preferences do not really predict if a student will drop out, stay enrolled or graduate. We can also confirm that, as the outliers are similar, the application order is not a meaningful predictor of a student's performance.
+**Figure 8** shows the **Application order by the three target students**. All three groups show similar distributions and are positioned in the lower range. The medians are approximately **1.5-2** for all categories. The **upper whisker** is similar for the three groups, reaching **3** and the **lower whisker** is at **0** for Graduates and around 1 for Dropout and Enrolled. There are numerous outliers that are at **4, 5 and 6, and even 9** for Enrolled category, indicating that some students applied as their **4th, 5th, 6th and 9th** choice. Regarding the interpretation, as the **distribution is similar** in the three categories this implies that the application order has not a strong relationship with students’ success. Most students have applied to this institution as their first or second choice, suggesting that institutional preferences do not really predict if a student will drop out, stay enrolled or graduate. We can also confirm that, as the outliers are similar, the application order is **not** a **meaningful predictor of a student’s performance**.
 
 
 ```{python}
@@ -929,25 +941,22 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 9 shows the proportion of displaced students (those who moved or changed residence) across the three target groups. Dropout students have the highest proportion of non-displaced students at around 53%. Enrolled students show about 45% non-displaced. Graduate students have the lowest at approximately 40% non-displaced, meaning 60% of graduates relocated.
-The pattern shows that students who relocated for their studies were more likely to graduate. This could be because moving demonstrates stronger commitment to education, or because staying home means dealing with work, family responsibilities, or other obligations that interfere with studying. Dropouts were the least likely to have relocated, suggesting that remaining in their original environment may have made it harder to focus on academics.
+**Figure 9** shows the **proportion of displaced students** (those who moved or changed residence) across the three target groups. Dropout students have the highest proportion of non-displaced students at around **53%**. Enrolled students show about **45% non-displaced**. Graduate students have the lowest at approximately **40% non-displaced**, meaning **60% of graduates relocated**. The pattern shows that students who relocated for their studies were more likely to graduate. This could be because moving demonstrates **stronger commitment** to education, or because staying home means dealing with work, family responsibilities, or other obligations that interfere with studying. Dropouts were the least likely to have relocated, suggesting that remaining in their original environment may have made it harder to focus on academics.
 
 
 ### 6.2.2 - Key Findings for Academic Performance and Study Conditions
 
-Graduates have higher admission grades and previous qualification grades compared to dropouts, though the differences are relatively small. This demonstrates that prior academic preparation shows limited predictive power.
+Graduates have **higher admission grades** and **previous qualification grades** compared to dropouts, though the differences are **relatively small**. This demonstrates that prior academic preparation shows **limited predictive power**.
 
 
-First-semester grades are the strongest predictor of students' performance. Students who drop out show dramatically lower grades (many between 0-5), while graduates consistently have higher grades (median around 12). First semester performance is therefore a critical warning signal for identifying at-risk students.
+**First-semester grades** are the **strongest predictor* of students’ performance. Students who drop out show dramatically lower grades (many between **0-5**), while graduates consistently have higher grades (median around **12**). **First semester performance** is therefore a **critical warning signal** for identifying at-risk students.
 
+Graduates tend to enroll in more courses in the first semester (median around **6-7**) compared to those who drop out (median around **5-6**), this may reflect a **stronger initial academic engagement**, even though this difference remains **small**.
 
-Graduates tend to enroll in more courses in the first semester (median around 6-7) compared to those who drop out (median around 5-6), this may reflect a stronger initial academic engagement, even though this difference remains small.
+Daytime/evening attendance suggests an observable difference and proves to be an important predictor. Evening students show higher drop out rates, around **15%** of dropouts compared to **10%** for graduates. This reflects additional challenges faced by students who must balance work, or family responsibilities with their studies.
 
+Students who are displaced have higher graduation rates (**60%** of graduates vs around **48%** of dropouts). This **counter-intuitive pattern** reflects that relocating for studies may reflect **stronger commitment** or **independence**.
 
-Daytime/evening attendance suggests an observable difference and proves to be an important predictor. Evening students show higher drop out rates, around 15% of dropouts compared to 10% for graduates. This reflects additional challenges faced by students who must balance work, or family responsibilities with their studies.
-
-
-Students who are displaced have higher graduation rates (60% of graduates vs around 48% of dropouts). This counter-intuitive pattern reflects that relocating for studies may reflect stronger commitment or independence.
 
 
 ### 6.2.3 - Demographic & Socioeconomic Background
@@ -970,10 +979,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 10 demonstrates the relationship between Age at enrollment and the three students outcomes. The Dropout group has the highest median age, which is approximately 23 and the widest interquartile range. The Enrolled group has a median age around 20-21, while the Graduate group shows the lowest median age at around 19. It is also the narrowest. The three groups contain numerous outliers, showing particularly older students from late 30th to 70 years old.
+**Figure 10** demonstrates the **relationship between Age at enrollment and the three students outcomes**. The Dropout group has the **highest median age**, which is approximately **23** and the **widest interquartile range**. The Enrolled group has a median age around **20-21**, while the Graduate group shows the lowest median age at around **19**. It is also the narrowest. The three groups contain numerous outliers, showing particularly older students from late 30th to 70 years old.
 
 
-This suggests that age at enrollment is a significant predictor of students' performance. We see that students who enroll at a younger age are more likely to graduate, while older students face more risk of dropping out. This can be caused by several factors, such as the fact that younger students may have fewer external responsibilities compared to older students that may deal with multiple commitments that can interfere with their studies. The wider distribution dropout’s group shows that students can occur at any age. However, older students do successfully graduate, showing that age does not determine success alone.
+This suggests that age at enrollment is a **significant predictor of students’ performance**. We see that students who enroll at a younger age are more likely to graduate, while older students face more risk of dropping out. This can be caused by several factors, such as the fact that younger students may have fewer external responsibilities compared to older students that may deal with multiple commitments that can interfere with their studies. The wider distribution dropout’s group shows that students can occur at any age. However, older students do successfully graduate, showing that age does not determine success alone.
 
 ```{python}
 #| label: fig-gender
@@ -996,10 +1005,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 11 shows the proportion of genders within each of the three target groups (Dropout, Enrolled Target, Graduate). In the Dropout group, the proportion of male and female students is almost equal. In contrast, both the Enrolled Target and Graduate groups have a higher proportion of female students than male students. 
+
+**Figure 11** shows the **proportion of genders** within each of the three target groups (Dropout, Enrolled Target, Graduate). In the Dropout group, the proportion of male and female students is almost **equal**. In contrast, both the **Enrolled Target** and **Graduate groups** have a **higher proportion of female students** than male students.
 
 
-This suggests that female students tend to persist and complete their studies at higher rates than male students. Male students appear slightly more likely to interrupt or drop out of their programs, which may contribute to the lower proportions observed in the Enrolled Target and Graduate groups.
+This suggests that female students tend to persist and complete their studies at **higher rates** than male students. Male students appear slightly more likely to interrupt or drop out of their programs, which may contribute to the lower proportions observed in the Enrolled Target and Graduate groups.
 
 ```{python}
 #| label: fig-scholarship
@@ -1023,9 +1033,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 12 shows the proportion of scholarship holders within each target group (Dropout, Enrolled Target, Graduate).
-In both the Dropout and Enrolled Target groups, the vast majority of students do not receive a scholarship, with only a small proportion being scholarship holders. In contrast, the Graduate group contains a noticeably higher proportion of scholarship recipients.
-This suggests that students who receive a scholarship may be more likely to graduate than those who do not. Scholarships often reduce financial pressure and provide support that may help students remain enrolled and complete their studies. Conversely, students without scholarships seem more represented among dropouts and ongoing enrollments.
+**Figure 12** shows the **proportion of scholarship holders** within each target group (Dropout, Enrolled Target, Graduate). In both the Dropout and Enrolled Target groups, the vast majority of students do not receive a scholarship, with only a small proportion being scholarship holders. In contrast, the Graduate group contains a noticeably **higher proportion of scholarship recipients**. This suggests that students who receive a scholarship may be more likely to graduate than those who do not. Scholarships often reduce financial pressure and provide support that may help students remain enrolled and complete their studies. Conversely, students without scholarships seem more represented among dropouts and ongoing enrollments.
 
 
 ```{python}
@@ -1049,8 +1057,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The Figure 13 shows that the dropout group has the largest proportion of students who are debtors. Enrolled students still include some debtors, but the proportion is noticeably smaller. In the graduate group, almost all students have no debt, with only a very small fraction appearing as debtors.
-
+The **Figure 13** shows that the **dropout group** has the **largest proportion of students who are debtors**. Enrolled students still include some debtors, but the proportion is **noticeably smaller**. In the graduate group, almost all students have no debt, with only a very small fraction appearing as debtors.
 
 This trend suggests that having debt is more common among students who end up dropping out, hinting that financial pressure may contribute to early departure. Conversely, students without debt seem more likely to remain enrolled and reach graduation.
 
@@ -1091,8 +1098,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-@fig-marital-status shows the distribution of marital status across the three target groups using a jittered scatter plot. While marital status achieved statistical significance in the ANOVA test (p < 0.001), its effect size is negligible (η² = 0.009), explaining less than 1% of the variance in student outcomes. This small effect is evident in the plot, where points align in nearly identical horizontal bands for each category, indicating that the marital status profiles are essentially the same among Dropout, Enrolled, and Graduate students.
-The visual clearly shows that the vast majority of students are single, which is expected given the typical age range of university students. The less common marital statuses married, divorced, widower, facto union, and legally separated—appear only sporadically and are spread evenly across the three groups, further confirming the lack of meaningful differences.
+**Figure 14** shows the **distribution of marital status across the three target groups** using a jittered scatter plot. While **marital status** achieved **statistical significance** in the **ANOVA test** (**p < 0.001**), its e**ffect size** is **negligible** (**η² = 0.009**), explaining **less than 1%** of the variance in student outcomes. This **small effect** is evident in the plot, where points align in nearly identical horizontal bands for each category, indicating that the marital status profiles are essentially the same among Dropout, Enrolled, and Graduate students. The visual clearly shows that the **vast majority of students** are **single**, which is expected given the typical age range of university students. The less common marital statuses married, divorced, widower, facto union, and legally separated—appear only sporadically and are spread evenly across the three groups, further confirming the lack of meaningful differences.
 
 
 ```{python}
@@ -1113,21 +1119,21 @@ plt.tight_layout()
 plt.show()
 ```
 
-Figure 15 shows the Mother’s qualification across the three target groups. Enrolled and  Graduate distributions are identical. The three groups display nearly identical distributions with all median at approximately 19. However, the Dropout group shows a slightly wider interquartile range, extending lower compared to the two other groups. They reach similar limits and there are no outliers.
+**Figure 15** shows the **Mother’s qualification** across the three target groups. Enrolled and Graduate **distributions** are **identical**. The **three groups** display **nearly identical distributions** with all median at approximately **19**. However, the **Dropout group** shows a **slightly wider interquartile range**, extending lower compared to the two other groups. They reach **similar limits** and there are **no outliers**.
 
-While the three distributions are very similar, the dropout category shows slightly fewer students with mothers who have very  low qualifications, but this is minimal.  The overall similarity indicates that a mother's qualification has little influence on whether students complete their studies. This is also supported by the small effect size.
+While the three distributions are very similar, the dropout category shows slightly fewer students with mothers who have very low qualifications, but this is minimal. The overall similarity indicates that **a mother’s qualification has little influence** on whether students complete their studies. This is also supported by the **small effect size**.
+
 
 
 ### 6.2.4 - Key Findings for Demographic & Socioeconomic Background 
 
-Younger students are more likely to graduate while older students face higher dropout risk. The dropout group also shows the widest age variation. This suggests that older students may face competing life responsibilities that interfere with their studies.
-Female students graduate at slightly higher rates, making up a larger proportion of both enrolled and graduate groups compared to dropouts (50-50 split).
+**Younger students** are **more likely to graduate** while **older students** face **higher dropout risk**. The **dropout group** also shows the**widest age variation**. This suggests that **older students may face competing life responsibilities** that interfere with their studies. **Female students graduate at slightly higher rates**, making up a larger proportion of both enrolled and graduate groups compared to dropouts (50-50 split).
 
+Graduates have a noticeably higher proportion of **scholarship recipients** compared to **dropouts** and **enrolled students**, most of whom do not receive scholarships. This suggests that **financial support may help students complete their studies**. **Dropouts have the largest proportion of students in debt**, while enrolled students include some debtors but fewer than dropouts. Graduates have almost no debt, indicating that financial pressure is strongly associated with dropout, whereas **financial stability aligns with graduation**.
 
-Graduates have a noticeably higher proportion of scholarship recipients compared to dropouts and enrolled students, where the majority receive no scholarship. This suggests financial support helps complete their studies. 
-Dropouts have the largest proportion of students who are debtors. Enrolled students include some debtors but fewer than Dropout students. Graduates have almost no debt. Financial pressure is strongly associated with dropout, while financial stability is associated with graduation.
-All three groups show identical distributions. Other marital statuses appear equally as outliers across all categories. Marital status has no relationship with student outcomes and no predictive value.
-The three groups display nearly identical distributions with medians around 19. While the dropout group shows a slightly wider spread extending lower, the difference is minimal. Mother’s qualification has little to no influence on whether students complete their studies.
+All three groups show **nearly identical distributions for marital status**, with outliers appearing equally across categories. This suggests that **marital status has little to no relationship with student outcomes** and holds no predictive value.
+
+The groups also display nearly identical distributions in terms of age, with medians around 19. The dropout group shows a slightly wider spread extending lower, but the difference is minimal. Finally, **mother’s qualification** appears to have **little to no influence** on whether students complete their studies.
 
 
 ## 7 - Predictive Modelling
@@ -1567,36 +1573,46 @@ All three methods agree that **_2nd semester grades_** and **_1st semester grade
 This project aimed to understand the factors driving student dropout and academic success. The objective was also to assess whether these outcomes can be predicted accurately, using demographic, socioeconomic, and academic information. Therefore, we were able to answer our research questions through a combination of exploratory data analysis and predictive modeling techniques.
 
 1. **How students’ academic indicators influence their likelihood of graduating or dropping out.** 
-**a. To what extent do financial factors (debtor status, scholarship holder) affect student retention ?**
 
-The analysis shows that academic performance indicators are the strongest determinant of students’ final academic outcomes. Second-semester grades constitute the most decisive factor in distinguishing between students who drop out, remain enrolled, or graduate, as reflected by a very large ANOVA effect size (η² = 0.339). First-semester grades are used as a critical warning signal for identifying students in difficulty. In contrast, indicators of prior academic preparation and course enrollment intensity show lower significance, which suggest that success at the university level relies more heavily on student’s adaptation and performance within the academic environment than on their background before university.
+The analysis indicates that **academic performance indicators** are the **strongest determinant of students’ final academic outcomes**. Second-semester grades constitute the **most decisive factor** in distinguishing between students who drop out, remain enrolled, or graduate, as reflected by a very large **ANOVA effect size** (**η² = 0.339**). **First-semester grades** are used as a **critical warning signal** for identifying students in difficulty. In contrast, indicators of prior academic preparation and course enrollment intensity show **lower significance**, which suggests that success at the university level relies more heavily on student’s adaptation and performance within the academic environment than on their background before university.
+
 Study conditions contribute to outcomes in a more nuanced way. Students attending evening programs face slightly higher dropout risk, likely due to external commitments, while students who relocate for their studies appear more likely to graduate, possibly reflecting stronger educational commitment or fewer competing obligations.
-Overall, these results point to a critical transition between the first and second semesters. While early academic difficulties can be identified shortly after enrollment, second-semester performance has a major role in determining whether they rebound or lose interest. From a practical perspective, this emphasizes the importance of early academic monitoring and targeted interventions during the first year to reduce dropout risk and promote student success.
 
-2. **What is the impact of demographic and socioeconomic background on students’ probability of dropping out? a.Which features category, academic, socioeconomic or demographic contribute the most in predicting students’ dropout?**
+Overall, these results point to a **critical transition** between the **first and second semesters**. While early academic difficulties can be identified shortly after enrollment, **second-semester performance** has a **major role** in determining whether they rebound or lose interest. From a practical perspective, this emphasizes the **importance of early academic monitoring** and **targeted interventions** during the first year to reduce dropout risk and promote student success.
 
-While demographic and socioeconomic factors have an impact on student outcomes, it is not as significant compared to academic performance. A clear pattern is observed for _Age at enrollment_: younger students are more likely to graduate, while older students face a higher risk of dropout (η² ≈ 0.065). However, age alone does not determine success. We also observe gender differences, with female students being more likely to remain enrolled and graduate, despite the effect size being moderate. 
-Financial factors also show a clear correlation with student outcomes. Dropping out indeed correlates with indebtedness. Students with debt are more likely to drop out, whereas those who graduate are less concerned about it. These findings support the LIME analysis, which shows that debt and scholarships are two of the most important non-academic factors: financial issues increase the risk of dropping out, while financial support improves retention.
-Considering other demographic variables such as marital status , application order and parental background, their effect sizes are very small, their distributions are similar across outcome groups and model-based explanations consistently rank them among the least important predictors. Therefore, although they are statistically significant, their effects are negligible and do not meaningfully explain differences in student outcomes.
-The findings indicate that socioeconomic factors, such as financial stress (_debt_) and financial support (_scholarships_), have a significant impact on student retention. Whereas demographic characteristics such as age and gender play a secondary role compared to academic performance and financial stability.
 
-3. Can we accurately predict a student’s final status (Dropout, Enrolled, or Graduate), and which characteristics are most relevant?
+2. **What is the impact of demographic and socioeconomic background on students' probability of dropping out?**
+    a. **To what extent do financial factors (debtor status, scholarship holder) affect student retention?**
+
+While **demographic and socioeconomic factors** have an **impact on student outcomes**, it is not as significant compared to academic performance. A clear pattern is observed for _Age at enrollment_: younger students are more likely to graduate, while older students face a higher risk of dropout (η² ≈ 0.065). However, age alone does not determine success. We also observe gender differences, with **female students** being **more likely** to **remain enrolled** and **graduate**, despite the effect size being moderate. 
+
+**Financial factors** also show a **clear correlation** with **student outcomes**. Dropping out indeed correlates with indebtedness. Students with debt are more likely to drop out, whereas those who graduate are less concerned about it. These findings support the **LIME analysis**, which shows that **debt and scholarships** are two of the **most important non-academic factors**: financial issues increase the risk of dropping out, while financial support improves retention.
+
+Considering other demographic variables such as marital status , application order and parental background, their **effect sizes** are **very small**, their distributions are similar across outcome groups and model-based explanations consistently rank them among the least important predictors. Therefore, although they are **statistically significant**, their effects are **negligible** and do not meaningfully explain differences in student outcomes.
+
+The findings indicate that **socioeconomic factors**, such as financial stress (_debt_) and financial support (_scholarships_), have a **significant impact** on student retention. Whereas demographic characteristics such as age and gender play a secondary role compared to academic performance and financial stability.
+
+
+3. **Can we accurately predict a student's final status (Dropout, Enrolled, or Graduate), and which characteristics are most relevant?**
+    a. **Which features category, academic, socioeconomic or demographic contribute the most in predicting students' dropout?**
 
 While the previous research questions focused on identifying and interpreting the individual effects of academic, socioeconomic, and demographic factors on student dropout, the final step in the analysis evaluates these factors jointly within a predictive modeling framework. This shift from explanation to prediction assesses how well a machine-learning model can classify students’ final academic status and which categories of variables contribute most to its performance.
 
-The results indicate that predicting students’ final academic status is feasible, though subject to important limitations. The Random Forest model performs well for students with clearly defined outcomes, particularly graduates and dropouts, while currently enrolled students are harder to classify, reflecting the inherent uncertainty of trajectories that are still in progress rather than shortcomings of the model itself.
+The results indicate that predicting students’ final academic status is feasible, though subject to important limitations. The **Random Forest model** performs **well** for students with clearly defined outcomes, particularly graduates and dropouts, while currently enrolled students are harder to classify, reflecting the inherent uncertainty of trajectories that are still in progress rather than shortcomings of the model itself.
 
-Regarding predictor relevance, a clear hierarchy emerges consistently across all methods. Academic features dominate predictive performance, accounting for approximately 60–70% of explanatory power, with second semester grades and first semester grades ranking highest across ANOVA, Random Forest importance, and LIME explanations. Socioeconomic factors form the second most influential category (around 20–30%), with scholarship holding and debtor status standing out as key non-academic predictors that condition students’ ability to sustain academic performance. Demographic characteristics contribute more modestly, with age at enrollment being the most relevant, while contextual and macroeconomic variables show minimal predictive value. These findings confirm that student outcomes can be predicted with moderate accuracy, primarily driven by academic performance and reinforced by financial stability.
+Regarding **predictor relevance**, a clear hierarchy emerges consistently across all methods. **Academic features** dominate predictive performance, accounting for approximately **60–70%** of **explanatory power**, with second semester grades and first semester grades ranking **highest** across **ANOVA**, **Random Forest importance**, and **LIME explanations**. **Socioeconomic factors** form the **second most influential** category (around **20–30%**), with scholarship holding and debtor status standing out as key non-academic predictors that condition students’ ability to sustain academic performance. Demographic characteristics contribute more modestly, with age at enrollment being the most relevant, while contextual and macroeconomic variables show minimal predictive value. These findings confirm that **student outcomes** can be predicted with **moderate accuracy**, primarily driven by academic performance and reinforced by financial stability.
+
 
 ---
 
-Taken together, this analysis highlights a clear hierarchy in the factors shaping student dropout and academic success. Academic performance stands out as the most influential determinant, followed by financial conditions, while demographic characteristics play a more limited supporting role and contextual variables show little direct impact. Across all methods, semester grades and especially second-semester performance, consistently emerge as the strongest indicators of students’ final outcomes.
+Taken together, this analysis highlights a clear hierarchy in the factors shaping student dropout and academic success. **Academic performance** stands out as the **most influential determinant**, followed by financial conditions, while demographic characteristics play a more limited supporting role and contextual variables show little direct impact. Across all methods, **semester grades** and especially **second-semester performance**, consistently emerge as the **strongest indicators** of students’ final outcomes.
 
-Rather than being a simple correlation, academic performance appears to be the channel through which other factors take effect. Financial pressure, age-related responsibilities, and study conditions influence students’ capacity to perform academically, which in turn directly affects their likelihood of persisting or dropping out. 
+Rather than being a simple correlation, **academic performance** appears to be the channel through which other factors take effect. Financial pressure, age-related responsibilities, and study conditions influence students’ capacity to perform academically, which in turn directly affects their likelihood of persisting or dropping out.
 
-The practical implications are clear. Effective dropout prevention should focus on early academic monitoring, combined with targeted financial support, particularly during the first year and before second-semester outcomes become decisive. Encouragingly, the most influential factors identified are also those that institutions can directly address through academic support services, financial aid policies, and early warning systems.
+The practical implications are clear. **Effective dropout prevention** should focus on **early academic monitoring**, combined with **targeted financial support**, particularly during the first year and before second-semester outcomes become decisive. Encouragingly, the **most influential factors** identified are also those that institutions can directly address through **academic support services**, **financial aid policies**, and **early warning systems**.
 
-Overall, this project demonstrates that student dropout is neither inevitable nor primarily driven by factors beyond institutional control. With timely, data-driven interventions targeting the right factors at the right moments, higher education institutions can meaningfully improve student retention and academic success.
+Overall, this project demonstrates that student dropout is **neither inevitable nor primarily driven by factors beyond institutional control**. With timely, **data-driven interventions** targeting the right factors at the right moments, higher education institutions can meaningfully improve **student retention and academic success**.
+
 
 
 ## 9 - Appendix
@@ -1605,7 +1621,7 @@ This following analysis is used to validate the robustness of our results, while
 
 ```{python}
 
-display(Markdown("\n## 7.1 - LIME Analysis - Class-Wise Aggregation\n"))
+display(Markdown("\n## 9.1 - LIME Analysis - Class-Wise Aggregation\n"))
 
 # Number of samples to analyze per class
 samples_per_class = 100  # Increased from 20 for more robust analysis
@@ -1706,7 +1722,7 @@ display(Markdown("""
 **Analysis of Dropout Risk Factors:** The aggregated LIME analysis across 100 dropout samples reveals the most influential features driving dropout predictions. Second semester grades emerge as the dominant predictor with a mean importance of 0.0852, significantly higher than any other feature. This is followed by scholarship holder status (0.0525) and debtor status (0.0370), highlighting how financial pressures compound academic struggles. Age at enrollment (0.0283) and first semester grades (0.0234) also play important roles. Notably, all top features appear in all 100 samples, demonstrating their consistent relevance across different dropout cases. The relatively low standard deviations (especially for scholarship holder and debtor status) indicate these features have stable, predictable effects, making them reliable indicators for early intervention systems targeting at-risk students.
 """))
 
-display(Markdown("\n## 7.2 - Feature Importance Comparison Across Classes\n"))
+display(Markdown("\n## 9.2 - Feature Importance Comparison Across Classes\n"))
 
 # Get top features from all classes
 all_top_features = set()
