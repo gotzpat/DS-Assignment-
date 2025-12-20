@@ -673,7 +673,7 @@ The next variable with detected outliers is _Age at enrollment_ , for which 101 
 
 ## 6 - Feature Importance Analysis
 
-### 6.1 - Methodology
+### 6.1 - Methodology (ANOVA)
 
 We used one-way ANOVA (Analysis of Variance) to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:
 
@@ -726,7 +726,7 @@ When evaluating feature importance, both statistical significance (p-value) and 
 - **η² = 0.06** (6%): Medium effect  
 - **η² = 0.14** (14%): Large effect
 
-For example, marital status has a highly significant p-value (2.66e-09) but explains less than 1% of variance (η² = 0.009), indicating negligible practical importance. In contrast, "Curricular units 2nd sem (grade)" explains 34% of variance (η² = 0.339), representing a large and meaningful effect. When identifying important predictors, it's better to prioritize features with larger effect sizes rather than relying only on p-values. 
+For example, _marital status_ has a highly significant p-value (2.66e-09) but explains less than 1% of variance (η² = 0.009), indicating negligible practical importance. In contrast, _Curricular units 2nd sem (grade)_ explains 34% of variance (η² = 0.339), representing a large and meaningful effect. When identifying important predictors, the features with larger effect sizes should be prioritized rather than relying only on p-values. 
 
 ## 6.2 - Top Predictive Variables
 
@@ -1132,11 +1132,11 @@ The three groups display nearly identical distributions with medians around 19. 
 
 ## 7 - Predictive Modelling
 
-In this section, we begin building a predictive model aimed at understanding which factors are most strongly associated with student dropout. Our goal is not only to classify students into the three outcome categories (Dropout, Enrolled, Graduate), but also to identify which variables contribute most to the risk of dropping out.
+In this section, we begin building a predictive model aimed at understanding which factors are most strongly associated with student dropout. Our goal is not only to classify students into the three outcome categories (Dropout, Enrolled, Graduate), but mainly to identify which variables contribute most to the **risk of dropping out**.
 
-We train a Random Forest classifier as a first baseline model. This allows us to evaluate predictive performance and obtain a first indication of which features may be important. To further interpret and validate these results, we use LIME explanations, both at the individual level (example students) and globally across multiple samples.
+We train a **Random Forest classifier** as a first baseline model. This allows us to evaluate predictive performance and obtain a first indication of which features may be important. To further interpret and validate these results, we use **LIME explanations**, both at the individual level (example students) and globally across multiple samples.
 
-This modelling part is therefore an exploratory step toward understanding dropout risk: the aim is to identify meaningful patterns, highlight influential academic or demographic factors, and evaluate which features could be most relevant for predicting student success or failure. Later, these insights can be refined and made more specific to dropout prediction.
+This modelling part is therefore an exploratory step toward identifying meaningful patterns, influential academic or demographic factors, and evaluating which features could be most relevant for predicting student success or failure. Later, these insights can be refined and made more specific to dropout prediction.
 
 
 ```{python}
@@ -1213,6 +1213,10 @@ display(Markdown("\n## 7.1 - Model Performance\n"))
 accuracy = accuracy_score(y_test, y_pred)
 display(Markdown(f"**Overall Accuracy:** {accuracy:.3f} ({accuracy*100:.1f}%)"))
 
+display(Markdown("""
+The Random Forest classifier achieved an overall accuracy of 67.3%, correctly predicting students' academic performance in approximately two-thirds of cases. However, accuracy by itself is not sufficient, and it is necessary to examine the model's performance for each class. 
+"""))
+
 # Classification Report as DataFrame
 report_dict = classification_report(y_test, y_pred, output_dict=True)
 report_df = pd.DataFrame(report_dict).transpose()
@@ -1231,6 +1235,12 @@ display(main_classes_df)
 summary_df = report_df.loc[['accuracy', 'macro avg', 'weighted avg']].copy()
 display(Markdown("\n### Global Performance\n"))
 display(summary_df)
+display(Markdown("""
+**Performance varies significantly across the three outcomes.** The model performs best at identifying Dropout and Graduate students, with F1-scores of **0.707** and **0.773** respectively. However, it struggles with the Enrolled category, achieving only an F1-score of **0.392**. This means that the model has difficulty distinguishing between currently enrolled students and those who will drop out or graduate.
+
+**The confusion matrix reveals specific prediction patterns.** The model correctly identifies 185 out of 284 dropouts (65.1% recall) and 338 out of 442 graduates (76.5% recall). The struggle with Enrolled students is evident: only **73** out of **159** (45.9%) are correctly classified, with many being misclassified as either future graduates (53 cases) or potential dropouts (33 cases). This reflects the inherent difficulty in predicting outcomes for students still in progress, their final status remains uncertain until they complete their program or drop out.
+
+**Handling class imbalance.** With a smaller number of Enrolled students in the dataset (159 vs 284 Dropouts and 442 Graduates), the model has **less training data to learn patterns** for this group. To address this imbalance, we used the _`class_weight='balanced'`_ parameter in the Random Forest model, which automatically adjusts weights inversely proportional to the frequency of classes.  This ensures the model gives equal attention to all three classes during training rather than being biased tward the majority class. While this helps mitigate the imbalance, the challenge remains: enrolled students represent an **"in-between"** state that is harder to characterize than the final outcomes of dropping out or graduating."""))
 
 # Class distribution comparison
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
@@ -1251,14 +1261,6 @@ plt.tight_layout()
 plt.show()
 
 display(Markdown("""
-The Random Forest classifier achieved an overall accuracy of 67.3%, correctly predicting students' academic performance in approximately two-thirds of cases. However, accuracy by itself is not enough; it is necessary to examine the model's performance for each class.
-
-**Performance varies significantly across the three outcomes.** The model performs best at identifying Dropout and Graduate students, with F1-scores of 0.707 and 0.773 respectively. However, it struggles with the Enrolled category, achieving only an F1-score of 0.392. This means that the model has difficulty distinguishing between currently enrolled students and those who will drop out or graduate.
-
-**The confusion matrix reveals specific prediction patterns.** The model correctly identifies 185 out of 284 dropouts (65.1% recall) and 338 out of 442 graduates (76.5% recall). The struggle with Enrolled students is evident: only 73 out of 159 (45.9%) are correctly classified, with many being misclassified as either future graduates (53 cases) or potential dropouts (33 cases). This reflects the inherent difficulty in predicting outcomes for students still in progress, their final status remains uncertain until they complete their program or drop out.
-
-**Handling class imbalance.** With a smaller number of Enrolled students in the dataset (159 vs 284 Dropouts and 442 Graduates), the model has less training data to learn patterns for this group. To address this imbalance, we used the `class_weight='balanced'` parameter in the Random Forest model, which automatically adjusts weights inversely proportional to the frequency of classes.  This ensures the model gives equal attention to all three classes during training rather than being biased toward the majority class. While this helps mitigate the imbalance, the fundamental challenge remains: enrolled students represent an "in-between" state that is harder to characterize than the final outcomes of dropping out or graduating.
-
 **Predicted distribution.** The last figure shows the predicted distribution of classes after applying the model. Despite the class imbalance in the original data, the model with balanced class weights manages to capture quite well the real distribution, proving that the balancing strategy is effective.
 
 """))
@@ -1270,7 +1272,7 @@ The Random Forest classifier achieved an overall accuracy of 67.3%, correctly pr
 display(Markdown("\n## 7.2 - Random Forest Feature Importance\n"))
 
 display(Markdown("""
-Random Forest models calculate feature importance by measuring how much each feature contributes to reducing prediction error across all decision trees in the forest. Features that consistently lead to better splits and more accurate predictions receive higher importance scores. It measures each variable’s contribution to prediction while considering all other features, capturing interactions and non-linear relationships.
+Random Forest models calculate **feature importance** by measuring how much each feature contributes to reducing prediction error across all decision trees in the forest. Features that consistently lead to better splits and more accurate predictions receive **higher importance scores**. It measures each variable’s contribution to prediction while considering all other features, capturing interactions and non-linear relationships.
 """))
 
 feature_importance = pd.DataFrame({
@@ -1292,7 +1294,7 @@ plt.tight_layout()
 plt.show()
 
 display(Markdown("""
-Even though Random Forest differs from ANOVA by evaluating variables in combination rather than in isolation, results obtained in both cases show that academic performance variables (_1st and 2nd semester grade_) are dominant.
+Even though Random Forest differs from ANOVA by evaluating variables in combination rather than in isolation, results obtained in both cases show that **academic performance variables** (_1st and 2nd semester grade_) are dominant.
 
 Variables like financial or administrative factors showed weak effects in ANOVA but appear among the top 15 Random Forest  features because they interact with academic variables to improve predictions. Therefore, these variables reveal conditional effects such as financial stress that can increase academic risk when performance is already low. Thus, these interactions enhance both predictive accuracy and the interpretation of underlying patterns in the data.
 """))
@@ -1327,13 +1329,12 @@ def balanced_predict_proba(X_sample):
 # PART 1: INDIVIDUAL EXAMPLES (One per class for illustration)
 # ============================================================================
 
-display(Markdown("\n## 7.3 - LIME Explanations - Individual Examples\n"))
+display(Markdown("\n## 7.3 - LIME Explanations (Individual Examples)\n"))
 display(Markdown("*Showing one representative example from each class*\n"))
 
 display(Markdown("""
-LIME (Local Interpretable Model-agnostic Explanations) helps us understand why the model made a specific prediction for an individual student. Unlike feature importance which shows what matters globally across all predictions, LIME reveals which features drove the decision for this particular case. The tables below show the top 10 features that most influenced this prediction. Positive weights push the prediction toward the predicted class, while negative weights push against it. The magnitude indicates the strength of influence.
+LIME (Local Interpretable Model-agnostic Explanations) helps us understand **why the model made a specific prediction for an individual student**. Unlike feature importance which shows what matters globally across all predictions, LIME reveals which features drove the decision for this particular case. The tables below show the **top 10 features that most influenced this prediction**. Positive weights push the prediction toward the predicted class, while negative weights push against it. The magnitude indicates the strength of influence.
 """))
-
 # Select one sample from each class with fixed seed for reproducibility
 np.random.seed(42)
 sample_indices = []
@@ -1343,16 +1344,15 @@ for class_label in sorted(y.unique()):
         sample_indices.append(np.random.choice(class_indices, size=1)[0])
 
 # Dictionary to store class-specific interpretations
-# Dictionary to store class-specific interpretations
 class_interpretations = {
     'Dropout': """
-**Interpretation:** This student was correctly identified as at risk of dropping out. The dominant factor is their poor academic performance, with a second semester grade of 10.78 or below strongly pushing toward dropout (large negative weight). Additionally, lacking scholarship support increases dropout risk. Protective factors such as not being in debt, younger age (≤19), and decent first semester grades (≤11) provide some counterbalance, are not enough to overcome poor results in the second semester. This highlights how academic difficulties, especially in later semesters, are key indicators of the risk of dropping out.
+**Interpretation:** This student was correctly identified as at risk of dropping out. The dominant factor is their **poor academic performance**, with a second semester grade of 10.78 or below strongly pushing toward dropout (large negative weight). Additionally, lacking **scholarship support** increases dropout risk. Protective factors such as not being in debt, younger age (≤19), and decent first semester grades (≤11) provide some counterbalance, are not enough to overcome poor results in the second semester. This highlights how academic difficulties, especially in later semesters, are key indicators of the risk of dropping out.
 """,
     'Enrolled': """
-**Interpretation:** This enrolled student presents a highly mixed profile that makes prediction challenging. Poor second semester grades (≤10.78) strongly push toward dropout, while positive factors like having no scholarship (paradoxically protective here), not being in debt, low unemployment rate, and moderate academic performance in the first semester push toward remaining enrolled or graduating. The model shows significant uncertainty, with multiple features pulling in different directions. This reflects the inherent difficulty in predicting outcomes for students still in progress, they're in a transitional state where their trajectory could go either way.
+**Interpretation:** This enrolled student presents a highly **mixed profile** that makes prediction challenging. **Poor second semester grades** (≤10.78) strongly push toward dropout, while positive factors like having **no scholarship (paradoxically protective here), not being in debt, low unemployment rate, and moderate academic performance in the first semester push toward remaining enrolled or graduating**. The model shows **significant uncertainty**, with multiple features pulling in different directions. This reflects the inherent difficulty in predicting outcomes for students still in progress, they're in a transitional state where their trajectory could go either way.
 """,
     'Graduate': """
-**Interpretation:** This student shows mixed but ultimately positive indicators of academic success. While poor second semester grades (≤10.78) push against graduation, several protective factors dominate: having no scholarship, not being in debt, low unemployment rate, being in a traditional age range (20-25), and having moderate previous qualifications all strongly predict graduation. The combination of financial stability (no debt) and adequate academic preparation outweighs the concerning second semester performance, allowing the model to confidently predict graduation. This demonstrates that graduation is driven by multiple factors beyond just grades alone.
+**Interpretation:** This student shows **mixed but ultimately positive indicators** of academic success. While poor second semester grades (≤10.78) push against graduation, several protective factors dominate: having **no scholarship, not being in debt, low unemployment rate, being in a "traditional" age range (20-25), and having moderate previous qualifications** all strongly predict graduation. The combination of financial stability (no debt) and adequate academic preparation outweighs the concerning second semester performance, allowing the model to confidently predict graduation. This demonstrates that graduation is driven by multiple factors beyond just grades alone.
 """
 }
 
@@ -1415,6 +1415,7 @@ for idx, sample_idx in enumerate(sample_indices):
 # ============================================================================
 
 display(Markdown("\n## 7.4 - Global LIME Feature Importance\n"))
+display(Markdown("""ADD A SMALL TRANSITION"""))
 
 sample_size = len(X_test)
 sample_indices_global = np.random.choice(len(X_test), size=sample_size, replace=False)
@@ -1445,12 +1446,12 @@ display(Markdown("\n### Top 15 Most Important Features (LIME Global)\n"))
 display(lime_importance_global.head(15).round(4))
 
 display(Markdown("""
-**Global LIME Feature Importance:** When aggregating LIME explanations across all three classes (Dropout, Enrolled, and Graduate), we obtain a global view of which features most consistently influence the model's predictions regardless of outcome. The ranking remains remarkably similar to the dropout-specific analysis, with second semester grades (0.0583) again dominating as the single most important predictor. Scholarship holder status (0.0527) and debtor status (0.0369) maintain their strong positions, reinforcing that financial factors and academic performance are universally important across all prediction scenarios.
+**Global LIME Feature Importance:** When aggregating LIME explanations across all three classes (Dropout, Enrolled, and Graduate), we obtain a **global view** of which features most consistently **influence the model's predictions regardless of outcome**. The ranking remains similar to the dropout-specific analysis, with **second semester grades** (0.0583) again dominating as the single most important predictor. **Scholarship holder status** (0.0527) and **debtor status** (0.0369) maintain their strong positions, reinforcing that financial factors and academic performance are universally important across all prediction scenarios.
 
-The consistency between dropout-specific and global feature importance suggests that the same fundamental factors drive all student outcomes, just in different directions. Strong academic performance and financial stability predict graduation, while their absence predicts dropout. Enrolled students fall somewhere in between, exhibiting mixed patterns of these key indicators. This global perspective validates our earlier findings and demonstrates that interventions targeting academic support and financial aid would benefit students across all outcome categories, not just those at risk of dropping out.
+The consistency between dropout-specific and global feature importance suggests that the same fundamental factors drive all student outcomes, just in different directions. Strong academic performance and financial stability predict graduation, while their absence predicts dropout. Enrolled students fall somewhere in between, showing mixed patterns of these key indicators. This global perspective validates our earlier findings and demonstrates that interventions targeting academic support and financial aid would benefit students across all outcome categories, not just those at risk of dropping out.
 """))
 
-display(Markdown("\n### Where Does the Model Struggle?\n"))
+display(Markdown("\n### Where does the Model struggle?\n"))
 
 # Analyze confusion patterns in LIME sample
 confusion_patterns = {
@@ -1481,8 +1482,8 @@ display(Markdown("\n**Confusion patterns in LIME sample:**\n"))
 display(confusion_display_df)
 
 # Identify problematic patterns
-display(Markdown("\n**Key Issues:**\n"))
 
+display(Markdown("\n**Key Issues:**\n"))
 for true_class in sorted(y.unique()):
     total = sum(confusion_patterns[true_class]['predicted_as'].values())
     correct = confusion_patterns[true_class]['predicted_as'][true_class]
@@ -1497,7 +1498,7 @@ for true_class in sorted(y.unique()):
             f"({main_confusion[1]}/{total} cases, {main_confusion[1]/total*100:.0f}%)"
         ))
 
-display(Markdown("""Due to the class imbalance the model can struggle, since most of the cases people are Graduated, there is a bias towards that group in the data, hence, it is more likelt to predict that for cases when it is hesitant."""))
+display(Markdown("""Due to the class imbalance the model can struggle, since most of the cases people are Graduated, there is a bias towards that group in the data. Hence, it is more likely to predict that for cases when it is hesitant."""))
 
 ```
 
@@ -1553,14 +1554,11 @@ This comparison reveals how different methods assess feature importance:
 - **ANOVA η² (green)**: Statistical effect size measuring the proportion of variance each feature explains in the target variable. Captures linear relationships and univariate associations.
 
 **Key Observations:**
-
-All three methods agree that **2nd semester grades** and **1st semester grades** are the most important predictors, validating academic performance as the dominant factor. However, they diverge on other features:
-
-- **Scholarship holder** and **Debtor** rank highly in LIME (practical prediction influence) but lower in Random Forest, suggesting these features work through interactions rather than independently.
+All three methods agree that **_2nd semester grades_** and **_1st semester grades_** are the most important predictors, validating academic performance as the dominant factor. However, they diverge on other features:
+- **_Scholarship holder_** and **_Debtor_** rank highly in LIME (practical prediction influence) but lower in Random Forest, suggesting these features work through interactions rather than independently.
 - **ANOVA** identifies strong linear relationships (high η² for grades) but may underestimate features that work through complex interactions.
 - **Random Forest** balances both direct effects and feature interactions, providing a comprehensive view of predictive power in the classification context.
 
-The convergence on academic performance across all three methods strongly validates its critical role, while divergences highlight how financial and demographic factors contribute through different mechanisms, some through direct effects (captured by ANOVA), others through complex interactions (captured by Random Forest and LIME).
 """))
 
 ```
@@ -1568,13 +1566,14 @@ The convergence on academic performance across all three methods strongly valida
 ## 8 - Conclusion 
 This project aimed to understand the factors driving student dropout and academic success. The objective was also to assess whether these outcomes can be predicted accurately, using demographic, socioeconomic, and academic information. Therefore, we were able to answer our research questions through a combination of exploratory data analysis and predictive modeling techniques.
 
-1. The first research question therefore focuses on understanding how students’ academic indicators influence their likelihood of graduating or dropping out. a. To what extent do financial factors (debtor status, scholarship holder) affect student retention ?
+1. **How students’ academic indicators influence their likelihood of graduating or dropping out.** 
+**a. To what extent do financial factors (debtor status, scholarship holder) affect student retention ?**
 
-The analysis indicates that academic performance indicators are the strongest determinant of students’ final academic outcomes. Second-semester grades constitute the most decisive factor in distinguishing between students who drop out, remain enrolled, or graduate, as reflected by a very large ANOVA effect size (η² = 0.339). First-semester grades are used as a critical warning signal for identifying students in difficulty. In contrast, indicators of prior academic preparation and course enrollment intensity show lower significance, which suggest that success at the university level relies more heavily on student’s adaptation and performance within the academic environment than on their background before university.
+The analysis shows that academic performance indicators are the strongest determinant of students’ final academic outcomes. Second-semester grades constitute the most decisive factor in distinguishing between students who drop out, remain enrolled, or graduate, as reflected by a very large ANOVA effect size (η² = 0.339). First-semester grades are used as a critical warning signal for identifying students in difficulty. In contrast, indicators of prior academic preparation and course enrollment intensity show lower significance, which suggest that success at the university level relies more heavily on student’s adaptation and performance within the academic environment than on their background before university.
 Study conditions contribute to outcomes in a more nuanced way. Students attending evening programs face slightly higher dropout risk, likely due to external commitments, while students who relocate for their studies appear more likely to graduate, possibly reflecting stronger educational commitment or fewer competing obligations.
 Overall, these results point to a critical transition between the first and second semesters. While early academic difficulties can be identified shortly after enrollment, second-semester performance has a major role in determining whether they rebound or lose interest. From a practical perspective, this emphasizes the importance of early academic monitoring and targeted interventions during the first year to reduce dropout risk and promote student success.
 
-2. What is the impact of demographic and socioeconomic background on students’ probability of dropping out? a.Which features category, academic, socioeconomic or demographic contribute the most in predicting students’ dropout?
+2. **What is the impact of demographic and socioeconomic background on students’ probability of dropping out? a.Which features category, academic, socioeconomic or demographic contribute the most in predicting students’ dropout?**
 
 While demographic and socioeconomic factors have an impact on student outcomes, it is not as significant compared to academic performance. A clear pattern is observed for _Age at enrollment_: younger students are more likely to graduate, while older students face a higher risk of dropout (η² ≈ 0.065). However, age alone does not determine success. We also observe gender differences, with female students being more likely to remain enrolled and graduate, despite the effect size being moderate. 
 Financial factors also show a clear correlation with student outcomes. Dropping out indeed correlates with indebtedness. Students with debt are more likely to drop out, whereas those who graduate are less concerned about it. These findings support the LIME analysis, which shows that debt and scholarships are two of the most important non-academic factors: financial issues increase the risk of dropping out, while financial support improves retention.
@@ -1591,9 +1590,9 @@ Regarding predictor relevance, a clear hierarchy emerges consistently across all
 
 ---
 
-Taken together, this analysis reveals a clear hierarchy in the determinants of student dropout and academic success. This analysis highlights a clear hierarchy in the factors shaping student dropout and academic success. Academic performance stands out as the most influential determinant, followed by financial conditions, while demographic characteristics play a more limited supporting role and contextual variables show little direct impact. Across all methods, semester grades and especially second-semester performance, consistently emerge as the strongest indicators of students’ final outcomes.
+Taken together, this analysis highlights a clear hierarchy in the factors shaping student dropout and academic success. Academic performance stands out as the most influential determinant, followed by financial conditions, while demographic characteristics play a more limited supporting role and contextual variables show little direct impact. Across all methods, semester grades and especially second-semester performance, consistently emerge as the strongest indicators of students’ final outcomes.
 
-Rather than being a simple correlation, academic performance appears to be the channel through which other factors take effect. Financial pressure, age-related responsibilities, and study conditions influence students’ capacity to perform academically, which in turn directly affects their likelihood of persisting or dropping out. This makes the first year of study, and particularly the transition to the second semester, a period for intervention
+Rather than being a simple correlation, academic performance appears to be the channel through which other factors take effect. Financial pressure, age-related responsibilities, and study conditions influence students’ capacity to perform academically, which in turn directly affects their likelihood of persisting or dropping out. 
 
 The practical implications are clear. Effective dropout prevention should focus on early academic monitoring, combined with targeted financial support, particularly during the first year and before second-semester outcomes become decisive. Encouragingly, the most influential factors identified are also those that institutions can directly address through academic support services, financial aid policies, and early warning systems.
 
@@ -1601,7 +1600,7 @@ Overall, this project demonstrates that student dropout is neither inevitable no
 
 
 ## 9 - Appendix
-Analyzing 100 samples per class to identify robust patterns and handle class imbalance. 
+
 This following analysis is used to validate the robustness of our results, while the main body focuses on the full dataset to reflect real student outcome distributions.
 
 ```{python}
@@ -1766,3 +1765,5 @@ Overall, these results indicate that the importance of the academic and financia
 
 """))
 ```
+
+## References
