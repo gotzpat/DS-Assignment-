@@ -43,7 +43,7 @@ execute:
 
 ## 1. - Introduction
 
-Student retention and academic success are crucial challenges for higher education institutions worldwide. Recent international observations show **rising university dropout** trends across multiple regions, including Australia and the United States [@sokolova2024dropout]. Looking closer at Europe, recent data from the German Center for Higher Education Research and Science Studies (2022), show that almost 30% of bachelor’s students in Germany leave university without graduating [@hachmeister2024german]. **In Portugal**, which is the focus of our analysis, recent data by Statistics Portugal reveal that a considerable portion of young adults (16.8%) aged from 15 to 34 have dropped out at least one level of education during their academic path [@europedata2024portugal]. Moreover, among those who dropped out, over more than half (50.8%)** did not complete their tertiary studies, highlighting that higher education represents a **critical point of disengagement** [@europedata2024portugal].
+Student retention and academic success are crucial challenges for higher education institutions worldwide. Recent international observations show **rising university dropout** trends across multiple regions, including Australia and the United States [@sokolova2024dropout]. Looking closer at Europe, recent data from the German Center for Higher Education Research and Science Studies (2022), show that almost 30% of bachelor’s students in Germany leave university without graduating [@hachmeister2024german]. **In Portugal**, which is the focus of our analysis, recent data by Statistics Portugal reveal that a considerable portion of young adults (16.8%) aged from 15 to 34 have dropped out at least one level of education during their academic path [@europedata2024portugal]. Moreover, among those who dropped out, over **more than half (50.8%)** did not complete their tertiary studies, highlighting that higher education represents a **critical point of disengagement** [@europedata2024portugal].
 These figures underline the seriousness of dropouts in higher education and the reinforced need for universities to rely on data-driven insights to identify at-risk students and to design early intervention strategies. We chose this topic because predicting student dropout not only helps **optimize institutional resources** but also supports students in achieving their **academic goals**. Understanding **the factors that influence academic success**, such as socio-economic background, previous academic performance, or family situation, can improve educational policies and personalized support systems. This subject is particularly meaningful in data science, as it allows us to combine analytical and predictive methods to **better understand and prevent** student dropout.
 
 
@@ -62,7 +62,7 @@ One relevant study titled _“Predicting Students’ Academic Success and Dropou
 
 Other articles emphasize the importance of constructing **robust predictive models**, but also the role of **feature selection**. In particular a recent paper by _Anaíle Mendes Rabelo_ and _Luis Enrique Zarate_ (2024) [@sciencedirect2024] demonstrates how combining academic performance indicators with contextual variables such as course selection, improves the reliability of dropout prediction models.
 
-In addition, an article published in 2022 named _“Towards a Students’ Dropout Prediction Model in Higher Education Institutions Using Machine Learning Algorithms”_ [@oqaidi2022dropout] focuses on the overall **analytical pipeline** used in educational data mining, from data preprocessing to model evaluation. The authors underline that **data quality** and **preprocessing decisions** play a key role in model performance**. 
+In addition, an article published in 2022 named _“Towards a Students’ Dropout Prediction Model in Higher Education Institutions Using Machine Learning Algorithms”_ [@oqaidi2022dropout] focuses on the overall **analytical pipeline** used in educational data mining, from data preprocessing to model evaluation. The authors underline that **data quality** and **preprocessing decisions** play a key role in model performance. 
 
 Overall, these research articles guided our methodological choices, particularly our use of a classification-based predictive framework and the selection of Random Forest models, which are well suited to capturing non-linear relationships and interactions among features. We complement our analysis with feature importance and LIME explanations to ensure interpretability alongside predictive performance.
 
@@ -298,7 +298,7 @@ Through this step, we didn't encounter any difficult challenges. The dataset was
 
 One of the most important steps in our project is data cleaning and wrangling. After running the code to check for missing values and undefined numerical data, we found that the dataset contains no missing values, no mistakes and no data entry mistakes.
 
-The dataset was already encoded, and we removed _Application mode_ and _Tuition fees up to date_ variables because they are not relevant to our research questions. Therefore we dropped two columns from the dataset. Ensuring that the numeric columns are numeric, categorical variables such as _Gender_, _Debtor_, _Displaced_ , _Daytime/Evening attendance_ were translated to readable string labels for analysis. Although we had a well-structured and clean dataset, our main challenge was to determine the reliability of our dataset. We verified if there were any missing values, spotting mistakes, and determined irrelevant variables for our analysis. We pursue our cleaning work with the conversion of the categorical variables. Therefore, the reliable dataset was ready to be analyzed.
+The dataset was already encoded, and we removed **_Application mode_** and **_Tuition fees up to date_** variables because they are not relevant to our research questions. Therefore we dropped two columns from the dataset. Ensuring that the numeric columns are numeric, categorical variables such as _Gender_, _Debtor_, _Displaced_ , _Daytime/Evening attendance_ were translated to readable string labels for analysis. Although we had a well-structured and clean dataset, our main challenge was to determine the reliability of our dataset. We verified if there were any missing values, spotting mistakes, and determined irrelevant variables for our analysis. We pursue our cleaning work with the conversion of the categorical variables. Therefore, the reliable dataset was ready to be analyzed.
 
 
 
@@ -669,7 +669,7 @@ else:
     print("\n No significant outliers detected!")
 ```
 
-We identified outliers in five different variables. _Curricular units 1st semester (enrolled)_ and _Curricular units 2nd semester (enrolled)_, which represent the number of courses students register for each semester. We observed **106 potential outliers** in the first curricular semester and **82** in the second semester**. Since the average course load is usually 5 to 6 classes, students taking a much higher or lower number of courses are naturally flagged as outliers. 
+We identified outliers in five different variables. _Curricular units 1st semester (enrolled)_ and _Curricular units 2nd semester (enrolled)_, which represent the number of courses students register for each semester. We observed **106 potential outliers in the first curricular semester** and **82 in the second semester**. Since the average course load is usually 5 to 6 classes, students taking a much higher or lower number of courses are naturally flagged as outliers. 
 
 In the first semester, the highest value reaches **26 classes**. Although this is an ambitious workload, it remains possible. Several situations could explain such a high number: for instance, a student trying to complete their degree quickly, or a student retaking courses after previous failures. These cases can reflect **meaningful academic behaviours**, so removing them would risk losing useful information. 
 
@@ -689,7 +689,7 @@ Based on our research questions, we conclude that removing these outliers would 
 
 ### 6.1 - Methodology (ANOVA)
 
-We used one-way **ANOVA (Analysis of Variance)*** to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:
+We used one-way **ANOVA (Analysis of Variance)** to identify which numeric variables show significant differences across the three target groups (Dropout, Enrolled, Graduate). For each variable, we calculated:
 
 - **p-value**: Statistical significance of differences between groups (α = 0.05)
 - **Eta-squared (η²)**: Effect size measure representing the proportion of variance explained by the target variable (ranges from 0 to 1, where higher values indicate stronger association)
@@ -740,7 +740,7 @@ When evaluating feature importance, both statistical significance (p-value) and 
 - **η² = 0.06 (6%)** : Medium effect  
 - **η² = 0.14 (14%)** : Large effect
 
-For example, marital status as a highly significant p-value (2.66e-0)but explains less than 1% of variance (η² = 0.009),  indicating **negligible practical importance**. In contrast, Curricular units 2nd sem (grade)** explains 34% of variance (η² = 0.339), representing a **large and meaningful effect**. When identifying important predictors, the features with **larger effect sizes** should be **prioritized** rather than relying only on p-values.
+For example, marital status as a highly significant p-value (2.66e-0)but explains less than 1% of variance (η² = 0.009),  indicating **negligible practical importance**. In contrast, Curricular units 2nd sem (grade) explains 34% of variance (η² = 0.339), representing a **large and meaningful effect**. When identifying important predictors, the features with **larger effect sizes** should be **prioritized** rather than relying only on p-values.
 
 ## 6.2 - Top Predictive Variables
 
@@ -765,7 +765,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-In **Figure 1**, we observe the distribution of the admission grade across the three categories (Dropout, Enrolled Target, and Graduate). **Dropout students* have an **average admission grade** of around **122**, with several **outliers ** reaching above **160.** **Enrolled Target students** show a very similar average grade to Dropout students, but with **fewer extreme values**. **Graduate students** display a slightly higher average admission grade, around **125**, and similarly present a few outliers above **160.** Overall, the three groups show **comparable distributions**, with considerable overlap in their admission grades. Graduate students tend to have a marginally higher average, which may suggest that stronger academic preparation is associated with a greater likelihood of graduating. However, the presence of high admission grades in both the Dropout and Graduate categories indicates that good grades alone do not fully determine academic outcomes. In other words, while **admission grade** may play a **role**, it is **not** a **decisive predictor** of whether a student will graduate or drop out.
+In **Figure 1**, we observe the distribution of the admission grade across the three categories (Dropout, Enrolled Target, and Graduate). **Dropout students** have an average admission grade of around **122**, with **several outliers**  reaching above **160**. **Enrolled Target students** show a very similar average grade to Dropout students, but with **fewer extreme values**. **Graduate students** display a slightly higher average admission grade, around **125**, and similarly present a few outliers above **160**. Overall, the three groups show **comparable distributions**, with considerable overlap in their admission grades. Graduate students tend to have a marginally higher average, which may suggest that stronger academic preparation is associated with a greater likelihood of graduating. However, the presence of high admission grades in both the Dropout and Graduate categories indicates that good grades alone do not fully determine academic outcomes. In other words, while **admission grade** may play a role, it is **not a decisive predictor** of whether a student will graduate or drop out.
 
 
 ```{python}
@@ -945,13 +945,13 @@ plt.show()
 Graduates have **higher admission grades** and **previous qualification grades** compared to dropouts, though the differences are **relatively small**. This demonstrates that prior academic preparation shows **limited predictive power**.
 
 
-**First-semester grades** are the **strongest predictor* of students’ performance. Students who drop out show dramatically lower grades (many between **0-5**), while graduates consistently have higher grades (median around **12**). **First semester performance** is therefore a **critical warning signal** for identifying at-risk students.
+First-semester grades are the **strongest predictor of students’ performance**. Students who drop out show dramatically lower grades (many between **0-5**), while graduates consistently have higher grades (median around **12**). First semester performance is therefore a critical warning signal for identifying at-risk students.
 
 Graduates tend to enroll in more courses in the first semester (median around **6-7**) compared to those who drop out (median around **5-6**), this may reflect a **stronger initial academic engagement**, even though this difference remains **small**.
 
 Daytime/evening attendance suggests an observable difference and proves to be an important predictor. Evening students show higher drop out rates, around **15%** of dropouts compared to **10%** for graduates. This reflects additional challenges faced by students who must balance work, or family responsibilities with their studies.
 
-Students who are displaced have higher graduation rates (**60%** of graduates vs around **48%** of dropouts). This **counter-intuitive pattern** reflects that relocating for studies may reflect **stronger commitment** or **independence**.
+Students who are displaced have higher graduation rates (**60%** of graduates vs around **48%** of dropouts). This counter-intuitive pattern reflects that relocating for studies may reflect **stronger commitment** or **independence**.
 
 
 
@@ -1263,7 +1263,7 @@ plt.tight_layout()
 plt.show()
 
 display(Markdown("""
-**Predicted distribution.** The last figure shows the predicted distribution of classes after applying the model. Despite the class imbalance in the original data, the model with balanced class weights manages to capture quite well the real distribution, proving that the balancing strategy is effective.
+**Predicted distribution.** This last figure shows the predicted distribution of classes after applying the model. Despite the class imbalance in the original data, the model with balanced class weights manages to capture quite well the real distribution, proving that the balancing strategy is effective.
 
 """))
 
@@ -1296,9 +1296,13 @@ plt.tight_layout()
 plt.show()
 
 display(Markdown("""
-Even though Random Forest differs from ANOVA by evaluating variables in combination rather than in isolation, results obtained in both cases show that **academic performance variables** (_1st and 2nd semester grade_) are dominant.
+The Random Forest feature importance analysis clearly shows that **academic performance variables** dominate the prediction of student outcomes. In particular, 2nd semester grades and 1st semester grades are by far the most important features in the model, contributing the largest share to predictive accuracy. This indicates that students’ performance during their first year is the strongest signal for distinguishing between dropout, enrolled, and graduate outcomes.
+This finding is **fully consistent with the ANOVA results**. In the ANOVA ranking, the same two grade-related variables show very low p-values and the largest effect sizes (η² = 0.339 for 2nd semester grades and η² = 0.244 for 1st semester grades). Therefore, both methods agree that early academic performance explains a substantial portion of the variance in student outcomes and is the most reliable indicator for prediction and intervention.
 
-Variables like financial or administrative factors showed weak effects in ANOVA but appear among the top 15 Random Forest  features because they interact with academic variables to improve predictions. Therefore, these variables reveal conditional effects such as financial stress that can increase academic risk when performance is already low. Thus, these interactions enhance both predictive accuracy and the interpretation of underlying patterns in the data.
+Beyond grades, both analyses identify **age at enrollment**, **scholarship status**, and **admission grade** as moderately important predictors. However, their relative importance differs slightly across methods. For example, admission grade is ranked higher by the Random Forest than by ANOVA, suggesting that its effect may be **non-linear or interaction-based**, which is better captured by machine learning models than by univariate statistical tests.
+
+**Some divergences** come out for socioeconomic and demographic variables such as **debtor status** and **gender**. While these variables are highly statistically significant in the ANOVA analysis, they receive much lower importance in the Random Forest ranking. This indicates that, although they are associated with outcome differences when considered individually, their predictive contribution becomes limited once the model accounts for other correlated features such as grades, age, and enrollment patterns.
+
 """))
 
 # Create a custom discretizer that respects class distributions
@@ -1417,7 +1421,7 @@ for idx, sample_idx in enumerate(sample_indices):
 # ============================================================================
 
 display(Markdown("\n## 7.4 - Global LIME Feature Importance\n"))
-display(Markdown("""ADD A SMALL TRANSITION"""))
+display(Markdown("""While examining individual cases reveals how the model makes specific predictions, aggregating these explanations across all students provides broader insights into which features consistently matter most. By analyzing LIME explanations globally, we can identify the universal drivers of student outcomes across all three classes."""))
 
 sample_size = len(X_test)
 sample_indices_global = np.random.choice(len(X_test), size=sample_size, replace=False)
@@ -1448,7 +1452,7 @@ display(Markdown("\n### Top 15 Most Important Features (LIME Global)\n"))
 display(lime_importance_global.head(15).round(4))
 
 display(Markdown("""
-**Global LIME Feature Importance:** When aggregating LIME explanations across all three classes (Dropout, Enrolled, and Graduate), we obtain a **global view** of which features most consistently **influence the model's predictions regardless of outcome**. The ranking remains similar to the dropout-specific analysis, with **second semester grades** (0.0583) again dominating as the single most important predictor. **Scholarship holder status** (0.0527) and **debtor status** (0.0369) maintain their strong positions, reinforcing that financial factors and academic performance are universally important across all prediction scenarios.
+**Global LIME Feature Importance:** When aggregating LIME explanations across all three classes (Dropout, Enrolled, and Graduate), we obtain a **global view** of which features most consistently influence the model's predictions regardless of outcome. The ranking remains similar to the dropout-specific analysis, with **second semester grades** (0.0583) again dominating as the single most important predictor. **Scholarship holder status** (0.0527) and **debtor status** (0.0369) maintain their strong positions, reinforcing that financial factors and academic performance are universally important across all prediction scenarios.
 
 The consistency between dropout-specific and global feature importance suggests that the same fundamental factors drive all student outcomes, just in different directions. Strong academic performance and financial stability predict graduation, while their absence predicts dropout. Enrolled students fall somewhere in between, showing mixed patterns of these key indicators. This global perspective validates our earlier findings and demonstrates that interventions targeting academic support and financial aid would benefit students across all outcome categories, not just those at risk of dropping out.
 """))
@@ -1551,7 +1555,7 @@ This comparison reveals how different methods assess feature importance:
 
 - **Random Forest (blue)**: Global feature importance based on how much each feature reduces prediction error across all decision trees. Captures complex interactions and non-linear relationships.
 
-- **LIME (orange)**: Local feature importance averaged across 100 samples from each class. Explains individual predictions by measuring how changes in feature values affect model outputs locally.
+- **LIME (orange)**: Local feature importance averaged across all samples from each class. Explains individual predictions by measuring how changes in feature values affect model outputs locally.
 
 - **ANOVA η² (green)**: Statistical effect size measuring the proportion of variance each feature explains in the target variable. Captures linear relationships and univariate associations.
 
@@ -1571,46 +1575,46 @@ All three methods agree that **_2nd semester grades_** and **_1st semester grade
 ## 8 - Conclusion 
 This project aimed to understand the factors driving student dropout and academic success. The objective was also to assess whether these outcomes can be predicted accurately, using demographic, socioeconomic, and academic information. Therefore, we were able to answer our research questions through a combination of exploratory data analysis and predictive modeling techniques.
 
-1. **How students’ academic indicators influence their likelihood of graduating or dropping out.** 
+_1. How students’ academic indicators influence their likelihood of graduating or dropping out._ 
 
-The analysis indicates that **academic performance indicators** are the **strongest determinant of students’ final academic outcomes**. Second-semester grades constitute the **most decisive factor** in distinguishing between students who drop out, remain enrolled, or graduate, as reflected by a very large **ANOVA effect size** (**η² = 0.339**). **First-semester grades** are used as a **critical warning signal** for identifying students in difficulty. In contrast, indicators of prior academic preparation and course enrollment intensity show **lower significance**, which suggests that success at the university level relies more heavily on student’s adaptation and performance within the academic environment than on their background before university.
+The analysis indicates that academic performance indicators are the **strongest determinant of students’ final academic outcomes**. Second-semester grades constitute the most decisive factor in distinguishing between students who drop out, remain enrolled, or graduate, as reflected by a very large ANOVA effect size (η² = 0.339). First-semester grades are used as a **critical warning signal** for identifying students in difficulty. In contrast, indicators of prior academic preparation and course enrollment intensity show lower significance, which suggests that success at the university level relies more heavily on **student’s adaptation and performance** within the academic environment than on their background before university.
 
 Study conditions contribute to outcomes in a more nuanced way. Students attending evening programs face slightly higher dropout risk, likely due to external commitments, while students who relocate for their studies appear more likely to graduate, possibly reflecting stronger educational commitment or fewer competing obligations.
 
-Overall, these results point to a **critical transition** between the **first and second semesters**. While early academic difficulties can be identified shortly after enrollment, **second-semester performance** has a **major role** in determining whether they rebound or lose interest. From a practical perspective, this emphasizes the **importance of early academic monitoring** and **targeted interventions** during the first year to reduce dropout risk and promote student success.
+Overall, these results point to a **critical transition** between the first and second semesters. While early academic difficulties can be identified shortly after enrollment, second-semester performance has a major role in determining whether they rebound or lose interest. From a practical perspective, this emphasizes the **importance of early academic monitoring** and **targeted interventions** during the first year to reduce dropout risk and promote student success.
 
 
-2. **What is the impact of demographic and socioeconomic background on students' probability of dropping out?**
-    a. **To what extent do financial factors (debtor status, scholarship holder) affect student retention?**
+_2. What is the impact of demographic and socioeconomic background on students' probability of dropping out?_
+    _a. To what extent do financial factors (debtor status, scholarship holder) affect student retention?_
+    
+While demographic and socioeconomic factors have an impact on student outcomes, it is not as significant compared to academic performance. A clear pattern is observed for _Age at enrollment_: **younger students are more likely to graduate**, while older students face a higher risk of dropout (η² ≈ 0.065). However, age alone does not determine success. We also observe gender differences, with **female students** being more likely **to remain enrolled and graduate**, despite the effect size being moderate. 
 
-While **demographic and socioeconomic factors** have an **impact on student outcomes**, it is not as significant compared to academic performance. A clear pattern is observed for _Age at enrollment_: younger students are more likely to graduate, while older students face a higher risk of dropout (η² ≈ 0.065). However, age alone does not determine success. We also observe gender differences, with **female students** being **more likely** to **remain enrolled** and **graduate**, despite the effect size being moderate. 
+Financial factors also show a clear correlation with student outcomes. Dropping out indeed correlates with indebtedness. **Students with debt are more likely to drop out**, whereas those who graduate are less concerned about it. These findings support the LIME analysis, which shows that **debt and scholarships** are two of the most important non-academic factors: financial issues increase the risk of dropping out, while financial support improves retention.
 
-**Financial factors** also show a **clear correlation** with **student outcomes**. Dropping out indeed correlates with indebtedness. Students with debt are more likely to drop out, whereas those who graduate are less concerned about it. These findings support the **LIME analysis**, which shows that **debt and scholarships** are two of the **most important non-academic factors**: financial issues increase the risk of dropping out, while financial support improves retention.
+Considering other demographic variables such as marital status , application order and parental background, their **effect sizes are very small**, their distributions are similar across outcome groups and model-based explanations consistently rank them among the least important predictors. Therefore, although they are **statistically significant**, their effects are **negligible** and do not meaningfully explain differences in student outcomes.
 
-Considering other demographic variables such as marital status , application order and parental background, their **effect sizes** are **very small**, their distributions are similar across outcome groups and model-based explanations consistently rank them among the least important predictors. Therefore, although they are **statistically significant**, their effects are **negligible** and do not meaningfully explain differences in student outcomes.
-
-The findings indicate that **socioeconomic factors**, such as financial stress (_debt_) and financial support (_scholarships_), have a **significant impact** on student retention. Whereas demographic characteristics such as age and gender play a secondary role compared to academic performance and financial stability.
+The findings indicate that socioeconomic factors, such as financial stress (_debt_) and financial support (_scholarships_), have a significant impact on student retention. Whereas demographic characteristics such as age and gender play a secondary role compared to academic performance and financial stability.
 
 
-3. **Can we accurately predict a student's final status (Dropout, Enrolled, or Graduate), and which characteristics are most relevant?**
-    a. **Which features category, academic, socioeconomic or demographic contribute the most in predicting students' dropout?**
+_3. Can we accurately predict a student's final status (Dropout, Enrolled, or Graduate), and which characteristics are most relevant?_
+   _a. Which features category, academic, socioeconomic or demographic contribute the most in predicting students' dropout?_
 
 While the previous research questions focused on identifying and interpreting the individual effects of academic, socioeconomic, and demographic factors on student dropout, the final step in the analysis evaluates these factors jointly within a predictive modeling framework. This shift from explanation to prediction assesses how well a machine-learning model can classify students’ final academic status and which categories of variables contribute most to its performance.
 
-The results indicate that predicting students’ final academic status is feasible, though subject to important limitations. The **Random Forest model** performs **well** for students with clearly defined outcomes, particularly graduates and dropouts, while currently enrolled students are harder to classify, reflecting the inherent uncertainty of trajectories that are still in progress rather than shortcomings of the model itself.
+The results indicate that predicting students’ final academic status is feasible, though subject to important limitations. The Random Forest model **performs well** for students with clearly defined outcomes, particularly graduates and dropouts, while currently enrolled students are harder to classify, reflecting the inherent uncertainty of trajectories that are still in progress rather than shortcomings of the model itself.
 
-Regarding **predictor relevance**, a clear hierarchy emerges consistently across all methods. **Academic features** dominate predictive performance, accounting for approximately **60–70%** of **explanatory power**, with second semester grades and first semester grades ranking **highest** across **ANOVA**, **Random Forest importance**, and **LIME explanations**. **Socioeconomic factors** form the **second most influential** category (around **20–30%**), with scholarship holding and debtor status standing out as key non-academic predictors that condition students’ ability to sustain academic performance. Demographic characteristics contribute more modestly, with age at enrollment being the most relevant, while contextual and macroeconomic variables show minimal predictive value. These findings confirm that **student outcomes** can be predicted with **moderate accuracy**, primarily driven by academic performance and reinforced by financial stability.
+Regarding predictor relevance, **academic features dominate predictive performance**, accounting for approximately 60–70% of explanatory power, with second semester grades and first semester grades ranking highest across **ANOVA**, **Random Forest importance**, and **LIME explanations**. **Socioeconomic factors** form the **second most influential** category (around **20–30%**), with scholarship holding and debtor status standing out as key non-academic predictors that condition students’ ability to sustain academic performance. Demographic characteristics contribute more modestly, with age at enrollment being the most relevant, while contextual and macroeconomic variables show minimal predictive value. These findings confirm that **student outcomes** can be predicted with **moderate accuracy**, primarily driven by academic performance and reinforced by financial stability.
 
 
 ---
 
-Taken together, this analysis highlights a clear hierarchy in the factors shaping student dropout and academic success. **Academic performance** stands out as the **most influential determinant**, followed by financial conditions, while demographic characteristics play a more limited supporting role and contextual variables show little direct impact. Across all methods, **semester grades** and especially **second-semester performance**, consistently emerge as the **strongest indicators** of students’ final outcomes.
+Taken together, this analysis highlights **a clear hierarchy** in the factors shaping student dropout and academic success. **Academic performance** stands out as the **most influential determinant**, followed by financial conditions, while demographic characteristics play a more limited supporting role and contextual variables show little direct impact. Across all methods, **semester grades** and especially **second-semester performance**, consistently emerge as the **strongest indicators** of students’ final outcomes.
 
-Rather than being a simple correlation, **academic performance** appears to be the channel through which other factors take effect. Financial pressure, age-related responsibilities, and study conditions influence students’ capacity to perform academically, which in turn directly affects their likelihood of persisting or dropping out.
+Rather than being a simple correlation, academic performance appears to be the channel through which other factors take effect. Financial pressure, age-related responsibilities, and study conditions influence students’ capacity to perform academically, which in turn directly affects their likelihood of persisting or dropping out.
 
-The practical implications are clear. **Effective dropout prevention** should focus on **early academic monitoring**, combined with **targeted financial support**, particularly during the first year and before second-semester outcomes become decisive. Encouragingly, the **most influential factors** identified are also those that institutions can directly address through **academic support services**, **financial aid policies**, and **early warning systems**.
+The practical implications are clear. Effective dropout prevention should focus on **early academic monitoring**, combined with **targeted financial support**, particularly during the first year and before second-semester outcomes become decisive. Encouragingly, the most influential factors identified are also those that institutions can directly address through academic support services, financial aid policies, and early warning systems.
 
-Overall, this project demonstrates that student dropout is **neither inevitable nor primarily driven by factors beyond institutional control**. With timely, **data-driven interventions** targeting the right factors at the right moments, higher education institutions can meaningfully improve **student retention and academic success**.
+Overall, this project demonstrates that student dropout is **neither inevitable nor primarily driven by factors beyond institutional control**. With timely, data-driven interventions targeting the right factors at the right moments, higher education institutions can meaningfully improve student retention and academic success.
 
 
 
